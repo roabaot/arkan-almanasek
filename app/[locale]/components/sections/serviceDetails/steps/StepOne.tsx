@@ -1,0 +1,73 @@
+import { RefObject, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { LuUser, LuGraduationCap, LuBuilding2 } from "react-icons/lu";
+import { ServiceFormInputsT } from "../../../ui/form/serviceFormSchema";
+import { useFormContext } from "react-hook-form";
+import AnimatedDiv from "../../../ui/animation/AnimatedDiv";
+import Radio from "../../../ui/fields/Radio";
+
+const StepOne = ({
+  direction,
+  nextBtnRef,
+}: {
+  direction: number;
+  nextBtnRef: RefObject<HTMLButtonElement | null>;
+}) => {
+  const {
+    register,
+    formState: { errors },
+    watch,
+  } = useFormContext<ServiceFormInputsT>();
+
+  // When role selected, focus next button for smoother UX
+  const roleValue = watch("role");
+  useEffect(() => {
+    if (roleValue && nextBtnRef?.current) {
+      nextBtnRef.current.focus();
+    }
+  }, [roleValue, nextBtnRef]);
+  const t = useTranslations();
+  return (
+    <AnimatedDiv className="flex flex-col gap-7" direction={direction}>
+      <div>
+        <h2 className="mb-2 text-2xl font-medium">
+          {t("services.form.step_1.title")}
+        </h2>
+        <p className="text-sm text-myGray-500">
+          {/* Please tell us about your skill level in frontend development. */}
+          {t("services.form.step_1.description")}
+        </p>
+      </div>
+      <div className="grid gap-x-10 gap-y-6 md:grid-cols-2 ">
+        <Radio
+          id="individual"
+          value="individual"
+          label={t("services.form.individual")}
+          icon={<LuUser size={20} />}
+          {...register("role")}
+        />
+        <Radio
+          id="institution"
+          value="institution"
+          label={t("services.form.institution")}
+          icon={<LuGraduationCap size={20} />}
+          {...register("role")}
+        />
+        <Radio
+          id="company"
+          value="company"
+          label={t("services.form.company")}
+          icon={<LuBuilding2 size={20} />}
+          {...register("role")}
+        />
+      </div>
+      {errors.role && (
+        <p className="text-xs text-red-500" role="alert">
+          {errors.role.message || t("validation.role.invalid")}
+        </p>
+      )}
+    </AnimatedDiv>
+  );
+};
+
+export default StepOne;

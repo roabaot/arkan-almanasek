@@ -1,0 +1,21 @@
+Proposed keys to add under services.style4:
+subtitle: "SERVICES"
+heading: "What we stand for"
+parts:
+  1:
+    title: "24/7 Support"
+    description: "We are available to assist you whenever you need."
+  2:
+    title: "Secure Payments"
+    description: "We ensure a safe and reliable payment method to protect your data."
+  3:
+    title: "Daily Updates"
+    description: "We continually update our services to keep them at their best."
+  4:
+    title: "Market Analysis"
+    description: "We analyze the market to empower you to make the best decisions."
+impact:
+  heading: "Our Impact in Numbers and Proven Success Through Strategy"
+  description: "We offer flat-rate pricing so you can plan your design needs without worrying about extra costs."
+  clients_label: "Satisfied Clients"
+  strategies_label: "Strategies Delivered"

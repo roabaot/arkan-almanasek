@@ -1,0 +1,208 @@
+@import "tailwindcss";
+/* tailwind config globals setting */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-xs: 375px;
+  --breakpoint-sm: 575px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  --font-primary: "Space Grotesk", sans-serif;
+  --font-secondary: "Inter", sans-serif;
+  --color-primary: #0a0c00;
+  --color-secondaryColor: #100701;
+  --color-textColor: #666a73;
+  --color-primaryBlue: #4f70e6;
+  --color-sectionBg: #f2f4f8;
+  --color-primaryBorder: #ccc;
+  --shadow-faq: 0px 0px 60px 0px rgba(0, 0, 0, 0.05);
+  --shadow-contact: 0px 4px 60px 0px rgba(0, 0, 0, 0.05);
+  --shadow-about: 0px 0px 60px 0px rgba(0, 0, 0, 0.05);
+  --gradient-blog-overlay: linear-gradient(
+    180deg,
+    rgba(38, 18, 8, 0) 44.52%,
+    #261208 92.46%
+  );
+  --gradient-banner-overlay: linear-gradient(
+    80deg,
+    rgba(16, 7, 1, 0.79) 36.94%,
+    rgba(118, 52, 7, 0) 78.99%
+  );
+  --shadow-navbar-shadow: 0px 4px 60px 0px rgba(38, 18, 8, 0.05);
+}
+
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+    cursor: none !important;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1 {
+    @apply text-primary xl:text-[100px] lg:text-[70px] md:text-[50px] text-[40px] xl:leading-[113px] lg:leading-[85px] md:leading-[58px] leading-[50px] font-primary font-normal tracking-[-2px];
+  }
+  h2 {
+    @apply text-secondaryColor xl:text-[60px] xl:leading-[68px] md:text-[50px] md:leading-[56px] text-[28px] leading-[36px] font-primary font-bold tracking-[-1.48px];
+  }
+
+  h3 {
+    @apply md:text-[32px] text-[24px] text-secondaryColor md:leading-[40px] leading-8 font-medium font-primary;
+  }
+
+  h4 {
+    @apply md:text-[24px] text-[22px] text-secondaryColor font-medium leading-[28px] md:leading-[36px] font-primary;
+  }
+
+  h5 {
+    @apply text-[18px] text-secondaryColor font-bold leading-7 font-primary;
+  }
+
+  h6 {
+    @apply text-[14px] text-secondaryColor font-normal font-primary;
+  }
+  p {
+    @apply text-textColor text-[16px] font-normal leading-7 font-secondary tracking-[-0.36px];
+  }
+  a {
+    @apply font-secondary;
+  }
+
+  .section-gap {
+    @apply lg:mt-[120px] md:mt-[80px] mt-[60px];
+  }
+  .section-padding {
+    @apply lg:py-[120px] md:py-[80px] py-[60px];
+  }
+  .section-label {
+    @apply text-[16px] font-bold font-primary text-primaryBlue uppercase tracking-[2.56px] leading-7;
+  }
+
+  .nav-menu {
+    @apply text-[14px] text-secondaryColor font-primary font-bold uppercase leading-6 relative inline-block cursor-pointer;
+    @apply after:absolute after:bottom-[30px] after:left-0 after:w-full after:h-[1px] after:bg-primaryBlue;
+    @apply after:scale-x-0 after:origin-right after:transition-transform after:duration-500;
+    @apply hover:text-primaryBlue hover:after:scale-x-100 hover:after:origin-left;
+  }
+
+  .nav-menu-two {
+    @apply text-[14px] text-white font-primary font-bold uppercase leading-6 relative inline-block cursor-pointer;
+    @apply after:absolute after:bottom-[26px] after:left-0 after:w-full after:h-[1px] after:bg-primaryBlue;
+    @apply after:scale-x-0 after:origin-right after:transition-transform after:duration-500;
+    @apply hover:text-primaryBlue hover:after:scale-x-100 hover:after:origin-left;
+  }
+
+  .nav-menu-three {
+    @apply text-[14px] text-secondaryColor font-primary font-bold uppercase leading-6 relative inline-block cursor-pointer;
+    @apply after:absolute after:bottom-[30px] after:left-0 after:w-full after:h-[1px] after:bg-primaryBlue;
+    @apply after:scale-x-0 after:origin-right after:transition-transform after:duration-500;
+    @apply hover:text-primaryBlue hover:after:scale-x-100 hover:after:origin-left;
+  }
+
+  .nav-sub-menu {
+    @apply block w-[250px] font-primary pt-4 px-7 hover:text-primaryBlue hover:ps-10 duration-300 ease-in-out;
+  }
+
+  .home-heading {
+    background: linear-gradient(90deg, #304b83 0%, #e84950 30%, #ed8324 70%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  [dir="rtl"] .home-heading {
+    background: linear-gradient(-90deg, #304b83 0%, #e84950 30%, #ed8324 70%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Override font families for RTL locales to use Tahoma */
+  [dir="rtl"] {
+    --font-primary: "Tahoma", "Space Grotesk", sans-serif;
+    --font-secondary: "Tahoma", "Inter", sans-serif;
+    /* --font-primary: "Poppins", "Space Grotesk", sans-serif;
+    --font-secondary: "Poppins", "Inter", sans-serif; */
+  }
+
+  /* Explicit override in case Tailwind compiled font-primary/font-secondary as static families */
+  [dir="rtl"] .font-primary,
+  [dir="rtl"] .font-secondary,
+  [dir="rtl"] body,
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6,
+  [dir="rtl"] p,
+  [dir="rtl"] a,
+  [dir="rtl"] button,
+  [dir="rtl"] span {
+    font-family: "Tahoma", "Space Grotesk", "Inter", sans-serif !important;
+    /* font-family: "Poppins", "Space Grotesk", "Inter", sans-serif !important; */
+  }
+
+  /* for navbar */
+  .animate-slideDown {
+    animation: slideDown 0.4s ease-out forwards;
+  }
+
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes wave {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  /* Create utility classes to use these animations */
+  .animate-slideDown {
+    animation: slideDown 0.5s ease-out forwards;
+  }
+
+  .animate-wave {
+    animation: wave 2s ease-out infinite;
+  }
+
+  .animate-wave-delay {
+    animation: wave 2s ease-out infinite 1s;
+  }
+}
+
+button {
+  @apply font-primary cursor-pointer;
+}
+
+.glow {
+  width: 200px;
+  height: 200px;
+  border-radius: 50px;
+  filter: blur(150px);
+}
+
+.glow.yellow {
+  background: #ffdc7899;
+}
+
+.text-number {
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #1a1a1a;
+  opacity: 0.2;
+}

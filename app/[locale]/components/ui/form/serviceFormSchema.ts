@@ -1,0 +1,84 @@
+import * as z from "zod";
+
+// Factory to create a translated service form schema.
+// Pass a translation function `t` (e.g. from `useTranslations('validation')`).
+// If no `t` is provided, it falls back to English keys for backward compatibility.
+export const createServiceFormSchema = (
+  t: (key: string) => string = (k) => k
+) =>
+  z
+    .object({
+      role: z.enum(["individual", "institution", "company"], {
+        error: t("validation.role.invalid"),
+      }),
+      first_name: z
+        .string()
+        .min(2, { message: t("validation.first_name.min") })
+        .max(36, { message: t("validation.first_name.max") }),
+      last_name: z
+        .string()
+        .min(2, { message: t("validation.last_name.min") })
+        .max(36, { message: t("validation.last_name.max") }),
+      email: z.string().email({ message: t("validation.email.invalid") }),
+      company_name: z.string().optional(),
+      institution_name: z.string().optional(),
+      unified_number: z
+        .string()
+        .min(7, { message: t("validation.unified_number.min") })
+        .max(10, { message: t("validation.unified_number.max") })
+        .optional(),
+      employee_count: z.string().optional(),
+      city: z.string().optional(),
+      country: z.string().optional(),
+      // phoneNumber: z
+      //   .string()
+      //   .regex(new RegExp(/^\+?[0-9][0-9]{7,14}$/), {
+      //     message: t("validation.phoneNumber.invalid"),
+      //   })
+      //   .optional(),
+      // idNumber: z.string().optional(),
+      // portfolioGithubLink: z.string().optional(),
+      // skillLevel: z.string().optional(), // legacy optional
+      // challengePref: z.string().array().nonempty().optional(),
+    })
+    .superRefine((data, ctx) => {
+      const needsCompanyFields =
+        data.role === "institution" || data.role === "company";
+      if (needsCompanyFields) {
+        if (!data.company_name && data.role === "company") {
+          ctx.addIssue({
+            code: "custom",
+            path: ["company_name"],
+            message: t("validation.company_name.required"),
+          });
+        }
+        if (!data.institution_name && data.role === "institution") {
+          ctx.addIssue({
+            code: "custom",
+            path: ["institution_name"],
+            message: t("validation.institution_name.required"),
+          });
+        }
+        if (!data.unified_number) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["unified_number"],
+            message: t("validation.unified_number.required"),
+          });
+        }
+        if (!data.employee_count) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["employee_count"],
+            message: t("validation.employee_count.required"),
+          });
+        }
+      }
+    });
+
+// Backward-compatible default (English keys will appear if no translator used)
+const serviceFormSchema = createServiceFormSchema();
+
+export type ServiceFormInputsT = z.infer<typeof serviceFormSchema>;
+
+export default serviceFormSchema;

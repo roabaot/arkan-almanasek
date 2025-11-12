@@ -1,0 +1,254 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact Us",
+    "privacy_policy": "Privacy Policy",
+    "terms_conditions": "Terms & Conditions",
+    "language": "Language",
+    "empty": "No data available",
+    "next_step": "Next Step",
+    "previous_step": "Previous Step",
+    "submit": "Submit"
+  },
+  "languages": {
+    "ar": "العربية",
+    "en": "English"
+  },
+  "hero": {
+    "title": "Welcome to Business Success Leadership Resources Company",
+    "description": "Your partner in management, human resources, and consulting services for sustainable growth"
+  },
+  "services": {
+    "title": "Our Services",
+    "description": "We offer a comprehensive range of diverse services.",
+    "list": {
+      "hr_services": "Human Resources Services",
+      "government_services": "Government Services",
+      "licensing": "Licensing",
+      "consulting": "Management Consulting",
+      "awards": "Awards",
+      "certifications": "Certifications"
+    },
+    "details": {
+      "required_documents": "Required Documents",
+      "benefits": "Benefits",
+      "description": "Service Description",
+      "cost": "Service Cost",
+      "duration": "Service Duration",
+      "government_fees": "Government Fees"
+    },
+    "form": {
+      "individual": "Individual",
+      "institution": "Institution",
+      "company": "Company",
+      "step_1": {
+        "title": "Client Type",
+        "description": "Please select the type of client submitting the request"
+      },
+      "step_2": {
+        "title": "Customer Information",
+        "description": "Please provide your information so we can get to know you better"
+      },
+      "placeholders": {
+        "first_name": "First name",
+        "last_name": "Last name",
+        "email": "Email address",
+        "company_name": "Company name",
+        "institution_name": "Institution name",
+        "unified_number": "Unified number",
+        "employee_count": "Employee count",
+        "city": "City"
+      },
+      "select_default": "Select {selector}",
+      "employee_count": {
+        "options": {
+          "1-10": "1 - 10 employees",
+          "11-50": "11 - 50 employees",
+          "51-100": "51 - 100 employees",
+          "101-250": "101 - 250 employees",
+          "more": "More than 250 employees"
+        }
+      },
+      "Saudi_citizen": {
+        "options": {
+          "riyadh": "Riyadh",
+          "makkah": "Makkah",
+          "madinah": "Madinah",
+          "jeddah": "Jeddah",
+          "alhasa": "Al Hasa",
+          "qassim": "Qassim",
+          "tabuk": "Tabuk",
+          "abha": "Abha",
+          "najran": "Najran",
+          "hail": "Hail",
+          "jouf": "Jouf",
+          "baha": "Baha",
+          "taif": "Taif",
+          "khobar": "Khobar",
+          "dhahran": "Dhahran",
+          "jubail": "Jubail",
+          "jazan": "Jazan",
+          "dammam": "Dammam",
+          "other": "Other"
+        }
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Check the FAQs below for quick answers.",
+    "list": {
+      "question_1": "What sets 'Leadership Resources' apart from other consulting firms?",
+      "answer_1": "Our specialized expertise in linking management consulting with effective HR management and compliance with government requirements. We provide an integrated solution that removes the need to deal with multiple parties.",
+      "question_2": "What role do you play in preparing my company for excellence awards?",
+      "answer_2": "We perform gap analysis, document procedures, prepare files, and train teams to ensure all criteria and requirements of prestigious awards are met.",
+      "question_3": "What types of companies do you work with?",
+      "answer_3": "We effectively serve small and medium-sized enterprises, as well as mixed and foreign companies seeking growth and compliance in the Saudi market.",
+      "question_4": "How long does the company structuring or KPI implementation process take?",
+      "answer_4": "We follow a methodology that starts with a rapid assessment followed by a clear, time-bound action plan. The duration depends on the size and complexity of the organization.",
+      "question_5": "Can you help my company obtain foreign licenses and registrations?",
+      "answer_5": "Yes. We have a specialized team that handles all required registrations and licenses for mixed and foreign companies, ensuring their operations run smoothly and in full legal compliance."
+    },
+    "project_completed": "Project Completed"
+  },
+  "features": {
+    "title": "Why Choose Us",
+    "description": "Here are some reasons that make us your ideal partner.",
+    "list": {
+      "title_1": "Professionalism",
+      "description_1": "Because the people we work with are not numbers—they are individuals with their own circumstances and challenges. We commit to precise performance that respects time, effort, and goals.",
+      "title_2": "Credibility & Transparency",
+      "description_2": "We honor what we say and deliver what we promise. We work transparently, turning regulations into practical actions with lasting impact.",
+      "title_3": "Impact",
+      "description_3": "We strive to be more than a strategic partner—to be a turning point and leave an enduring impact with our partners.",
+      "title_4": "Flexibility",
+      "description_4": "We believe off-the-shelf solutions rarely do anyone justice. We tailor our services flexibly to partner needs, pursuing the best outcomes."
+    }
+  },
+  "buttons": {
+    "get_started": "Get Started",
+    "learn_more": "Learn More",
+    "read_more": "Read More",
+    "contact_us": "Contact Us"
+  },
+  "footer": {
+    "description": "We strive to deliver the best advanced solutions and services to our clients.",
+    "contact_title": "Contact",
+    "address_label": "Address",
+    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia",
+    "phone_label": "Phone Number",
+    "phone_value": "+966556332242",
+    "email_label": "Email",
+    "email_value": "Info@macs.com.sa",
+    "work_label": "Working Hours",
+    "work_hours": "Sunday - Thursday: 9:00 AM - 5:00 PM",
+    "response_time": "Average response time: within 24 business hours",
+    "newsletter_title": "Newsletter",
+    "newsletter_description": "Technology is constantly evolving, shaping the way we live and work",
+    "newsletter_placeholder": "Your email...",
+    "newsletter_hint": "It only takes 2 minutes to complete.",
+    "copyright": "© Putech {year} | All Rights Reserved"
+  },
+  "sidebar": {
+    "tagline": "Innovative solutions for business growth and success",
+    "contact_title": "Contact Information",
+    "email_label": "Email",
+    "email_value": "Info@macs.com.sa",
+    "phone_label": "Phone",
+    "phone_value": "+966556332242",
+    "location_title": "Location Information",
+    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia"
+  },
+  "about": {
+    "breadcrumb_title": "About Us",
+    "breadcrumb_para": "Delivering high-quality, on-demand service with speed and precision. Elevate your brand effortlessly, one moment at a time.",
+    "story": {
+      "tagline": "Driving Growth Through Strategic and Innovative Marketing",
+      "our_story_title": "Our Story",
+      "our_story_paragraph": "Leadership Resources was established in 2017 to be the integrated strategic partner that makes a difference. We don't just provide services; we create impact—shaping an intelligent, integrated work environment aligned with the highest national and international standards. Leadership Resources Company is one of the leading specialized companies in marketing on behalf of others and delivering specialized services and consulting.",
+      "our_mission_title": "Our Mission",
+      "our_mission_paragraph": "We believe that true partnership creates growth. We strive to be the first choice for ambitious companies by enabling our partners to focus on their vision while we build and execute plans professionally to ensure success. We create impact through integrated solutions that combine intelligence, strategy, and commitment to the highest national and international standards—delivering an experience that makes a difference and inspires progress."
+    },
+    "service": {
+      "subtitle": "SERVICES",
+      "heading": "What we stand for",
+      "parts": {
+        "1": {
+          "title": "24/7 Support",
+          "description": "We are available to assist you whenever you need."
+        },
+        "2": {
+          "title": "Secure Payments",
+          "description": "We ensure a safe and reliable payment method to protect your data."
+        },
+        "3": {
+          "title": "Daily Updates",
+          "description": "We continually update our services to keep them at their best."
+        },
+        "4": {
+          "title": "Market Analysis",
+          "description": "We analyze the market to empower you to make the best decisions."
+        }
+      },
+      "impact": {
+        "heading": "Our Impact in Numbers and Proven Success Through Strategy",
+        "description": "We offer flat-rate pricing so you can plan your design needs without worrying about extra costs.",
+        "clients_label": "Satisfied Clients",
+        "strategies_label": "Strategies Delivered"
+      }
+    },
+    "section": {
+      "title": "We drive your brand to leadership by delivering advanced solutions and services",
+      "description": "Thoughtful minds weaving ideas into tailored marketing plans. We build strategic partnerships to boost sales and create innovative ways to elevate companies. We also provide services that support growth, internal communication, and strengthen brand presence in the Saudi market.",
+      "stats": {
+        "clients": "Happy clients",
+        "services": "Services provided"
+      },
+      "list": {
+        "0": "Create a marketing plan",
+        "1": "Identify potential marketing channels",
+        "2": "Develop actionable strategies",
+        "3": "Develop and strengthen brand identity",
+        "4": "Publish monthly reports"
+      },
+      "help_text": "Need help? Contact us at"
+    }
+  },
+  "validation": {
+    "role": {
+      "invalid": "Please select a valid role"
+    },
+    "first_name": {
+      "min": "First name is too short",
+      "max": "First name is too long"
+    },
+    "last_name": {
+      "min": "Last name is too short",
+      "max": "Last name is too long"
+    },
+    "email": {
+      "invalid": "Invalid email address"
+    },
+    "unified_number": {
+      "min": "Unified number is too short",
+      "max": "Unified number is too long",
+      "required": "Unified number is required"
+    },
+    "phoneNumber": {
+      "invalid": "Invalid phone number"
+    },
+    "company_name": {
+      "required": "Company name is required"
+    },
+    "institution_name": {
+      "required": "Institution name is required"
+    },
+    "employee_count": {
+      "required": "Employee count is required"
+    }
+  }
+}
