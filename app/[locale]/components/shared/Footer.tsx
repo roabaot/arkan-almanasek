@@ -163,7 +163,12 @@ const Footer = () => {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.18 }}
                   >
-                    <a href="tel:+966556332242">+966556332242</a>
+                    <a
+                      href="tel:+966556332242"
+                      className="hover:text-primaryBlue transition-colors duration-300 ease-in-out"
+                    >
+                      +966556332242
+                    </a>
                   </motion.h5>
                 </div>
               </motion.div>
@@ -188,7 +193,12 @@ const Footer = () => {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.18 }}
                   >
-                    <a href="mailto:info@macs.com.sa">info@macs.com.sa</a>
+                    <a
+                      href="mailto:info@macs.com.sa"
+                      className="hover:text-primaryBlue transition-colors duration-300 ease-in-out"
+                    >
+                      info@macs.com.sa
+                    </a>
                   </motion.h5>
                 </div>
               </motion.div>
@@ -250,10 +260,10 @@ const Footer = () => {
             <motion.p className="text-white mt-7" variants={itemVariants}>
               {t("newsletter_description")}
             </motion.p>
-            <motion.div className="mt-7 relative">
+            <motion.div className="group mt-7 relative">
               <motion.input
                 type="text"
-                className="w-full border border-white ps-5 rounded-full h-[54px] pe-[54px] text-white text-[16px] font-secondary font-normal outline-0 placeholder:text-white focus:border-primaryBlue duration-300 ease-in-out"
+                className="w-full border border-white ps-5 rounded-full h-[54px] pe-[54px] text-white text-[16px] font-secondary font-normal outline-0 placeholder:text-white focus:border-primaryBlue group-hover:border-primaryBlue/50 duration-300 ease-in-out"
                 placeholder={t("newsletter_placeholder")}
                 variants={itemVariants}
               />
@@ -263,13 +273,13 @@ const Footer = () => {
               >
                 <BsSendFill size={20} color="#fff" />
               </motion.button>
-              <motion.span
-                className="text-white text-[12px] font-normal font-secondary mt-2 ms-3"
-                variants={itemVariants}
-              >
-                {t("newsletter_hint")}
-              </motion.span>
             </motion.div>
+            <motion.span
+              className="text-white text-[12px] font-normal font-secondary mt-2 ms-3"
+              variants={itemVariants}
+            >
+              {t("newsletter_hint")}
+            </motion.span>
           </motion.div>
         </div>
 

@@ -14,6 +14,11 @@ export const metadata: Metadata = {
   title: "Putech – Business & IT Solutions Next.js Template",
   description:
     "Putech is a sleek, modern, and fully responsive Next.js template for IT companies, startups, software agencies, and business service providers. Built with Next.js and Tailwind CSS.",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default async function RootLayout({

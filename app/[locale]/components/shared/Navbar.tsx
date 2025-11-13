@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import { usePathname, useRouter, Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import Container from "../common/Container";
@@ -16,7 +17,6 @@ const Navbar = () => {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations();
-  const isHome = pathname === "/";
 
   const [isSticky, setIsSticky] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -48,15 +48,24 @@ const Navbar = () => {
 
   return (
     <div>
-      <div
+      <motion.div
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
           isSticky ? "bg-white animate-slideDown shadow-navbar-shadow" : ""
         }`}
+        initial={{ y: -100, opacity: 0, filter: "blur(10px)" }}
+        // animate values must be plain numbers/strings — transitions are specified
+        // in the separate `transition` prop. To target a single property's
+        // transition (opacity), provide a per-property transition object.
+        animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+        transition={{
+          opacity: { duration: 1, delay: 1 },
+          y: { duration: 1 },
+          filter: { duration: 0.5, delay: 1 },
+          type: "spring",
+        }}
       >
         <Container
-          className={`max-w-[calc(100%-16px)] mx-auto relative w-full lg:py-0 py-3 ${
-            isHome ? "rounded-full" : "rounded-[20px]"
-          } ${
+          className={`max-w-[calc(100%-16px)] mx-auto relative w-full lg:py-0 py-3 rounded-full  ${
             isSticky
               ? ""
               : "absolute top-5 bg-white shadow-navbar-shadow left-1/2 -translate-x-1/2 px-4 md:px-6 xl:px-7 2xl:px-7"
@@ -128,7 +137,7 @@ const Navbar = () => {
             </div>
           </header>
         </Container>
-      </div>
+      </motion.div>
 
       {/* Drawer Component */}
       <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
