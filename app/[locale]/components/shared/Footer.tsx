@@ -1,3 +1,4 @@
+"use client";
 import Container from "../common/Container";
 import {
   FaEnvelope,
@@ -14,26 +15,69 @@ import FooterMap from "../ui/contact/FooterMap";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const t = useTranslations("footer");
   const tCommon = useTranslations("common");
   const year = new Date().getFullYear();
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const innerStagger = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.06 } },
+  };
+
+  const innerNoStagger = {
+    hidden: {},
+    visible: {},
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 12 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.45 },
+    },
+  };
+
   return (
     <div className="bg-secondaryColor section-gap">
       <Container className="pt-20">
         {/* map here  */}
-        <FooterMap />
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <FooterMap />
+        </motion.div>
 
         {/* main footer start here */}
         <div className="mt-15 flex flex-wrap justify-between space-y-10 md:space-y-0 mb-20">
           {/* item 1 start */}
-          <div className="max-w-[300px]">
+          <motion.div
+            className="max-w-[300px]"
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.18 }}
+          >
             {/* logo */}
-            <Link href={"/"}>
+            <Link href="/">
               <Image
                 className="w-[150px] h-auto object-contain"
-                src={"/logo-with-name.svg"}
+                src="/logo-with-name.svg"
                 width={150}
                 height={50}
                 alt="putech logo"
@@ -84,85 +128,175 @@ const Footer = () => {
                 <FaSnapchatGhost size={18} />
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* item 2 here */}
           <div className="max-w-[300px]">
-            <h4 className="text-white">{t("contact_title")}</h4>
+            <motion.h4
+              className="text-white"
+              variants={itemVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.18 }}
+            >
+              {t("contact_title")}
+            </motion.h4>
+
             <div className="mt-7 flex flex-col gap-4">
               {/* Phone */}
-              <div className="flex items-center gap-4">
+              <motion.div
+                className="flex items-center gap-4"
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.18 }}
+              >
                 <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
                   <FaPhoneAlt className="text-white text-lg" />
                 </div>
                 <div>
                   <p className="text-white mb-2">{t("phone_label")}</p>
-                  <h5 className="text-white [unicode-bidi:plaintext]">
+                  <motion.h5
+                    className="text-white [unicode-bidi:plaintext]"
+                    variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.18 }}
+                  >
                     <a href="tel:+966556332242">+966556332242</a>
-                  </h5>
+                  </motion.h5>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Email */}
-              <div className="flex items-center gap-4">
+              <motion.div
+                className="flex items-center gap-4"
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.18 }}
+              >
                 <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
                   <FaEnvelope className="text-white text-lg" />
                 </div>
                 <div>
                   <p className="text-white mb-2">{t("email_label")}</p>
-                  <h5 className="text-white">
+                  <motion.h5
+                    className="text-white"
+                    variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.18 }}
+                  >
                     <a href="mailto:info@macs.com.sa">info@macs.com.sa</a>
-                  </h5>
+                  </motion.h5>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Work / Hours */}
-              <div className="flex items-center gap-4">
+              <motion.div
+                className="flex items-center gap-4"
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.18 }}
+              >
                 <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
                   <FaClock className="text-white text-lg" />
                 </div>
                 <div>
                   <p className="text-white mb-2">{t("work_label")}</p>
-                  <h5 className="text-white">{t("work_hours")}</h5>
+                  <motion.h5
+                    className="text-white"
+                    variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.18 }}
+                  >
+                    {t("work_hours")}
+                  </motion.h5>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
 
           {/* item 3 here */}
-          <div className="max-w-[300px]">
-            <h4 className="text-white">{t("address_label")}</h4>
-            <p className="text-white mt-7">{t("address_value")}</p>
-          </div>
+          <motion.div
+            className="max-w-[300px]"
+            variants={innerNoStagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+          >
+            <motion.h4 className="text-white" variants={itemVariants}>
+              {t("address_label")}
+            </motion.h4>
+            <motion.p className="text-white mt-7" variants={itemVariants}>
+              {t("address_value")}
+            </motion.p>
+          </motion.div>
 
           {/* item 4 here */}
-          <div className="max-w-[300px]">
-            <h4 className="text-white">{t("newsletter_title")}</h4>
-            <p className="text-white mt-7">{t("newsletter_description")}</p>
-            <div className="mt-7 relative">
-              <input
+          <motion.div
+            className="max-w-[300px]"
+            variants={innerStagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.35 }}
+          >
+            <motion.h4 className="text-white" variants={itemVariants}>
+              {t("newsletter_title")}
+            </motion.h4>
+            <motion.p className="text-white mt-7" variants={itemVariants}>
+              {t("newsletter_description")}
+            </motion.p>
+            <motion.div className="mt-7 relative">
+              <motion.input
                 type="text"
                 className="w-full border border-white ps-5 rounded-full h-[54px] pe-[54px] text-white text-[16px] font-secondary font-normal outline-0 placeholder:text-white focus:border-primaryBlue duration-300 ease-in-out"
                 placeholder={t("newsletter_placeholder")}
+                variants={itemVariants}
               />
-              <button className="bg-primaryBlue w-10 h-10 rounded-full flex items-center justify-center text-secondaryColor absolute top-1.5 ltr:right-2 rtl:left-2 rtl:rotate-[225deg] ltr:rotate-[45deg]">
+              <motion.button
+                className="bg-primaryBlue w-10 h-10 rounded-full flex items-center justify-center text-secondaryColor absolute top-1.5 ltr:right-2 rtl:left-2 rtl:rotate-[225deg] ltr:rotate-[45deg]"
+                variants={itemVariants}
+              >
                 <BsSendFill size={20} color="#fff" />
-              </button>
-              <span className="text-white text-[12px] font-normal font-secondary mt-2 ml-3">
+              </motion.button>
+              <motion.span
+                className="text-white text-[12px] font-normal font-secondary mt-2 ms-3"
+                variants={itemVariants}
+              >
                 {t("newsletter_hint")}
-              </span>
-            </div>
-          </div>
+              </motion.span>
+            </motion.div>
+          </motion.div>
         </div>
 
-        <hr className="text-white/20" />
+        <motion.hr
+          className="text-white/20"
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+        />
+
         {/* footer bottom */}
-        <div className="py-[30px] md:flex justify-between items-center">
-          <div>
+        <motion.div
+          className="py-[30px] md:flex justify-between items-center"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+        >
+          <motion.div
+            variants={itemVariants}
+            className="md:text-start text-center"
+          >
             <p className="text-white">{t.rich("copyright", { year })}</p>
-          </div>
-          <div className="mt-2 md:mt-0">
-            <ul className="flex flex-wrap items-center space-x-7">
+          </motion.div>
+          <motion.div className="mt-2 md:mt-0" variants={itemVariants}>
+            <ul className="flex flex-wrap items-center space-x-7 md:justify-start justify-center">
               <li>
                 <Link
                   href={"/terms-condition"}
@@ -188,8 +322,8 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </Container>
     </div>
   );
