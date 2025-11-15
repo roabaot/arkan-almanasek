@@ -53,7 +53,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       <div
         ref={sidebarRef}
         className={cn(
-          "fixed top-0 right-0 h-full w-[85%] bg-white shadow-lg z-50 transform transition-transform duration-500 ease-in-out",
+          "fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white shadow-lg z-50 transform transition-transform duration-500 ease-in-out",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
