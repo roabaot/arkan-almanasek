@@ -2,7 +2,8 @@ import Breadcrumb from "@/app/[locale]/components/common/Breadcrumb";
 import Container from "@/app/[locale]/components/common/Container";
 import dynamic from "next/dynamic";
 const BlogDetailsInfo = dynamic(
-  () => import("@/app/[locale]/components/sections/blogDetails/BlogDetailsInfo"),
+  () =>
+    import("@/app/[locale]/components/sections/blogDetails/BlogDetailsInfo"),
   { ssr: false }
 );
 import BlogCatagory from "@/app/[locale]/components/ui/blog/BlogCatagory";
@@ -15,7 +16,7 @@ import { getTranslations } from "next-intl/server";
 export const metadata: Metadata = {
   title: "Blog Details | MACS – Business & IT Solutions Next.js Template",
   description:
-    "Dive into detailed articles and insights on business and IT solutions with our Blog Details page at MACS – Business & IT Solutions Next.js template.",
+    "Dive into detailed articles and insights on business and IT solutions with our Blog Details page at MACS – Business Solutions Next.js template.",
 };
 
 const BlogDetails = async ({

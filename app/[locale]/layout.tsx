@@ -78,9 +78,6 @@ export default async function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable}`}
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
-      <head>
-        <meta name="apple-mobile-web-app-title" content="MACS" />
-      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <Navbar />
