@@ -10,10 +10,44 @@ import { routing } from "../../i18n/routing";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 
+const APP_NAME = "MACS App";
+const APP_DEFAULT_TITLE = "My Awesome MACS App";
+const APP_TITLE_TEMPLATE = "%s - MACS App";
+const APP_DESCRIPTION = "Best MACS app in the world!";
+
 export const metadata: Metadata = {
-  title: "Putech – Business & IT Solutions Next.js Template",
-  description:
-    "Putech is a sleek, modern, and fully responsive Next.js template for IT companies, startups, software agencies, and business service providers. Built with Next.js and Tailwind CSS.",
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+    // startUpImage: [],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
   icons: {
     icon: "/logo.svg",
     shortcut: "/logo.svg",
@@ -44,6 +78,9 @@ export default async function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable}`}
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
+      <head>
+        <meta name="apple-mobile-web-app-title" content="MACS" />
+      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <Navbar />

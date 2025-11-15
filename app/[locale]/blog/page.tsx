@@ -10,6 +10,7 @@ import PopularTag from "@/app/[locale]/components/ui/blog/PopularTag";
 import FollowUs from "@/app/[locale]/components/ui/blog/FollowUs";
 import { getBlogs } from "../actions/blogs";
 import { getTranslations } from "next-intl/server";
+import MotionContainer from "@/app/[locale]/components/common/MotionContainer";
 
 export const metadata: Metadata = {
   title: "Blog | Putech – Business & IT Solutions Next.js Template",
@@ -20,18 +21,19 @@ export const metadata: Metadata = {
 const BlogPage = async () => {
   const { items: blogs } = await getBlogs();
   const t = await getTranslations();
-  console.log("blogs: ", blogs);
 
   return (
     <div>
       {/************* Breadcrumb section start here **************/}
-      <Breadcrumb
-        title={t("blogs.title")}
-        breadcrumb={[
-          { name: t("common.home"), href: "/" },
-          { name: t("blogs.title") },
-        ]}
-      />
+      <MotionContainer>
+        <Breadcrumb
+          title={t("blogs.title")}
+          breadcrumb={[
+            { name: t("common.home"), href: "/" },
+            { name: t("blogs.title") },
+          ]}
+        />
+      </MotionContainer>
 
       {/************* blog section start here **************/}
       <section className="section-gap">
@@ -39,41 +41,51 @@ const BlogPage = async () => {
           {/* part 1 */}
           <div className="lg:w-[65%] w-full">
             {/* blog cart start here */}
-            <div className="flex flex-col gap-20">
-              {blogs?.map((blog) => (
-                <BlogCard key={blog?.id} blog={blog} />
-              ))}
-            </div>
+            {blogs && blogs.length > 0 ? (
+              <MotionContainer className="flex flex-col gap-20">
+                {blogs.map((blog) => (
+                  <BlogCard key={blog?.id} blog={blog} />
+                ))}
+              </MotionContainer>
+            ) : (
+              <MotionContainer className="flex flex-col gap-6 items-center justify-center py-20">
+                <p className="text-center text-muted">{t("blogs.empty")}</p>
+              </MotionContainer>
+            )}
             {/* pagination part start here */}
-            <BlogPagination />
+            {blogs.length > 0 && (
+              <MotionContainer>
+                <BlogPagination />
+              </MotionContainer>
+            )}
           </div>
 
           {/* part 2 */}
           <div className="lg:w-[35%] w-full flex flex-col gap-10 mt-10 lg:mt-0">
             {/* blog search part start here */}
-            <div>
+            <MotionContainer>
               <BlogSearch />
-            </div>
+            </MotionContainer>
 
             {/* Popular Post part start here */}
-            <div>
+            <MotionContainer>
               <PopularPost />
-            </div>
+            </MotionContainer>
 
             {/* Category part start here */}
-            <div>
+            <MotionContainer>
               <BlogCatagory />
-            </div>
+            </MotionContainer>
 
             {/* Popular Tag part start here */}
-            <div>
+            <MotionContainer>
               <PopularTag />
-            </div>
+            </MotionContainer>
 
             {/* Follow Us */}
-            <div>
+            <MotionContainer>
               <FollowUs />
-            </div>
+            </MotionContainer>
           </div>
         </Container>
       </section>

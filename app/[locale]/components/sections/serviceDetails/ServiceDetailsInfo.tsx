@@ -6,6 +6,7 @@ import ServiceSidebar from "./ServiceSidebar";
 import { useTranslations } from "next-intl";
 import ServiceItemCard from "../../ui/cards/ServiceItemCard";
 import ServiceForm from "../../ui/form/ServiceForm";
+import MotionWrapper from "../../common/MotionWrapper";
 
 const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
   const t = useTranslations();
@@ -65,10 +66,11 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
             alt="Service image"
           /> */}
           <div className="flex flex-col gap-y-[30px] mt-[30px]">
-            <div>
-              <h2>{service?.name_i18n}</h2>
+            <MotionWrapper>
+              <div>
+                <h2>{service?.name_i18n}</h2>
 
-              {/* <div className="flex flex-col gap-5 mt-5">
+                {/* <div className="flex flex-col gap-5 mt-5">
                 {service?.paragraphs?.map((p, index) => (
                   <div key={index}>
                     <p>{p}</p>
@@ -90,25 +92,32 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
                 ))}
               </div> */}
 
-              <p className="my-[30px]">{service?.description_i18n}</p>
-            </div>
+                <p className="my-[30px]">{service?.description_i18n}</p>
+              </div>
+            </MotionWrapper>
 
             {/* Connecting You to Tomorrow */}
-            <div>
-              {/* <ConnectingService /> */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] my-[30px]">
-                {details.map((detail) => (
-                  <ServiceItemCard
-                    key={detail.id}
-                    title={detail.label}
-                    icon={detail.icon}
-                    description={detail.value}
-                  />
-                ))}
+            <MotionWrapper>
+              <div>
+                {/* <ConnectingService /> */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] my-[30px]">
+                  {details.map((detail, idx) => (
+                    <MotionWrapper key={detail.id} delay={idx * 0.06}>
+                      <ServiceItemCard
+                        key={detail.id}
+                        title={detail.label}
+                        icon={detail.icon}
+                        description={detail.value}
+                      />
+                    </MotionWrapper>
+                  ))}
+                </div>
               </div>
-            </div>
+            </MotionWrapper>
 
-            <ServiceForm />
+            <MotionWrapper>
+              <ServiceForm />
+            </MotionWrapper>
           </div>
         </div>
 

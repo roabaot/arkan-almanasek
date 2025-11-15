@@ -13,30 +13,19 @@ import AnimatedNumber from "../../ui/animation/AnimatedNumber";
 const Faq = () => {
   const t = useTranslations("faq");
 
-  const titleRef = useRef<HTMLDivElement | null>(null);
   const statsRef = useRef<HTMLDivElement | null>(null);
   const statsInView = useInView(statsRef, { once: true, amount: 0.6 });
-  const isInView = useInView(titleRef, {
-    once: true,
-    amount: 1,
-  });
-
-  useEffect(() => {
-    console.log("isInView", isInView);
-  }, [isInView]);
 
   return (
     <div className="bg-sectionBg section-gap relative py-16 overflow-hidden">
       <Container>
         {/* section title start here */}
-        <div ref={titleRef}>
-          <SectionTitle
-            label={t("title")}
-            title={t("description")}
-            align="center"
-            delay={0.8}
-          />
-        </div>
+        <SectionTitle
+          label={t("title")}
+          title={t("description")}
+          align="center"
+          delay={0.8}
+        />
 
         {/* Accordion part start    */}
         <div className="lg:flex flex-row-reverse items-center justify-between md:mt-[60px] mt-10">

@@ -1,8 +1,10 @@
+"use client";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import Container from "./Container";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "next-intl";
+import { motion } from "framer-motion";
 
 type PageHeaderProps = {
   title: string;
@@ -13,9 +15,23 @@ const Breadcrumb = ({ title, breadcrumb }: PageHeaderProps) => {
   const locale = useLocale();
   const isRtl = locale === "ar";
   return (
-    <div className="bg-[#F2F4F8]/50 h-[300px] md:h-[400px] 2xl:h-[450px] relative">
+    <motion.div
+      className="bg-[#F2F4F8]/50 h-[300px] md:h-[400px] 2xl:h-[450px] relative overflow-hidden"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.7 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+    >
       <Container className="h-[300px] md:h-[400px] 2xl:h-[450px] flex flex-col justify-center items-start">
-        <h2 className="mt-[50px]">{title}</h2>
+        <motion.h2
+          className="mt-[50px]"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {title}
+        </motion.h2>
         <div className="mt-3 flex gap-2">
           {breadcrumb?.map((item, index) => (
             <span
@@ -60,7 +76,7 @@ const Breadcrumb = ({ title, breadcrumb }: PageHeaderProps) => {
           alt="mark"
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

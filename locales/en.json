@@ -129,6 +129,13 @@
       "description_4": "We believe off-the-shelf solutions rarely do anyone justice. We tailor our services flexibly to partner needs, pursuing the best outcomes."
     }
   },
+  "blogs": {
+    "title": "Blogs",
+    "empty": "No blogs found",
+    "search": "Search in blogs...",
+    "author_by": "By {author}",
+    "read_more": "Read More"
+  },
   "buttons": {
     "get_started": "Get Started",
     "learn_more": "Learn More",

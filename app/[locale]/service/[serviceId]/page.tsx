@@ -4,6 +4,12 @@ import { Metadata } from "next";
 import { getServiceById } from "../../actions/services";
 import { getTranslations } from "next-intl/server";
 import { handleServiceBreadcrumbs } from "@/app/lib/utils";
+import dynamic from "next/dynamic";
+
+const MotionWrapper = dynamic(
+  () => import("@/app/[locale]/components/common/MotionWrapper"),
+  { ssr: false }
+);
 
 export const metadata: Metadata = {
   title: "Service Details | Putech – Business & IT Solutions Next.js Template",
@@ -26,17 +32,21 @@ const ServiceDetails = async ({
   return (
     <div>
       {/************* Breadcrumb section start here **************/}
-      <Breadcrumb
-        title={service?.name_i18n || "Service"}
-        breadcrumb={[
-          { name: t("common.home"), href: "/" },
-          { name: t("services.title"), href: "/category" },
-          ...(breadcrumbs ?? []),
-        ]}
-      />
+      <MotionWrapper>
+        <Breadcrumb
+          title={service?.name_i18n || "Service"}
+          breadcrumb={[
+            { name: t("common.home"), href: "/" },
+            { name: t("services.title"), href: "/category" },
+            ...(breadcrumbs ?? []),
+          ]}
+        />
+      </MotionWrapper>
 
       {/************* Service details section start here **************/}
-      <ServiceDetailsInfo service={service} />
+      <MotionWrapper>
+        <ServiceDetailsInfo service={service} />
+      </MotionWrapper>
 
       {/* pagination start */}
       {/* <Pagination /> */}

@@ -133,7 +133,8 @@
     "title": "المدونات",
     "search": "البحث في المدونات...",
     "author_by": "بواسطة {author}",
-    "read_more": "اقرأ المزيد"
+    "read_more": "اقرأ المزيد",
+    "empty": "لا توجد مدونات"
   },
   "buttons": {
     "get_started": "ابدأ الآن",
