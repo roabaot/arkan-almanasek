@@ -7,8 +7,7 @@ import { handleServiceBreadcrumbs } from "@/app/lib/utils";
 import dynamic from "next/dynamic";
 
 const MotionWrapper = dynamic(
-  () => import("@/app/[locale]/components/common/MotionWrapper"),
-  { ssr: false }
+  () => import("@/app/[locale]/components/common/MotionWrapper")
 );
 
 export const metadata: Metadata = {

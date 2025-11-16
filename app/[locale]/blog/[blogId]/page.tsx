@@ -1,10 +1,9 @@
 import Breadcrumb from "@/app/[locale]/components/common/Breadcrumb";
 import Container from "@/app/[locale]/components/common/Container";
 import dynamic from "next/dynamic";
+
 const BlogDetailsInfo = dynamic(
-  () =>
-    import("@/app/[locale]/components/sections/blogDetails/BlogDetailsInfo"),
-  { ssr: false }
+  () => import("@/app/[locale]/components/sections/blogDetails/BlogDetailsInfo")
 );
 import BlogCatagory from "@/app/[locale]/components/ui/blog/BlogCatagory";
 import PopularPost from "@/app/[locale]/components/ui/blog/PopularPost";
