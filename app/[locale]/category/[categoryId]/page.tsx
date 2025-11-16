@@ -21,7 +21,7 @@ const CategoryPage = async ({
 
   const [category, servicesData] = await Promise.all([
     getServiceCategoryById(categoryId),
-    getServices({ service_category_ids: [categoryId] }),
+    getServices({ service_category_ids: [categoryId], debug: true }),
   ]);
   const t = await getTranslations();
 

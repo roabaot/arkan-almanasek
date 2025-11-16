@@ -3,7 +3,7 @@ import { getServiceCategories } from "../../../actions/services";
 import ServiceClient from "./ServiceClient";
 
 const Service = async () => {
-  const services = await getServiceCategories();
+  const services = await getServiceCategories({ debug: true });
 
   return (
     <div className="section-gap">

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const BlogPage = async () => {
-  const { items: blogs } = await getBlogs();
+  const { items: blogs } = await getBlogs({ debug: true });
   const t = await getTranslations();
 
   return (
