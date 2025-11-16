@@ -22,6 +22,8 @@ const BlogPage = async () => {
   const { items: blogs } = await getBlogs({ debug: true });
   const t = await getTranslations();
 
+  console.log("blogs: ", blogs);
+
   return (
     <div>
       {/************* Breadcrumb section start here **************/}
@@ -41,17 +43,21 @@ const BlogPage = async () => {
           {/* part 1 */}
           <div className="lg:w-[65%] w-full">
             {/* blog cart start here */}
-            {blogs && blogs.length > 0 ? (
-              <MotionContainer className="flex flex-col gap-20">
-                {blogs.map((blog) => (
-                  <BlogCard key={blog?.id} blog={blog} />
-                ))}
-              </MotionContainer>
-            ) : (
-              <MotionContainer className="flex flex-col gap-6 items-center justify-center py-20">
-                <p className="text-center text-muted">{t("blogs.empty")}</p>
-              </MotionContainer>
-            )}
+            <div className="space-y-6">
+              {blogs && blogs.length > 0 ? (
+                <>
+                  {blogs.map((blog) => (
+                    <MotionContainer key={blog.id}>
+                      <BlogCard key={blog?.id} blog={blog} />
+                    </MotionContainer>
+                  ))}
+                </>
+              ) : (
+                <MotionContainer className="flex flex-col gap-6 items-center justify-center py-20">
+                  <p className="text-center text-muted">{t("blogs.empty")}</p>
+                </MotionContainer>
+              )}
+            </div>
             {/* pagination part start here */}
             {blogs.length > 0 && (
               <MotionContainer>

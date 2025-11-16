@@ -53,6 +53,11 @@
         "title": "Customer Information",
         "description": "Please provide your information so we can get to know you better"
       },
+      "step_3": {
+        "title": "Congratulations! 🎉",
+        "description": "Your request has been submitted successfully and we look forward to reviewing it soon.",
+        "back_home": "Return to Home"
+      },
       "placeholders": {
         "first_name": "First name",
         "last_name": "Last name",

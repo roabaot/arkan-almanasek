@@ -1,8 +1,12 @@
-import React from "react";
+import Link from "next/link";
 import AnimatedDiv from "../../../ui/animation/AnimatedDiv";
 import { FaRegCheckCircle } from "react-icons/fa";
+import Button from "../../../common/Button";
+import { getLocale, getTranslations } from "next-intl/server";
 
-const StepThree = ({ direction }: { direction: number }) => {
+const StepThree = async ({ direction }: { direction: number }) => {
+  const t = await getTranslations();
+  const locale = await getLocale();
   return (
     <AnimatedDiv
       className="flex min-h-[396px] flex-col items-center justify-center text-center"
@@ -13,10 +17,21 @@ const StepThree = ({ direction }: { direction: number }) => {
         size={128}
         className="mb-4 text-primaryBlue drop-shadow-sm"
       />
-      <h2 className="mb-7 mt-4 text-2xl font-semibold">تهانينا! 🎉</h2>
+      <h2 className="mb-7 mt-4 text-2xl font-semibold">
+        {t("services.form.step_3.title")}
+      </h2>
       <p className="max-w-[474px] text-sm text-myGray-500">
-        تم ارسال طلبك بنجاح ونتطلع إلى مراجعة طلبك قريبًا.
+        {t("services.form.step_3.description")}
       </p>
+
+      <Link href={`/${locale}`}>
+        <Button
+          hoverBgColorClass="bg-primaryBlue"
+          className="bg-transparent border border-primaryBlue text-primaryBlue duration-300 ease-in-out"
+        >
+          {t("services.form.step_3.back_home")}
+        </Button>
+      </Link>
     </AnimatedDiv>
   );
 };

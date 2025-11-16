@@ -19,10 +19,10 @@ interface BlogProps {
 const BlogCard = ({ blog }: BlogProps) => {
   const t = useTranslations("blogs");
   return (
-    <div className="w-full relative">
-      <div className="group overflow-hidden rounded-md">
+    <div className="group w-full relative bg-white shadow-md hover:shadow-xl rounded-[10px] transition-shadow duration-300 ease-in-out overflow-hidden">
+      <div className="overflow-hidden">
         <Image
-          className="w-full h-auto group-hover:scale-105 duration-300 ease-in-out"
+          className="w-full h-auto group-hover:scale-105 duration-300 ease-in-out aspect-[6/4]"
           src={blog.image_url}
           unoptimized
           width={850}
@@ -31,52 +31,54 @@ const BlogCard = ({ blog }: BlogProps) => {
           alt={blog.title}
         />
       </div>
-      <div className="flex items-center gap-10 mt-5 mb-5">
-        <span className="flex items-center gap-3">
-          <CiUser className="text-[20px] text-secondaryColor" />
-          <span className="text-[16px] font-normal text-textColor font-secondary">
-            {t("author_by", { author: blog.author })}
-          </span>
-        </span>
-        {blog.comments && (
+      <div className="p-6">
+        <div className="flex items-center gap-10 mt-5 mb-5">
           <span className="flex items-center gap-3">
-            <FaComment className="text-[16px] text-primary" />
+            <CiUser className="text-[20px] text-secondaryColor" />
             <span className="text-[16px] font-normal text-textColor font-secondary">
-              {blog.comments} Comment
+              {t("author_by", { author: blog.author })}
             </span>
           </span>
-        )}
-        <span className="flex items-center gap-3">
-          <CiShoppingTag className="text-[20px] text-secondaryColor" />
-          <span className="text-[16px] font-normal text-textColor font-secondary">
-            {blog.category}
+          {blog.comments && (
+            <span className="flex items-center gap-3">
+              <FaComment className="text-[16px] text-primary" />
+              <span className="text-[16px] font-normal text-textColor font-secondary">
+                {blog.comments} Comment
+              </span>
+            </span>
+          )}
+          <span className="flex items-center gap-3">
+            <CiShoppingTag className="text-[20px] text-secondaryColor" />
+            <span className="text-[16px] font-normal text-textColor font-secondary">
+              {blog.category}
+            </span>
           </span>
-        </span>
-        <span className="flex items-center gap-3">
-          <CiCalendarDate className="text-[20px] text-secondaryColor" />
-          <span className="text-[16px] font-normal text-textColor font-secondary">
-            {new Date(blog.published_at).toUTCString().slice(0, 16)}
+          <span className="flex items-center gap-3">
+            <CiCalendarDate className="text-[20px] text-secondaryColor" />
+            <span className="text-[16px] font-normal text-textColor font-secondary">
+              {new Date(blog.published_at).toUTCString().slice(0, 16)}
+            </span>
           </span>
-        </span>
-      </div>
-
-      <Link href={`/blog/${blog.id}`}>
-        <h3 className="hover:text-primaryBlue duration-300 ease-initial">
-          {blog.title}
-        </h3>
-      </Link>
-
-      <div className="flex items-center gap-[30px] mt-[30px] w-full">
-        <div className="flex-1">
-          <div className="w-full h-px bg-primaryBorder"></div>
         </div>
-        <div>
-          <Link href={`/blog/${blog.id}`}>
-            {" "}
-            <button className="text-[18px] font-medium capitalize text-secondaryColor font-primary">
-              {t("read_more")}
-            </button>
-          </Link>
+
+        <Link href={`/blog/${blog.id}`}>
+          <h3 className="group-hover:text-primaryBlue duration-300 ease-initial">
+            {blog.title}
+          </h3>
+        </Link>
+
+        <div className="flex items-center gap-[30px] mt-[30px] w-full">
+          <div className="flex-1">
+            <div className="w-full h-px bg-primaryBorder"></div>
+          </div>
+          <div>
+            <Link href={`/blog/${blog.id}`}>
+              {" "}
+              <button className="text-[18px] font-medium capitalize text-secondaryColor font-primary">
+                {t("read_more")}
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
 
