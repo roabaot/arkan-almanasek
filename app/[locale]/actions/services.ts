@@ -69,7 +69,9 @@ export async function getServices(
           (id) => `filter_by[service_category_ids][]=${encodeURIComponent(id)}`
         )
         .join("&");
-      url += `?${qs}`;
+      url += `?${qs}&locale=${locale}`;
+    } else {
+      url += `?locale=${locale}`;
     }
 
     const fetchOptions: RequestInit & {
@@ -136,7 +138,7 @@ export const getServiceById = async (
       locale,
     };
     const serviceRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/services/${id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/services/${id}?locale=${locale}`,
       fetchOptions
     ).then((res) => res.json());
 
@@ -165,7 +167,7 @@ export async function getServiceCategories(
         );
       return [];
     }
-    const url = `${base}/service_categories`;
+    const url = `${base}/service_categories?locale=${locale}`;
     const fetchOptions: RequestInit & {
       next?: { tags?: string[]; revalidate?: number };
       locale?: string;
@@ -317,8 +319,6 @@ export const postService = async (
         cache: "no-store",
       }
     ).then((res) => res.json());
-
-    console.log("serviceRes: ", serviceRes);
 
     if (serviceRes.status === 200) {
       return serviceRes.body;
