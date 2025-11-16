@@ -28,7 +28,14 @@ const ServiceItemCard = ({
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-5">
         {icon && (
-          <Image src={icon} alt={title} width={40} height={40} priority />
+          <Image
+            src={icon}
+            unoptimized
+            alt={title}
+            width={40}
+            height={40}
+            priority
+          />
         )}
         <h4 className="text-[18px] md:text-[20px] xl:text-[24px]">{title}</h4>
       </div>
