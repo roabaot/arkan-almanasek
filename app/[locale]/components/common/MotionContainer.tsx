@@ -8,6 +8,14 @@ type Props = {
   className?: string;
   delay?: number;
   stagger?: number;
+  /** If true (default), animate when scrolled into view. If false, animate immediately. */
+  inView?: boolean;
+  /** Only applies when inView=true: whether to animate only the first time. */
+  once?: boolean;
+  /** Only applies when inView=true: intersection threshold amount. */
+  amount?: number;
+  /** If false and inView=false, skip the initial hidden state (shows instantly). */
+  animateInitial?: boolean;
 };
 
 const containerVariants = (stagger = 0.08, delay = 0) => {
@@ -35,6 +43,10 @@ export default function MotionContainer({
   className = "",
   delay = 0,
   stagger = 0.08,
+  inView = true,
+  once = true,
+  amount = 0.35,
+  animateInitial = true,
 }: Props) {
   // Wrap direct children so each child becomes an animating item.
   const mappedChildren = React.Children.map(children, (child) => (
@@ -43,11 +55,21 @@ export default function MotionContainer({
     </motion.div>
   ));
 
+  // Decide animation strategy based on inView flag
+  const motionProps = inView
+    ? {
+        initial: "hidden" as const,
+        whileInView: "show" as const,
+        viewport: { once, amount },
+      }
+    : {
+        initial: animateInitial ? "hidden" : undefined,
+        animate: "show" as const,
+      };
+
   return (
     <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
+      {...motionProps}
       variants={containerVariants(stagger, delay)}
       className={className}
     >

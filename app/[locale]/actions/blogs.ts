@@ -8,6 +8,7 @@ interface GetBlogsOptions {
   category?: string | number; // category id or slug depending on BE
   noStore?: boolean;
   debug?: boolean;
+  search?: string; // free-text search term
 }
 
 export interface BlogT {
@@ -43,6 +44,7 @@ export async function getBlogs(
     category,
     noStore = false,
     debug = false,
+    search,
   } = opts;
 
   try {
@@ -66,6 +68,9 @@ export async function getBlogs(
       // backend may accept filter_by[category_ids][]=<id> or category=<slug>
       // use a simple category param — adjust if BE expects different shape
       params.push(`category=${encodeURIComponent(String(category))}`);
+    }
+    if (search && String(search).trim() !== "") {
+      params.push(`search=${encodeURIComponent(String(search).trim())}`);
     }
     if (params.length) url += `?${params.join("&")}`;
 

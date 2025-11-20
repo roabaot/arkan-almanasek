@@ -19,7 +19,10 @@ export const createServiceFormSchema = (
         .string()
         .min(2, { message: t("validation.last_name.min") })
         .max(36, { message: t("validation.last_name.max") }),
-      email: z.string().email({ message: t("validation.email.invalid") }),
+      email: z
+        .string()
+        .email({ message: t("validation.email.invalid") })
+        .optional(),
       company_name: z.string().optional(),
       institution_name: z.string().optional(),
       unified_number: z

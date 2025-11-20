@@ -262,5 +262,18 @@
     "employee_count": {
       "required": "Employee count is required"
     }
+  },
+  "contact_page": {
+    "meta_title": "Contact Us | Putech – Business & IT Solutions Next.js Template",
+    "meta_description": "Get in touch with Putech – a modern Next.js template for IT companies, startups, and software agencies. Contact us today for business and IT solutions.",
+    "breadcrumb_title": "Contact Us",
+    "section_label": "Contact us",
+    "section_title": "Get In Touch",
+    "section_description": "Technology is constantly evolving, shaping the way we live and work. It encompasses innovation, automation, and connectivity driving progress",
+    "address_label": "Address",
+    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia",
+    "email_label": "E-mail",
+    "email_value": "Info@macs.com.sa",
+    "form_title": "Send A Message"
   }
 }

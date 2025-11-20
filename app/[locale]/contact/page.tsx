@@ -1,27 +1,28 @@
 import Breadcrumb from "@/app/[locale]/components/common/Breadcrumb";
 import Contact from "@/app/[locale]/components/sections/contact/Contact";
-import ContactMap from "@/app/[locale]/components/ui/contact/ContactMap";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Contact Us | Putech – Business & IT Solutions Next.js Template",
   description:
     "Get in touch with Putech – a modern Next.js template for IT companies, startups, and software agencies. Contact us today for business and IT solutions.",
 };
-const ContactPage = () => {
+const ContactPage = async () => {
+  const t = await getTranslations("contact_page");
+  const tCommon = await getTranslations("common");
   return (
     <div>
-      {/************* Breadcrumb section start here **************/}
+      {/* Breadcrumb */}
       <Breadcrumb
-        title="Contact us"
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Contact us" }]}
+        title={t("breadcrumb_title")}
+        breadcrumb={[
+          { name: tCommon("home"), href: "/" },
+          { name: t("breadcrumb_title") },
+        ]}
       />
-
-      {/************* contact from start here **************/}
+      {/* Contact Section */}
       <Contact />
-
-      {/************* Map start here **************/}
-      <ContactMap />
     </div>
   );
 };

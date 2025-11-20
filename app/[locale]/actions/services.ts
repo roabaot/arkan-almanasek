@@ -176,6 +176,8 @@ export async function getServiceCategories(
       : { next: { tags: ["services-category"], revalidate: 3600 }, locale };
     if (debug) console.log("[services-category] Fetching:", url);
     const res = await fetch(url, fetchOptions);
+    console.log("res: ", res);
+
     if (!res.ok) {
       if (debug)
         console.error(
