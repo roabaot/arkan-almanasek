@@ -139,7 +139,9 @@
     "empty": "No blogs found",
     "search": "Search in blogs...",
     "author_by": "By {author}",
-    "read_more": "Read More"
+    "read_more": "Read More",
+    "categories": "Categories",
+    "tags": "Tags"
   },
   "buttons": {
     "get_started": "Get Started",

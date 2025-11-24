@@ -51,7 +51,7 @@ const menuConfig: Array<
   { key: "about", href: "/about-v2" },
   { key: "services", href: "/category" },
   { key: "blog", href: "/blog" },
-  // { key: "contact", href: "/contact" },
+  { key: "contact", href: "/contact" },
 ];
 const NavMenu = () => {
   const [hoveredSubmenu, setHoveredSubmenu] = useState<number | null>(null);

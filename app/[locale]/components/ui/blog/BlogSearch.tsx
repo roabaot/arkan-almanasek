@@ -19,6 +19,7 @@ const BlogSearch = ({
   const [value, setValue] = useState(initialValue);
   const [isComposing, setIsComposing] = useState(false); // Track IME composition (Arabic, etc.)
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastEmittedRef = useRef<string>(initialValue.trim());
 
   // Handle input change immediately (controlled component)
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,11 +28,19 @@ const BlogSearch = ({
 
   // Debounce effect
   useEffect(() => {
-    if (!onSearch) return; // no callback, nothing to schedule
-    if (isComposing) return; // wait until composition finishes to avoid partial queries
+    if (!onSearch) return;
+    if (isComposing) return; // Don't emit during IME composition
+    const trimmed = value.trim();
+    // If value hasn't changed since last emission, skip scheduling
+    if (trimmed === lastEmittedRef.current) return;
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      onSearch(value.trim());
+      // Double-check before emitting (user may have typed back to previous value)
+      const latestTrimmed = value.trim();
+      if (latestTrimmed !== lastEmittedRef.current) {
+        lastEmittedRef.current = latestTrimmed;
+        onSearch(latestTrimmed);
+      }
     }, delayMs);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);

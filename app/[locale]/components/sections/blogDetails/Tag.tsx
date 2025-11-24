@@ -1,23 +1,26 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { FaFacebookF } from "react-icons/fa";
 import { FaInstagram, FaSnapchatGhost } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiTiktok } from "react-icons/si";
 
 type Props = {
-  tags: string;
+  tags: string[];
   shareUrl?: string;
   title?: string;
 };
 
 const Tag = ({ tags, shareUrl, title }: Props) => {
-  const tagList = tags ? tags.split(",").map((tag) => tag.trim()) : [];
+  const t = useTranslations("blogs");
+
+  // const tagList = tags ? tags?.split(",").map((tag) => tag.trim()) : [];
   return (
     <div className="md:flex justify-between items-center mt-[30px]">
       <div className="flex flex-wrap gap-6">
-        <h3> Tags:</h3>
-        {tagList.map((tag, index) => (
+        <h3>{t("tags")}:</h3>
+        {tags?.map((tag, index) => (
           <div key={index} className="bg-[#F2F4F8] rounded-[30px] px-2 py-1">
             <p>{tag}</p>
           </div>

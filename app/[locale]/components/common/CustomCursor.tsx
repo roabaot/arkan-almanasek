@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -11,9 +11,9 @@ export default function CustomCursor() {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener("mousemove", handleMouseMove);
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
@@ -23,8 +23,8 @@ export default function CustomCursor() {
     const followCursor = () => {
       const cursor = cursorRef.current;
       if (cursor) {
-        const currentX = parseFloat(cursor.style.left || '0');
-        const currentY = parseFloat(cursor.style.top || '0');
+        const currentX = parseFloat(cursor.style.left || "0");
+        const currentY = parseFloat(cursor.style.top || "0");
         const dx = mousePosition.x - currentX;
         const dy = mousePosition.y - currentY;
 
@@ -51,13 +51,13 @@ export default function CustomCursor() {
       {/* Outer lagging circle */}
       <div
         ref={cursorRef}
-        className="fixed w-8 h-8 border border-primaryBlue rounded-full z-50 pointer-events-none -translate-x-1/2 -translate-y-1/2 top-0 left-0"
+        className="fixed md:block hidden w-8 h-8 border border-primaryBlue rounded-full z-50 pointer-events-none -translate-x-1/2 -translate-y-1/2 top-0 left-0"
       />
 
       {/* Inner dot */}
       <div
         ref={dotRef}
-        className="fixed w-3 h-3 bg-primaryBlue rounded-full z-50 pointer-events-none -translate-x-1/2 -translate-y-1/2 top-0 left-0"
+        className="fixed md:block hidden w-3 h-3 bg-primaryBlue rounded-full z-50 pointer-events-none -translate-x-1/2 -translate-y-1/2 top-0 left-0"
       />
     </>
   );

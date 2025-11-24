@@ -106,7 +106,7 @@
     @apply block w-[250px] font-primary pt-4 px-7 hover:text-primaryBlue hover:ps-10 duration-300 ease-in-out;
   }
 
-  .home-heading {
+  /* .home-heading {
     background: linear-gradient(90deg, #304b83 0%, #e84950 30%, #ed8324 70%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -118,7 +118,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
+  } */
 
   /* Override font families for RTL locales to use Tahoma */
   [dir="rtl"] {

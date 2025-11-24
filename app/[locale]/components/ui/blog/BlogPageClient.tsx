@@ -1,99 +1,136 @@
 "use client";
 import BlogCard from "@/app/[locale]/components/ui/cards/BlogCard";
-import BlogPagination from "@/app/[locale]/components/ui/blog/BlogPagination";
+// import BlogPagination from "@/app/[locale]/components/ui/blog/BlogPagination";
 import BlogSearch from "@/app/[locale]/components/ui/blog/BlogSearch";
-import PopularPost from "@/app/[locale]/components/ui/blog/PopularPost";
+// import PopularPost from "@/app/[locale]/components/ui/blog/PopularPost";
 import BlogCatagory from "@/app/[locale]/components/ui/blog/BlogCatagory";
 import PopularTag from "@/app/[locale]/components/ui/blog/PopularTag";
 import FollowUs from "@/app/[locale]/components/ui/blog/FollowUs";
 import MotionContainer from "@/app/[locale]/components/common/MotionContainer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import type { BlogT } from "@/app/[locale]/actions/blogs";
+
+export type blogClassT = {
+  id: number;
+  name: string;
+  name_en: string;
+  name_i18n: string;
+};
 
 interface BlogPageClientProps {
   blogs: BlogT[]; // initial SSR blogs
+  categories: blogClassT[];
+  tags: blogClassT[];
   emptyLabel: string;
+  category?: string;
+  tag?: string;
 }
 
 const BlogPageClient = ({
   blogs: initialBlogs,
+  categories,
+  tags,
   emptyLabel,
+  category,
+  tag,
 }: BlogPageClientProps) => {
-  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState({
+    search: "",
+    category: category || "",
+    tag: tag || "",
+  });
   const [blogs, setBlogs] = useState<BlogT[]>(initialBlogs);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let active = true;
-    const controller = new AbortController();
+  // Unified guarded effect using a stable serialized key to prevent redundant runs.
+  const lastFilterKeyRef = useRef<string>("__init__");
+  const filterKey = `${filter.search.trim()}|${filter.category.trim()}|${filter.tag.trim()}`;
 
-    if (!search.trim()) {
-      setBlogs(initialBlogs);
+  useEffect(() => {
+    // If key unchanged, do nothing.
+    if (lastFilterKeyRef.current === filterKey) return;
+    lastFilterKeyRef.current = filterKey;
+
+    const [searchVal, categoryVal, tagVal] = filterKey.split("|");
+    const allEmpty = !searchVal && !categoryVal && !tagVal;
+    if (allEmpty) {
+      setBlogs((prev) => (prev === initialBlogs ? prev : initialBlogs));
       setLoading(false);
       setError(null);
-      return () => {
-        active = false;
-        controller.abort();
-      };
+      return; // No fetch needed.
     }
 
-    const fetchBlogs = async () => {
+    let active = true;
+    const controller = new AbortController();
+    const run = async () => {
       try {
         const base = process.env.NEXT_PUBLIC_BASE_URL;
         setLoading(true);
         setError(null);
-        // Build query inline using nested key filter_by[search]; value is URL-encoded, key left readable.
-        const url = `${base}/blogs?filter_by[search]=${encodeURIComponent(
-          search.trim()
-        )}`;
-        // const url = `${base}/blogs?filter_by[search]=%D9%85%D8%AB%D8%A7%D9%84%D9%8A%D8%A9`;
-
+        const params: string[] = [];
+        if (searchVal)
+          params.push(`filter_by[search]=${encodeURIComponent(searchVal)}`);
+        if (categoryVal)
+          params.push(`filter_by[category]=${encodeURIComponent(categoryVal)}`);
+        if (tagVal) params.push(`filter_by[tag]=${encodeURIComponent(tagVal)}`);
+        const finalFilter = params.join("&");
+        if (!base) {
+          console.warn(
+            "[BlogPageClient] Missing NEXT_PUBLIC_BASE_URL env variable"
+          );
+          if (active) {
+            setBlogs([]);
+            setLoading(false);
+          }
+          return;
+        }
+        const url = `${base}/blogs?${finalFilter}`;
         const res = await fetch(url, {
           cache: "no-store",
           signal: controller.signal,
         });
-        console.log("res: ", res);
-
         if (!res.ok) throw new Error(`Failed ${res.status}`);
         const json = await res.json();
-        console.log("json:", json);
-
         const items: BlogT[] = Array.isArray(json?.body) ? json.body : [];
-        console.log(
-          "[BlogPageClient] fetched",
-          items.length,
-          "items for search=",
-          search
-        );
         if (active) setBlogs(items);
       } catch (err) {
         const errorObj = err as Error;
         if (errorObj.name === "AbortError") return;
-        console.error("[BlogPageClient] fetch error", errorObj);
         if (active) setError("Failed to load blogs");
       } finally {
-        if (active) setLoading(false);
+        setLoading(false);
       }
     };
-    fetchBlogs();
+    run();
     return () => {
       active = false;
       controller.abort();
     };
-  }, [search, initialBlogs]);
+  }, [filterKey, initialBlogs]);
 
   // Mark that initial animation has played after first render displaying blogs
   useEffect(() => {
-    if (!hasAnimated && blogs.length > 0 && search !== "") {
+    if (
+      !hasAnimated &&
+      blogs.length > 0 &&
+      (filter.search.trim() !== "" ||
+        filter.category.trim() !== "" ||
+        filter.tag.trim() !== "")
+    ) {
       setTimeout(() => {
         setHasAnimated(true);
       }, 500);
     }
-  }, [blogs, hasAnimated, search]);
+  }, [blogs, hasAnimated, filter.search, filter.category, filter.tag]);
 
-  console.log("blogs", blogs);
+  // Memoized guarded search setter prevents state updates when value unchanged
+  const handleSearch = useCallback((val: string) => {
+    setFilter((prev) =>
+      prev.search === val ? prev : { ...prev, search: val }
+    );
+  }, []);
 
   return (
     <div className="flex flex-col lg:flex-row gap-[30px]">
@@ -136,20 +173,36 @@ const BlogPageClient = ({
       </div>
       <div className="lg:w-[35%] w-full flex flex-col gap-10 mt-10 lg:mt-0">
         <MotionContainer>
-          <BlogSearch onSearch={setSearch} />
+          <BlogSearch onSearch={handleSearch} />
         </MotionContainer>
-        <MotionContainer>
+        {/* <MotionContainer>
           <PopularPost />
-        </MotionContainer>
-        <MotionContainer>
-          <BlogCatagory />
-        </MotionContainer>
-        <MotionContainer>
-          <PopularTag />
-        </MotionContainer>
-        <MotionContainer>
+        </MotionContainer> */}
+        {categories.length > 0 && (
+          <MotionContainer>
+            <BlogCatagory
+              categories={categories}
+              activeCategory={filter.category}
+              setActiveCategory={(val) =>
+                setFilter((params) => ({ ...params, category: val }))
+              }
+            />
+          </MotionContainer>
+        )}
+        {tags.length > 0 && (
+          <MotionContainer>
+            <PopularTag
+              tags={tags}
+              activeTag={filter.tag}
+              setActiveTag={(val: string) =>
+                setFilter((params) => ({ ...params, tag: val }))
+              }
+            />
+          </MotionContainer>
+        )}
+        {/* <MotionContainer>
           <FollowUs />
-        </MotionContainer>
+        </MotionContainer> */}
       </div>
     </div>
   );

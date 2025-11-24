@@ -21,6 +21,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
                 <Image
                   src={service.icon_url || "/icons/services/icon-7.svg"}
                   alt={service.name_i18n}
+                  unoptimized
                   width={45}
                   height={45}
                   priority

@@ -48,7 +48,7 @@ const BlogDetailsInfo = ({ blog }: { blog: BlogT | null }) => {
     <div className="lg:w-[65%] w-full">
       <div>
         <Image
-          className="w-full h-auto group-hover:scale-105 duration-300 ease-in-out rounded-[10px]"
+          className="w-full h-auto group-hover:scale-105 duration-300 ease-in-out rounded-[10px] aspect-[16/9]"
           src={blog.image_url}
           width={850}
           height={500}
@@ -85,7 +85,7 @@ const BlogDetailsInfo = ({ blog }: { blog: BlogT | null }) => {
         />
 
         {/* tag */}
-        <Tag tags={blog?.tags || ""} />
+        <Tag tags={Array.isArray(blog?.tags) ? blog.tags : []} />
       </div>
     </div>
   );

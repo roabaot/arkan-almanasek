@@ -51,17 +51,17 @@ const Footer = () => {
   };
 
   return (
-    <div className="bg-secondaryColor section-gap">
+    <div className="bg-sectionBg section-gap">
       <Container className="pt-20">
         {/* map here  */}
-        <motion.div
+        {/* <motion.div
           variants={itemVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
           <FooterMap />
-        </motion.div>
+        </motion.div> */}
 
         {/* main footer start here */}
         <div className="mt-15 flex flex-wrap justify-between space-y-10 md:space-y-0 mb-20">
@@ -83,14 +83,14 @@ const Footer = () => {
                 alt="putech logo"
               />
             </Link>
-            <p className="text-white mt-[30px]">{t("description")}</p>
+            <p className="text-primary mt-[30px]">{t("description")}</p>
             {/* social media icon here */}
             <div className="mt-5 flex items-center gap-3">
               <a
                 href="https://x.com/mawardsal"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#36180A] w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-primaryBlue duration-300 ease-in-out"
+                className="bg-white w-10 h-10 border border-primary rounded-full flex items-center justify-center text-primary hover:bg-primaryBlue hover:text-white hover:border-primaryBlue duration-300 ease-in-out"
               >
                 <FaXTwitter size={18} />
               </a>
@@ -98,7 +98,7 @@ const Footer = () => {
                 href="https://www.facebook.com/profile.php?id=100095473516234"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#36180A] w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-primaryBlue duration-300 ease-in-out"
+                className="bg-white w-10 h-10 border border-primary rounded-full flex items-center justify-center text-primary hover:bg-primaryBlue hover:text-white hover:border-primaryBlue duration-300 ease-in-out"
               >
                 <FaFacebookF size={18} />
               </a>
@@ -107,7 +107,7 @@ const Footer = () => {
                 href="https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fmawardsal%2F&is_from_rle"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#36180A] w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-primaryBlue duration-300 ease-in-out"
+                className="bg-white w-10 h-10 border border-primary rounded-full flex items-center justify-center text-primary hover:bg-primaryBlue hover:text-white hover:border-primaryBlue duration-300 ease-in-out"
               >
                 <FaInstagram size={18} />
               </a>
@@ -115,7 +115,7 @@ const Footer = () => {
                 href="https://www.tiktok.com/@mawaridksa"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#36180A] w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-primaryBlue duration-300 ease-in-out"
+                className="bg-white w-10 h-10 border border-primary rounded-full flex items-center justify-center text-primary hover:bg-primaryBlue hover:text-white hover:border-primaryBlue duration-300 ease-in-out"
               >
                 <FaTiktok size={18} />
               </a>
@@ -123,7 +123,7 @@ const Footer = () => {
                 href="https://www.snapchat.com/@mawardsal"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#36180A] w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-primaryBlue duration-300 ease-in-out"
+                className="bg-white w-10 h-10 border border-primary rounded-full flex items-center justify-center text-primary hover:bg-primaryBlue hover:text-white hover:border-primaryBlue duration-300 ease-in-out"
               >
                 <FaSnapchatGhost size={18} />
               </a>
@@ -133,7 +133,7 @@ const Footer = () => {
           {/* item 2 here */}
           <div className="max-w-[300px]">
             <motion.h4
-              className="text-white"
+              className="text-primary"
               variants={itemVariants}
               initial="hidden"
               whileInView="visible"
@@ -152,12 +152,12 @@ const Footer = () => {
                 viewport={{ once: true, amount: 0.18 }}
               >
                 <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
-                  <FaPhoneAlt className="text-white text-lg" />
+                  <FaPhoneAlt className="text-primary text-lg" />
                 </div>
                 <div>
-                  <p className="text-white mb-2">{t("phone_label")}</p>
+                  <p className="text-primary mb-2">{t("phone_label")}</p>
                   <motion.h5
-                    className="text-white [unicode-bidi:plaintext]"
+                    className="text-[15px] text-primary [unicode-bidi:plaintext]"
                     variants={itemVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -182,12 +182,12 @@ const Footer = () => {
                 viewport={{ once: true, amount: 0.18 }}
               >
                 <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
-                  <FaEnvelope className="text-white text-lg" />
+                  <FaEnvelope className="text-primary text-lg" />
                 </div>
                 <div>
-                  <p className="text-white mb-2">{t("email_label")}</p>
+                  <p className="text-primary mb-2">{t("email_label")}</p>
                   <motion.h5
-                    className="text-white"
+                    className="text-[15px] text-primary"
                     variants={itemVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -212,12 +212,12 @@ const Footer = () => {
                 viewport={{ once: true, amount: 0.18 }}
               >
                 <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
-                  <FaClock className="text-white text-lg" />
+                  <FaClock className="text-primary text-lg" />
                 </div>
                 <div>
-                  <p className="text-white mb-2">{t("work_label")}</p>
+                  <p className="text-primary mb-2">{t("work_label")}</p>
                   <motion.h5
-                    className="text-white"
+                    className="text-[15px] text-primary"
                     variants={itemVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -238,10 +238,10 @@ const Footer = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
           >
-            <motion.h4 className="text-white" variants={itemVariants}>
+            <motion.h4 className="text-primary" variants={itemVariants}>
               {t("address_label")}
             </motion.h4>
-            <motion.p className="text-white mt-7" variants={itemVariants}>
+            <motion.p className="text-primary mt-7" variants={itemVariants}>
               {t("address_value")}
             </motion.p>
           </motion.div>
@@ -254,16 +254,16 @@ const Footer = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.35 }}
           >
-            <motion.h4 className="text-white" variants={itemVariants}>
+            <motion.h4 className="text-primary" variants={itemVariants}>
               {t("newsletter_title")}
             </motion.h4>
-            <motion.p className="text-white mt-7" variants={itemVariants}>
+            <motion.p className="text-primary mt-7" variants={itemVariants}>
               {t("newsletter_description")}
             </motion.p>
             <motion.div className="group mt-7 relative">
               <motion.input
                 type="text"
-                className="w-full border border-white ps-5 rounded-full h-[54px] pe-[54px] text-white text-[16px] font-secondary font-normal outline-0 placeholder:text-white focus:border-primaryBlue group-hover:border-primaryBlue/50 duration-300 ease-in-out"
+                className="w-full border border-primary ps-5 rounded-full h-[54px] pe-[54px] text-primary text-[16px] font-secondary font-normal outline-0 placeholder:text-primary focus:border-primaryBlue group-hover:border-primaryBlue/50 duration-300 ease-in-out"
                 placeholder={t("newsletter_placeholder")}
                 variants={itemVariants}
               />
@@ -275,7 +275,7 @@ const Footer = () => {
               </motion.button>
             </motion.div>
             <motion.span
-              className="text-white text-[12px] font-normal font-secondary mt-2 ms-3"
+              className="text-primary text-[12px] font-normal font-secondary mt-2 ms-3"
               variants={itemVariants}
             >
               {t("newsletter_hint")}
@@ -284,7 +284,7 @@ const Footer = () => {
         </div>
 
         <motion.hr
-          className="text-white/20"
+          className="text-primary/20"
           variants={itemVariants}
           initial="hidden"
           whileInView="visible"
@@ -303,14 +303,14 @@ const Footer = () => {
             variants={itemVariants}
             className="md:text-start text-center"
           >
-            <p className="text-white">{t.rich("copyright", { year })}</p>
+            <p className="text-primary">{t.rich("copyright", { year })}</p>
           </motion.div>
           <motion.div className="mt-2 md:mt-0" variants={itemVariants}>
             <ul className="flex flex-wrap items-center space-x-7 md:justify-start justify-center">
               <li>
                 <Link
                   href={"/terms-condition"}
-                  className="text-white text-[16px] font-normal font-secondary hover:text-primaryBlue duration-300 ease-in-out"
+                  className="text-primary text-[16px] font-normal font-secondary hover:text-primaryBlue duration-300 ease-in-out"
                 >
                   {tCommon("terms_conditions")}
                 </Link>
@@ -318,7 +318,7 @@ const Footer = () => {
               <li>
                 <Link
                   href={"/privacy-policy"}
-                  className="text-white text-[16px] font-normal font-secondary hover:text-primaryBlue duration-300 ease-in-out"
+                  className="text-primary text-[16px] font-normal font-secondary hover:text-primaryBlue duration-300 ease-in-out"
                 >
                   {tCommon("privacy_policy")}
                 </Link>
@@ -326,7 +326,7 @@ const Footer = () => {
               <li>
                 <Link
                   href={"/contact"}
-                  className="text-white text-[16px] font-normal font-secondary hover:text-primaryBlue duration-300 ease-in-out"
+                  className="text-primary text-[16px] font-normal font-secondary hover:text-primaryBlue duration-300 ease-in-out"
                 >
                   {tCommon("contact")}
                 </Link>

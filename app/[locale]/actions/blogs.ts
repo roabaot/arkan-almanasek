@@ -1,11 +1,13 @@
 "use server";
 import "server-only";
 import { revalidateTag } from "next/cache";
+import { getLocale } from "next-intl/server";
 
 interface GetBlogsOptions {
   page?: number;
   per_page?: number;
   category?: string | number; // category id or slug depending on BE
+  tag?: string; // tag slug
   noStore?: boolean;
   debug?: boolean;
   search?: string; // free-text search term
@@ -20,7 +22,7 @@ export interface BlogT {
   image_url: string;
   category: string;
   content: string;
-  tags?: string;
+  tags?: string | string[];
   [key: string]: unknown;
 }
 
@@ -42,12 +44,14 @@ export async function getBlogs(
     page = 1,
     per_page = 10,
     category,
+    tag,
     noStore = false,
     debug = false,
     search,
   } = opts;
 
   try {
+    const locale = (await getLocale()) || "ar";
     const base = process.env.NEXT_PUBLIC_BASE_URL;
     if (!base) {
       if (debug)
@@ -67,12 +71,23 @@ export async function getBlogs(
     ) {
       // backend may accept filter_by[category_ids][]=<id> or category=<slug>
       // use a simple category param — adjust if BE expects different shape
-      params.push(`category=${encodeURIComponent(String(category))}`);
+      params.push(
+        `filter_by[category]=${encodeURIComponent(String(category))}`
+      );
+    }
+    if (tag !== undefined && tag !== null && String(tag) !== "") {
+      params.push(`filter_by[tag]=${encodeURIComponent(String(tag))}`);
     }
     if (search && String(search).trim() !== "") {
-      params.push(`search=${encodeURIComponent(String(search).trim())}`);
+      params.push(
+        `filter_by[search]=${encodeURIComponent(String(search).trim())}`
+      );
     }
-    if (params.length) url += `?${params.join("&")}`;
+    if (params.length) {
+      url += `?locale=${locale}&` + params.join("&");
+    } else {
+      url += `?locale=${locale}`;
+    }
 
     const fetchOptions: RequestInit & {
       next?: { tags?: string[]; revalidate?: number };
@@ -144,9 +159,46 @@ export const getBlogById = async (
   id: number | string
 ): Promise<BlogT | null> => {
   try {
+    const locale = (await getLocale()) || "ar";
     const base = process.env.NEXT_PUBLIC_BASE_URL;
     if (!base) return null;
-    const res = await fetch(`${base}/blogs/${id}`, {
+    const res = await fetch(`${base}/blogs/${id}?locale=${locale}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    // expect { status: number, body: { ... } }
+    return json?.body ?? null;
+  } catch (error) {
+    console.error("[blogs] getBlogBySlug error", error);
+    return null;
+  }
+};
+
+export const getBlogCategories = async () => {
+  try {
+    const locale = (await getLocale()) || "ar";
+    const base = process.env.NEXT_PUBLIC_BASE_URL;
+    if (!base) return null;
+    const res = await fetch(`${base}/blog_categories?locale=${locale}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    // expect { status: number, body: { ... } }
+    return json?.body ?? null;
+  } catch (error) {
+    console.error("[blogs] getBlogBySlug error", error);
+    return null;
+  }
+};
+
+export const getBlogTags = async () => {
+  try {
+    const locale = (await getLocale()) || "ar";
+    const base = process.env.NEXT_PUBLIC_BASE_URL;
+    if (!base) return null;
+    const res = await fetch(`${base}/blog_tags?locale=${locale}`, {
       cache: "no-store",
     });
     if (!res.ok) return null;
