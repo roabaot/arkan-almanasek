@@ -5,7 +5,6 @@ import BlogSearch from "@/app/[locale]/components/ui/blog/BlogSearch";
 // import PopularPost from "@/app/[locale]/components/ui/blog/PopularPost";
 import BlogCatagory from "@/app/[locale]/components/ui/blog/BlogCatagory";
 import PopularTag from "@/app/[locale]/components/ui/blog/PopularTag";
-import FollowUs from "@/app/[locale]/components/ui/blog/FollowUs";
 import MotionContainer from "@/app/[locale]/components/common/MotionContainer";
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { BlogT } from "@/app/[locale]/actions/blogs";

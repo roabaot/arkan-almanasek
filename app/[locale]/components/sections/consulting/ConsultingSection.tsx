@@ -6,28 +6,28 @@ import Container from "../../common/Container";
 import Image from "next/image";
 import SectionTitle from "../../common/SectionTitle";
 
-const features = [
-  {
-    number: "01",
-    title: "title_1",
-    desc: "description_1",
-  },
-  {
-    number: "02",
-    title: "title_2",
-    desc: "description_2",
-  },
-  {
-    number: "03",
-    title: "title_3",
-    desc: "description_3",
-  },
-  {
-    number: "04",
-    title: "title_4",
-    desc: "description_4",
-  },
-];
+// const features = [
+//   {
+//     number: "01",
+//     title: "title_1",
+//     desc: "description_1",
+//   },
+//   {
+//     number: "02",
+//     title: "title_2",
+//     desc: "description_2",
+//   },
+//   {
+//     number: "03",
+//     title: "title_3",
+//     desc: "description_3",
+//   },
+//   {
+//     number: "04",
+//     title: "title_4",
+//     desc: "description_4",
+//   },
+// ];
 
 const ConsultingSection: React.FC = () => {
   const t = useTranslations("features");
@@ -49,15 +49,15 @@ const ConsultingSection: React.FC = () => {
     },
   } as const;
 
-  const numberVariant = {
-    hidden: { opacity: 0, x: -20, rotate: -6 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      rotate: 0,
-      transition: { type: "spring", stiffness: 220, damping: 22 },
-    },
-  } as const;
+  // const numberVariant = {
+  //   hidden: { opacity: 0, x: -20, rotate: -6 },
+  //   visible: {
+  //     opacity: 0.2,
+  //     x: 0,
+  //     rotate: 0,
+  //     transition: { type: "spring", stiffness: 220, damping: 22 },
+  //   },
+  // } as const;
 
   const imageVariant = {
     hidden: { opacity: 0, scale: 0.98, y: 18 },
@@ -89,7 +89,7 @@ const ConsultingSection: React.FC = () => {
           {/* Left Content */}
           <div className="lg:w-[50%] w-full">
             {/* Make the grid the visible container so staggerChildren will affect direct children */}
-            <motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 md:mt-15 mt-12">
+            {/* <motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 md:mt-15 mt-12">
               {features.map((step) => (
                 <motion.div
                   key={step.number}
@@ -112,6 +112,15 @@ const ConsultingSection: React.FC = () => {
                   <p className="ml-5">{t(`list.${step.desc}`)}</p>
                 </motion.div>
               ))}
+            </motion.div> */}
+            <motion.div
+              className="flex flex-col whitespace-pre-line text-xl"
+              variants={item}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+            >
+              {t("paragraph")}
             </motion.div>
           </div>
           {/* Right Image */}

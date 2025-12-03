@@ -43,15 +43,15 @@ const About = () => {
   };
 
   // Entrance-only variant (same as itemVariants but without hover) - used for wrappers
-  const itemEntranceVariants: Variants = {
-    hidden: { opacity: 0, x: isRtl ? 24 : -24, scale: 0.995 },
-    show: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: { type: "spring", stiffness: 140, damping: 20 },
-    },
-  };
+  // const itemEntranceVariants: Variants = {
+  //   hidden: { opacity: 0, x: isRtl ? 24 : -24, scale: 0.995 },
+  //   show: {
+  //     opacity: 1,
+  //     x: 0,
+  //     scale: 1,
+  //     transition: { type: "spring", stiffness: 140, damping: 20 },
+  //   },
+  // };
 
   // NOTE: span hover now handled with Tailwind 'group-hover' classes
 
@@ -258,7 +258,7 @@ const About = () => {
           <div className="lg:w-[47%] md:w-[80%] md:mx-auto lg:mx-0 w-full mt-10 lg:mt-0">
             <SectionTitle
               label={tCommen("about")}
-              title={t("title")}
+              // title={t("title")}
               description={t("description")}
               align="start"
             />

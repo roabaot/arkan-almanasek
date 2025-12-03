@@ -10,8 +10,8 @@ const HomePage = () => {
       <Hero />
       <About />
       <Service />
-      <Faq />
       <ConsultingSection />
+      <Faq />
     </div>
   );
 };

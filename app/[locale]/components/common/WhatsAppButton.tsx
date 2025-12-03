@@ -5,7 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 // Fixed floating WhatsApp chat button
 // Opens WhatsApp with predefined phone number. Text left blank so user can type.
 // Arabic locale will keep RTL direction automatically.
-const WHATSAPP_URL =
+export const WHATSAPP_URL =
   "https://api.whatsapp.com/send/?phone=966556332242&text&type=phone_number&app_absent=0";
 
 export default function WhatsAppButton() {

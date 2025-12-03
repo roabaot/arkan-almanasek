@@ -15,6 +15,10 @@ export const spaceGrotesk = {
   variable: "--font-primary",
 };
 
+export const amiri = {
+  variable: "--font-amiri",
+};
+
 export const poppins = {
   variable: "--font-poppins",
 };

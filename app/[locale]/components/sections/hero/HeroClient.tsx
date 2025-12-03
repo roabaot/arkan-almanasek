@@ -86,7 +86,7 @@ export default function HeroClient({ title, description, locale }: Props) {
                   initial={{ filter: "blur(20px)", opacity: 0 }}
                   animate={{ filter: "blur(0px)", opacity: 1 }}
                   transition={{ duration: 1.2 }}
-                  className="xl:text-[72px] lg:text-[64px] md:text-[40px] text-[36px] font-bold !leading-[1.2] text-[#304b83] tracking-[-1.92px]"
+                  className="xl:text-[48px] lg:text-[36px] md:text-[32px] text-[28px] font-bold !leading-[1.2] text-[#304b83] tracking-[-1.92px]"
                 >
                   {title}
                 </motion.h1>

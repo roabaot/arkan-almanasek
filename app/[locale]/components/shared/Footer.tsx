@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { BsSendFill } from "react-icons/bs";
-import FooterMap from "../ui/contact/FooterMap";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -51,7 +50,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="bg-sectionBg section-gap">
+    <div className="bg-sectionBg">
       <Container className="pt-20">
         {/* map here  */}
         {/* <motion.div

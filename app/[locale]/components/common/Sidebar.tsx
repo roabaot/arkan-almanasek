@@ -82,7 +82,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
             {/* Phone */}
             <div>
-              <h4 className="text-base font-semibold mb-1">
+              <h4 className="text-base font-semibold mb-1 [unicode-bidi:plaintext]">
                 {t("sidebar.phone_label")}
               </h4>
               <a href="tel:+966556332242">+966556332242</a>

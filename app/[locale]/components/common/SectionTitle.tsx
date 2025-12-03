@@ -3,7 +3,7 @@ import { TextFade } from "../ui/animation/TextFade";
 
 interface SectionTitleProps {
   label?: string;
-  title: string;
+  title?: string;
   description?: string;
   align?: "left" | "center" | "right" | "start" | "end";
   className?: string;
@@ -41,7 +41,13 @@ const SectionTitle = ({
       className={cn("max-w-[740px]", alignClass, className)}
     >
       {label ? <span className="section-label block mb-2">{label}</span> : null}
-      <h2 className={color}>{title}</h2>
+      {title && (
+        <h2
+          className={`xl:text-[36px] lg:text-[32px] md:text-[28px] text-[24px] ${color}`}
+        >
+          {title}
+        </h2>
+      )}
       {description ? <p className="mt-3">{description}</p> : null}
     </TextFade>
   );

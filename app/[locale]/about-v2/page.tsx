@@ -1,7 +1,7 @@
 import BreadcrumbStyle2 from "@/app/[locale]/components/common/BreadcrumbStyle2";
 import AboutStory from "@/app/[locale]/components/sections/about/AboutStory";
-import ServiceStyle4 from "@/app/[locale]/components/sections/service/ServiceStyle4";
 import { useTranslations } from "next-intl";
+import OurValues from "../components/sections/service/OurValues";
 
 const AboutPageTwo = () => {
   const t = useTranslations("about");
@@ -12,7 +12,8 @@ const AboutPageTwo = () => {
         para={t("breadcrumb_para")}
       />
       <AboutStory />
-      <ServiceStyle4 />
+      <OurValues />
+      {/* <ServiceStyle4 /> */}
       {/* <TeamStyle3 />
       <ExperiencedBusiness />
       <TestimonialStyle2 /> */}
