@@ -1,28 +1,35 @@
-import Breadcrumb from "@/app/[locale]/components/common/Breadcrumb";
-import Contact from "@/app/[locale]/components/sections/contact/Contact";
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import ContactClinet from "../components/ui/contact/ContactClinet";
 
 export const metadata: Metadata = {
   title: "Contact Us | Putech – Business & IT Solutions Next.js Template",
   description:
     "Get in touch with Putech – a modern Next.js template for IT companies, startups, and software agencies. Contact us today for business and IT solutions.",
 };
+
 const ContactPage = async () => {
-  const t = await getTranslations("contact_page");
-  const tCommon = await getTranslations("common");
+  // const t = useTranslations("contact_page");
+  // const tCommon = useTranslations("common");
   return (
     <div>
       {/* Breadcrumb */}
-      <Breadcrumb
+      {/* <Breadcrumb
         title={t("breadcrumb_title")}
         breadcrumb={[
           { name: tCommon("home"), href: "/" },
           { name: t("breadcrumb_title") },
         ]}
-      />
+      /> */}
       {/* Contact Section */}
-      <Contact />
+      {/* <Contact /> */}
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
+
+          <ContactClinet />
+        </div>
+      </div>
     </div>
   );
 };

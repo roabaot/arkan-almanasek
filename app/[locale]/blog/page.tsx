@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 const BlogPage = async ({
   searchParams,
 }: {
-  params: { locale: string };
-  searchParams?: Record<string, string | string[] | undefined>;
+  // Align with Next's generated PageProps: searchParams is a Promise
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) => {
   // accept query like `?category=Advancing%20with%20innovation`
   const query = await searchParams;
