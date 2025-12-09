@@ -1,10 +1,10 @@
 import { RefObject, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { LuUser, LuGraduationCap, LuBuilding2 } from "react-icons/lu";
-import { ServiceFormInputsT } from "../../../ui/form/serviceFormSchema";
 import { useFormContext } from "react-hook-form";
 import AnimatedDiv from "../../../ui/animation/AnimatedDiv";
 import Radio from "../../../ui/fields/Radio";
+import { ServiceFormInputsT } from "@/app/[locale]/lib/schemas/serviceFormSchema";
 
 const StepOne = ({
   direction,

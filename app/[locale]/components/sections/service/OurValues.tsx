@@ -19,7 +19,7 @@ const OurValues = () => {
   const t = useTranslations("about.values");
   return (
     <motion.div
-      className="section-gap"
+      className="section-gap pb-16"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}

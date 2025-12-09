@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
+import ToastProvider from "./components/shared/ToastProvider";
 
 const APP_NAME = "MACS App";
 const APP_DEFAULT_TITLE = "My Awesome MACS App";
@@ -80,11 +81,13 @@ export default async function RootLayout({
     >
       <body>
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          {children}
-          <Footer />
-          {/* All client-side extras are isolated */}
-          <ClientLayout />
+          <ToastProvider>
+            <Navbar />
+            {children}
+            <Footer />
+            {/* All client-side extras are isolated */}
+            <ClientLayout />
+          </ToastProvider>
         </NextIntlClientProvider>
       </body>
     </html>

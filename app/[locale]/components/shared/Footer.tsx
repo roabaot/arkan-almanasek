@@ -15,11 +15,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { useState, FormEvent } from "react";
+import { postSletters } from "../../actions/newsletters";
+import { newsletterSchema } from "../../lib/schemas/newsletterSchema";
+import { useToast } from "./ToastProvider";
+import { useIsLocaleRtl } from "@/app/lib/utils";
 
 const Footer = () => {
+  const isRtl = useIsLocaleRtl();
   const t = useTranslations("footer");
   const tCommon = useTranslations("common");
   const year = new Date().getFullYear();
+  const { showToast } = useToast();
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const containerVariants = {
     hidden: {},
@@ -47,6 +56,55 @@ const Footer = () => {
       y: 0,
       transition: { duration: 0.45 },
     },
+  };
+
+  const handleSubmit = async (e?: FormEvent) => {
+    if (e) e.preventDefault();
+    if (isSubmitting) return;
+
+    const parsed = newsletterSchema.safeParse({ email });
+    if (!parsed.success) {
+      const message = parsed.error.issues[0]?.message ?? "Invalid email";
+      showToast({
+        type: "error",
+        message,
+        position: isRtl ? "top-right" : "top-left",
+      });
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const res = await postSletters({ email: parsed.data.email });
+      if (res) {
+        showToast({
+          type: "success",
+          message: t("newsletter_success", {
+            default: "تم الاشتراك في النشرة البريدية بنجاح",
+          }),
+          position: isRtl ? "top-right" : "top-left",
+        });
+        setEmail("");
+      } else {
+        showToast({
+          type: "error",
+          message: t("newsletter_error", {
+            default: "تعذر إرسال الاشتراك، يرجى المحاولة مرة أخرى",
+          }),
+          position: isRtl ? "top-right" : "top-left",
+        });
+      }
+    } catch {
+      showToast({
+        type: "error",
+        message: t("newsletter_error", {
+          default: "تعذر إرسال الاشتراك، يرجى المحاولة مرة أخرى",
+        }),
+        position: isRtl ? "top-right" : "top-left",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -246,12 +304,13 @@ const Footer = () => {
           </motion.div>
 
           {/* item 4 here */}
-          <motion.div
+          <motion.form
             className="max-w-[300px]"
             variants={innerStagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.35 }}
+            onSubmit={handleSubmit}
           >
             <motion.h4 className="text-primary" variants={itemVariants}>
               {t("newsletter_title")}
@@ -261,14 +320,19 @@ const Footer = () => {
             </motion.p>
             <motion.div className="group mt-7 relative">
               <motion.input
-                type="text"
+                type="email"
                 className="w-full border border-primary ps-5 rounded-full h-[54px] pe-[54px] text-primary text-[16px] font-secondary font-normal outline-0 placeholder:text-primary focus:border-primaryBlue group-hover:border-primaryBlue/50 duration-300 ease-in-out"
                 placeholder={t("newsletter_placeholder")}
                 variants={itemVariants}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
               />
               <motion.button
-                className="bg-primaryBlue w-10 h-10 rounded-full flex items-center justify-center text-secondaryColor absolute top-1.5 ltr:right-2 rtl:left-2 rtl:rotate-[225deg] ltr:rotate-[45deg]"
+                type="submit"
+                className="bg-primaryBlue w-10 h-10 rounded-full flex items-center justify-center text-secondaryColor absolute top-1.5 ltr:right-2 rtl:left-2 rtl:rotate-[225deg] ltr:rotate-[45deg] disabled:opacity-60 disabled:cursor-not-allowed"
                 variants={itemVariants}
+                disabled={isSubmitting}
               >
                 <BsSendFill size={20} color="#fff" />
               </motion.button>
@@ -279,7 +343,7 @@ const Footer = () => {
             >
               {t("newsletter_hint")}
             </motion.span>
-          </motion.div>
+          </motion.form>
         </div>
 
         <motion.hr

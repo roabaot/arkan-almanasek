@@ -11,17 +11,8 @@ import { motion } from "framer-motion";
 import { CiCalendar, CiMail, CiUser } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
 
-const consultationTypes = [
-  { value: "strategy", label: "Strategy & Planning" },
-  { value: "implementation", label: "Implementation" },
-  { value: "optimization", label: "Optimization & Performance" },
-  { value: "integration", label: "Integration Support" },
-  { value: "training", label: "Training & Onboarding" },
-  { value: "other", label: "Other" },
-];
-
 const NewContactForm = () => {
-  const t = useTranslations();
+  const t = useTranslations("consultation.form");
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [detailsLength, setDetailsLength] = useState(0);
@@ -75,11 +66,10 @@ const NewContactForm = () => {
           </div>
           <div>
             <h3 className="font-semibold text-green-900 mb-1">
-              Request Submitted!
+              {t("success.title")}
             </h3>
             <p className="text-green-700">
-              Thank you for your interest. Our team will contact you within 24
-              hours to schedule your consultation.
+              {t("success.message")}
             </p>
           </div>
         </motion.div>
@@ -99,13 +89,13 @@ const NewContactForm = () => {
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
-                Full Name
+                {t("fields.name.label")}
               </label>
               <div className="relative">
                 <CiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="John Doe"
+                  placeholder={t("fields.name.placeholder")}
                   className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
                   {...register("name")}
                 />
@@ -124,13 +114,13 @@ const NewContactForm = () => {
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
-                Email Address
+                {t("fields.email.label")}
               </label>
               <div className="relative">
                 <CiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                 <input
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder={t("fields.email.placeholder")}
                   className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
                   {...register("email")}
                 />
@@ -151,13 +141,13 @@ const NewContactForm = () => {
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
-                Phone Number
+                {t("fields.phone.label")}
               </label>
               <div className="relative">
                 <FiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                 <input
                   type="tel"
-                  placeholder="+1 (555) 123-4567"
+                  placeholder={t("fields.phone.placeholder")}
                   className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
                   {...register("phone")}
                 />
@@ -176,18 +166,19 @@ const NewContactForm = () => {
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
-                Consultation Type
+                {t("fields.type.label")}
               </label>
               <select
                 className="w-full px-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white text-slate-600 appearance-none cursor-pointer"
                 {...register("consultationType")}
               >
-                <option value="">Select a type</option>
-                {consultationTypes.map((type) => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
+                <option value="">{t("fields.type.placeholder")}</option>
+                <option value="strategy">{t("fields.type.options.strategy")}</option>
+                <option value="implementation">{t("fields.type.options.implementation")}</option>
+                <option value="optimization">{t("fields.type.options.optimization")}</option>
+                <option value="integration">{t("fields.type.options.integration")}</option>
+                <option value="training">{t("fields.type.options.training")}</option>
+                <option value="other">{t("fields.type.options.other")}</option>
               </select>
               {errors.consultationType && (
                 <p className="text-red-500 text-sm mt-2">
@@ -204,11 +195,11 @@ const NewContactForm = () => {
             className="flex flex-col"
           >
             <label className="text-slate-700 font-semibold mb-3 block">
-              Project Details
+              {t("fields.details.label")}
             </label>
             <div className="relative">
               <textarea
-                placeholder="Tell us about your project and what you're looking to achieve..."
+                placeholder={t("fields.details.placeholder")}
                 className="w-full px-4 py-4 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white min-h-32 resize-none"
                 {...register("details")}
                 onChange={(e) => {
@@ -241,10 +232,10 @@ const NewContactForm = () => {
               {isLoading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Submitting...
+                  {t("submit.loading")}
                 </>
               ) : (
-                "Request Consultation"
+                t("submit.label")
               )}
             </button>
           </motion.div>

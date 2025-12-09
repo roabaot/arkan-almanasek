@@ -144,7 +144,7 @@ export default function HeroClient({ title, description, locale }: Props) {
                 <Image
                   className="lg:w-[290px] w-[200px] lg:h-[380px] h-[310px] object-cover rounded-[20px]"
                   src={"/assets/hero/sub-hero-1.png"}
-                  alt="putech image"
+                  alt="macs image"
                   width={290}
                   height={380}
                 />
@@ -153,7 +153,7 @@ export default function HeroClient({ title, description, locale }: Props) {
                 <Image
                   className="lg:w-[250px] w-[160px] h-[365px] mt-[-30px] object-cover rounded-[20px]"
                   src={"/assets/hero/sub-hero-2.jpeg"}
-                  alt="putech image"
+                  alt="macs image"
                   width={250}
                   height={365}
                   priority

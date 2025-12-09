@@ -1,8 +1,8 @@
 "use server";
 import "server-only";
 import { revalidateTag } from "next/cache";
-import { ServiceFormInputsT } from "../components/ui/form/serviceFormSchema";
 import { getLocale } from "next-intl/server";
+import { ServiceFormInputsT } from "../lib/schemas/serviceFormSchema";
 
 export interface BreadcrumbsT {
   id: number;
@@ -327,7 +327,7 @@ export const postService = async (
     }
     return null;
   } catch (error) {
-    console.error("[services] getServiceById error", error);
+    console.error("[services] postService error", error);
     return null;
   }
 };

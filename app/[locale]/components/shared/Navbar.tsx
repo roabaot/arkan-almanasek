@@ -11,12 +11,14 @@ import { RxDashboard } from "react-icons/rx";
 import { MdLanguage } from "react-icons/md";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import Drawer from "./Drawer";
+import { useIsLocaleRtl } from "@/app/lib/utils";
 
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations();
+  const isRtl = useIsLocaleRtl();
 
   const [isSticky, setIsSticky] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -99,7 +101,11 @@ const Navbar = () => {
                   </button>
 
                   {/* Dropdown Menu - NavMenu Style */}
-                  <ul className="absolute right-0 transform top-[140px] opacity-0 invisible transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:top-[75px] bg-white text-secondaryColor pb-5 shadow-lg rounded-md z-30 min-w-[220px]">
+                  <ul
+                    className={`absolute ${
+                      isRtl ? "left-0" : "right-0"
+                    } transform top-[140px] opacity-0 invisible transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:top-[75px] bg-white text-secondaryColor pb-5 shadow-lg rounded-md z-30 min-w-[220px]`}
+                  >
                     {languages.map((lang) => (
                       <li key={lang.code}>
                         <button

@@ -4,8 +4,10 @@ import { CiCalendar } from "react-icons/ci";
 import NewContactForm from "../form/NewContactForm";
 import Link from "next/link";
 import Container from "../../common/Container";
+import { useTranslations } from "next-intl";
 
 const ContactClinet = () => {
+  const t = useTranslations("consultation.contactSection");
   return (
     <Container className="mt-32 mb-12">
       <motion.div
@@ -24,11 +26,10 @@ const ContactClinet = () => {
         </motion.div>
 
         <h1 className="text-5xl sm:text-5xl font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent mb-4">
-          Request a Free Consultation
+          {t("title")}
         </h1>
         <p className="text-xl text-slate-600 max-w-xl mx-auto">
-          Our experts are ready to help. Schedule your personalized consultation
-          today and discover how we can transform your business.
+          {t("description")}
         </p>
       </motion.div>
 
@@ -41,12 +42,12 @@ const ContactClinet = () => {
         className="mt-8 text-center"
       >
         <p className="text-slate-600">
-          Have questions?{" "}
+          {t("haveQuestions")}{" "}
           <Link
             href="/faq"
             className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
           >
-            Visit our FAQ
+            {t("visitFaq")}
           </Link>
         </p>
       </motion.div>

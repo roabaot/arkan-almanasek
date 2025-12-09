@@ -340,5 +340,53 @@
     "email_label": "البريد الإلكتروني",
     "email_value": "Info@macs.com.sa",
     "form_title": "أرسل رسالة"
+  },
+  "consultation": {
+    "contactSection": {
+      "title": "اطلب استشارة مجانية",
+      "description": "خبراؤنا جاهزون لمساعدتك. احجز استشارتك المخصصة اليوم واكتشف كيف يمكننا تطوير أعمالك.",
+      "haveQuestions": "هل لديك أسئلة؟",
+      "visitFaq": "تصفح الأسئلة الشائعة"
+    },
+    "form": {
+      "success": {
+        "title": "تم إرسال الطلب!",
+        "message": "شكرًا لاهتمامك. سيتواصل معك فريقنا خلال 24 ساعة لترتيب موعد الاستشارة."
+      },
+      "fields": {
+        "name": {
+          "label": "الاسم الكامل",
+          "placeholder": "محمد أحمد"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "example@domain.com"
+        },
+        "phone": {
+          "label": "رقم الجوال",
+          "placeholder": "+966 5X XXX XXXX"
+        },
+        "type": {
+          "label": "نوع الاستشارة",
+          "placeholder": "اختر نوع الاستشارة",
+          "options": {
+            "strategy": "الاستراتيجية والتخطيط",
+            "implementation": "التنفيذ",
+            "optimization": "التحسين ورفع الكفاءة",
+            "integration": "دعم التكامل والربط",
+            "training": "التدريب والتأهيل",
+            "other": "أخرى"
+          }
+        },
+        "details": {
+          "label": "تفاصيل المشروع",
+          "placeholder": "أخبرنا عن مشروعك وما الذي تطمح لتحقيقه..."
+        }
+      },
+      "submit": {
+        "label": "طلب استشارة",
+        "loading": "جاري الإرسال..."
+      }
+    }
   }
 }

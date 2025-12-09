@@ -340,5 +340,53 @@
     "email_label": "E-mail",
     "email_value": "Info@macs.com.sa",
     "form_title": "Send A Message"
+  },
+  "consultation": {
+    "contactSection": {
+      "title": "Request a Free Consultation",
+      "description": "Our experts are ready to help. Schedule your personalized consultation today and discover how we can transform your business.",
+      "haveQuestions": "Have questions?",
+      "visitFaq": "Visit our FAQ"
+    },
+    "form": {
+      "success": {
+        "title": "Request Submitted!",
+        "message": "Thank you for your interest. Our team will contact you within 24 hours to schedule your consultation."
+      },
+      "fields": {
+        "name": {
+          "label": "Full Name",
+          "placeholder": "John Doe"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "john@example.com"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "+1 (555) 123-4567"
+        },
+        "type": {
+          "label": "Consultation Type",
+          "placeholder": "Select a type",
+          "options": {
+            "strategy": "Strategy & Planning",
+            "implementation": "Implementation",
+            "optimization": "Optimization & Performance",
+            "integration": "Integration Support",
+            "training": "Training & Onboarding",
+            "other": "Other"
+          }
+        },
+        "details": {
+          "label": "Project Details",
+          "placeholder": "Tell us about your project and what you're looking to achieve..."
+        }
+      },
+      "submit": {
+        "label": "Request Consultation",
+        "loading": "Submitting..."
+      }
+    }
   }
 }

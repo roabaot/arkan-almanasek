@@ -3,10 +3,6 @@ import { AnimatePresence } from "framer-motion";
 import React, { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  ServiceFormInputsT,
-  createServiceFormSchema,
-} from "./serviceFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProgressBar from "../animation/ProgressBar";
 import AnimatedDiv from "../animation/AnimatedDiv";
@@ -15,6 +11,10 @@ import StepTwo from "../../sections/serviceDetails/steps/StepTwo";
 import Button from "../../common/Button";
 import { postService } from "@/app/[locale]/actions/services";
 import StepThree from "../../sections/serviceDetails/steps/StepThree";
+import {
+  createServiceFormSchema,
+  ServiceFormInputsT,
+} from "@/app/[locale]/lib/schemas/serviceFormSchema";
 
 const ServiceForm = () => {
   const [step, setStep] = useState(0);
