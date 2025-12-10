@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "../../common/Container";
 import Button from "../../common/Button";
-import { AnimatePresence, motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import React from "react";
 import { useTranslations } from "next-intl";
 import { useIsLocaleRtl } from "@/app/lib/utils";
@@ -13,15 +13,6 @@ type Props = {
   title: string;
   description: string;
   locale: string;
-};
-
-const headingVariants = {
-  hidden: { opacity: 0, y: -10 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
 };
 
 const imagesVariants = {

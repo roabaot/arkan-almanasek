@@ -1,6 +1,6 @@
-import Container from "../../common/Container";
-import { services } from "../../data/servicesData";
-import ServiceCard from "../../ui/cards/ServiceCard";
+// import Container from "../../common/Container";
+// import { services } from "../../data/servicesData";
+// import ServiceCard from "../../ui/cards/ServiceCard";
 
 const ServiceStyle2 = () => {
   return (

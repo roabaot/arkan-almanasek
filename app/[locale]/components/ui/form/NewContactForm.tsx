@@ -15,7 +15,7 @@ const NewContactForm = () => {
   const t = useTranslations("consultation.form");
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [detailsLength, setDetailsLength] = useState(0);
+  // const [detailsLength, setDetailsLength] = useState(0);
   const consultationSchema = createConsultationSchema((key) => t(key));
 
   const {
@@ -44,7 +44,7 @@ const NewContactForm = () => {
       console.log("Form data:", data);
       setSubmitted(true);
       reset();
-      setDetailsLength(0);
+      // setDetailsLength(0);
       setTimeout(() => setSubmitted(false), 5000);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -212,7 +212,7 @@ const NewContactForm = () => {
                 {...register("details")}
                 onChange={(e) => {
                   register("details").onChange(e);
-                  setDetailsLength(e.target.value.length);
+                  // setDetailsLength(e.target.value.length);
                 }}
               />
               <div className="absolute bottom-3 right-3 text-xs text-slate-400">

@@ -1,14 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import { accordionData, faqs } from "../../data/accordionData";
+import { faqs } from "../../data/accordionData";
 import Container from "../../common/Container";
-import SectionTitle from "../../common/SectionTitle";
-import Accordion from "../../common/AccordionItem";
 import { useTranslations } from "next-intl";
-import { AnimatePresence, motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import AnimatedNumber from "../../ui/animation/AnimatedNumber";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import {
   FiArrowRight,
   FiHelpCircle,
@@ -26,8 +22,6 @@ import { WHATSAPP_URL } from "../../common/WhatsAppButton";
 const Faq = () => {
   const t = useTranslations();
 
-  const statsRef = useRef<HTMLDivElement | null>(null);
-  const statsInView = useInView(statsRef, { once: true, amount: 0.6 });
   const isRtl = useIsLocaleRtl();
   const [openId, setOpenId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
