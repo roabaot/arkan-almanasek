@@ -68,9 +68,7 @@ const NewContactForm = () => {
             <h3 className="font-semibold text-green-900 mb-1">
               {t("success.title")}
             </h3>
-            <p className="text-green-700">
-              {t("success.message")}
-            </p>
+            <p className="text-green-700">{t("success.message")}</p>
           </div>
         </motion.div>
       )}
@@ -173,11 +171,21 @@ const NewContactForm = () => {
                 {...register("consultationType")}
               >
                 <option value="">{t("fields.type.placeholder")}</option>
-                <option value="strategy">{t("fields.type.options.strategy")}</option>
-                <option value="implementation">{t("fields.type.options.implementation")}</option>
-                <option value="optimization">{t("fields.type.options.optimization")}</option>
-                <option value="integration">{t("fields.type.options.integration")}</option>
-                <option value="training">{t("fields.type.options.training")}</option>
+                <option value="strategy">
+                  {t("fields.type.options.strategy")}
+                </option>
+                <option value="implementation">
+                  {t("fields.type.options.implementation")}
+                </option>
+                <option value="optimization">
+                  {t("fields.type.options.optimization")}
+                </option>
+                <option value="integration">
+                  {t("fields.type.options.integration")}
+                </option>
+                <option value="training">
+                  {t("fields.type.options.training")}
+                </option>
                 <option value="other">{t("fields.type.options.other")}</option>
               </select>
               {errors.consultationType && (

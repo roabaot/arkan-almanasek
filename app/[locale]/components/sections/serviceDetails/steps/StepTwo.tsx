@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import AnimatedDiv from "../../../ui/animation/AnimatedDiv";
 import { useFormContext } from "react-hook-form";
-import { ServiceFormInputsT } from "../../../ui/form/serviceFormSchema";
 import { useTranslations } from "next-intl";
+import { ServiceFormInputsT } from "@/app/[locale]/lib/schemas/serviceFormSchema";
 
 const StepTwo = ({ direction }: { direction: number }) => {
   const {

@@ -1,16 +1,23 @@
+import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import Breadcrumb from "@/app/[locale]/components/common/Breadcrumb";
 import Container from "@/app/[locale]/components/common/Container";
-import BlogPageClient from "@/app/[locale]/components/ui/blog/BlogPageClient";
 import { getBlogCategories, getBlogs, getBlogTags } from "../actions/blogs";
 import { getTranslations } from "next-intl/server";
 import MotionContainer from "@/app/[locale]/components/common/MotionContainer";
-
+const BlogPageClient = dynamic(
+  () => import("@/app/[locale]/components/ui/blog/BlogPageClient"),
+  {
+    loading: () => <div>loading blog content...</div>, // your inner fallback
+  }
+);
 export const metadata: Metadata = {
   title: "Blog | Putech – Business & IT Solutions Next.js Template",
   description:
     "Read the latest articles, insights, and updates on IT solutions and business strategies from Putech – Business & IT Solutions Next.js template.",
 };
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const BlogPage = async ({
   searchParams,
@@ -26,9 +33,23 @@ const BlogPage = async ({
   const category = first(query?.category);
   const tag = first(query?.tag);
 
-  const reqBlogs = getBlogs({ debug: true, category, tag });
-  const reqCategories = getBlogCategories();
-  const reqTags = getBlogTags();
+  // const reqBlogs = getBlogs({ debug: true, category, tag });
+  // const reqCategories = getBlogCategories();
+  // const reqTags = getBlogTags();
+  const reqBlogs = (async () => {
+    await delay(10_000);
+    return getBlogs({ debug: true, category, tag });
+  })();
+
+  const reqCategories = (async () => {
+    await delay(10_000);
+    return getBlogCategories();
+  })();
+
+  const reqTags = (async () => {
+    await delay(10_000);
+    return getBlogTags();
+  })();
 
   const [resBlogs, resCategories, resTags] = await Promise.all([
     reqBlogs,
@@ -54,18 +75,22 @@ const BlogPage = async ({
       </MotionContainer>
 
       {/************* blog section start here **************/}
-      <section className="section-gap">
-        <Container>
-          <BlogPageClient
-            blogs={blogs}
-            categories={resCategories || []}
-            tags={resTags || []}
-            emptyLabel={t("blogs.empty")}
-            category={category}
-            tag={tag}
-          />
-        </Container>
-      </section>
+      <div className="relative">
+        {/* <Suspense fallback="loading..."> */}
+        <section className="section-gap">
+          <Container>
+            <BlogPageClient
+              blogs={blogs}
+              categories={resCategories || []}
+              tags={resTags || []}
+              emptyLabel={t("blogs.empty")}
+              category={category}
+              tag={tag}
+            />
+          </Container>
+        </section>
+        {/* </Suspense> */}
+      </div>
     </div>
   );
 };
