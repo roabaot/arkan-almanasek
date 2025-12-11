@@ -216,11 +216,7 @@ const About = () => {
 
                 <div>
                   <h3>
-                    <AnimatedNumber
-                      value={6000}
-                      suffix="+"
-                      play={statsInView}
-                    />
+                    <AnimatedNumber value={500} suffix="+" play={statsInView} />
                   </h3>
                   <p>{t("stats.clients")}</p>
                 </div>
@@ -243,7 +239,7 @@ const About = () => {
                 <div>
                   <h3>
                     <AnimatedNumber
-                      value={2000}
+                      value={1500}
                       suffix="+"
                       play={statsInView}
                     />

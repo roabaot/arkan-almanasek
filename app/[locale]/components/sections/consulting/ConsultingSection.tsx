@@ -71,7 +71,7 @@ const ConsultingSection: React.FC = () => {
   } as const;
   return (
     <motion.section
-      className="bg-white section-gap overflow-hidden"
+      className="bg-white section-gap overflow-hidden pb-12"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.18 }}

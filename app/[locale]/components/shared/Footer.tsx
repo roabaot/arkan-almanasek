@@ -7,7 +7,6 @@ import {
   FaInstagram,
   FaTiktok,
   FaPhoneAlt,
-  FaClock,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { BsSendFill } from "react-icons/bs";
@@ -230,6 +229,33 @@ const Footer = () => {
                 </div>
               </motion.div>
 
+              {/* Unified Number */}
+              <motion.div
+                className="flex items-center gap-4"
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.18 }}
+              >
+                <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
+                  <FaPhoneAlt className="text-primary text-lg" />
+                </div>
+                <div>
+                  <p className="text-primary mb-2">
+                    {t("unified_number_label")}
+                  </p>
+                  <motion.h5
+                    className="text-[15px] text-primary"
+                    variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.18 }}
+                  >
+                    920019969
+                  </motion.h5>
+                </div>
+              </motion.div>
+
               {/* Email */}
               <motion.div
                 className="flex items-center gap-4"
@@ -259,49 +285,41 @@ const Footer = () => {
                   </motion.h5>
                 </div>
               </motion.div>
-
-              {/* Work / Hours */}
-              <motion.div
-                className="flex items-center gap-4"
-                variants={itemVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.18 }}
-              >
-                <div className="bg-white/10 min-w-10 w-10 h-10 flex justify-center items-center rounded-full">
-                  <FaClock className="text-primary text-lg" />
-                </div>
-                <div>
-                  <p className="text-primary mb-2">{t("work_label")}</p>
-                  <motion.h5
-                    className="text-[15px] text-primary"
-                    variants={itemVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.18 }}
-                  >
-                    {t("work_hours")}
-                  </motion.h5>
-                </div>
-              </motion.div>
             </div>
           </div>
 
           {/* item 3 here */}
-          <motion.div
-            className="max-w-[300px]"
-            variants={innerNoStagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-          >
-            <motion.h4 className="text-primary" variants={itemVariants}>
-              {t("address_label")}
-            </motion.h4>
-            <motion.p className="text-primary mt-7" variants={itemVariants}>
-              {t("address_value")}
-            </motion.p>
-          </motion.div>
+          <div className="space-y-6">
+            <motion.div
+              className="max-w-[300px]"
+              variants={innerNoStagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+            >
+              <motion.h4 className="text-primary" variants={itemVariants}>
+                {t("address_label")}
+              </motion.h4>
+              <motion.p className="text-primary mt-7" variants={itemVariants}>
+                {t("address_value")}
+              </motion.p>
+            </motion.div>
+
+            <motion.div
+              className="max-w-[300px]"
+              variants={innerNoStagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+            >
+              <motion.h4 className="text-primary" variants={itemVariants}>
+                {t("work_label")}
+              </motion.h4>
+              <motion.p className="text-primary mt-7" variants={itemVariants}>
+                {t("work_hours")}
+              </motion.p>
+            </motion.div>
+          </div>
 
           {/* item 4 here */}
           <motion.form

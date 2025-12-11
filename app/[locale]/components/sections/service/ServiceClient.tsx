@@ -29,7 +29,7 @@ const ServiceClient = ({ services }: { services: ServiceCategoryT[] }) => {
   const ref = React.useRef(null);
   const isInView = useInView(ref, {
     once: true,
-    amount: "all",
+    amount: 0.5,
   });
   return (
     <motion.div
@@ -46,7 +46,7 @@ const ServiceClient = ({ services }: { services: ServiceCategoryT[] }) => {
         label={t("title")}
         title={t("description")}
         align="center"
-        delay={0.8}
+        delay={0.4}
         inView={isInView}
         inherit={true}
       />
@@ -58,7 +58,12 @@ const ServiceClient = ({ services }: { services: ServiceCategoryT[] }) => {
             <p className="text-gray-600">{tCommon("empty")}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[30px]">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[30px]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.9 }} // 0.4s title delay + 0.5s title duration
+          >
             {services.map((service: ServiceCategoryT, index: number) => (
               <ServiceItemCard
                 key={service.id}
@@ -68,7 +73,7 @@ const ServiceClient = ({ services }: { services: ServiceCategoryT[] }) => {
                 order={index + 1 < 10 ? `0${index + 1}` : index + 1}
               />
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.div>

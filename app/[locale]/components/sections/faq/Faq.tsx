@@ -77,7 +77,7 @@ const Faq = () => {
             <FiHelpCircle className="w-10 h-10 text-white" />
           </motion.div>
 
-          <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl sm:text-6xl font-bold leading-[1] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent mb-4">
             {t("faq.title")}
           </h1>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
