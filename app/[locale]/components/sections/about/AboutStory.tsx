@@ -86,17 +86,18 @@ const AboutStory = () => {
         </motion.div>
       </Container>
 
-      <Container>
-        {/* story here */}
-        {/* <motion.div
+      {/* <Container> */}
+      {/* story here */}
+      {/* <motion.div
           className="mt-12 md:mt-20 max-w-4xl mx-auto"
           variants={itemVariants}
         >
           <h3 className="text-[36px]">{t("our_story_title")}</h3>
           <p className="mt-4 text-secondaryColor">{t("our_story_paragraph")}</p>
         </motion.div> */}
-        {/* Vision here */}
-        <motion.div
+
+      {/* Vision here */}
+      {/* <motion.div
           className="mt-12 md:mt-20 max-w-4xl mx-auto"
           variants={itemVariants}
         >
@@ -104,9 +105,10 @@ const AboutStory = () => {
           <p className="mt-4 text-secondaryColor">
             {t("our_vision_paragraph")}
           </p>
-        </motion.div>
-        {/* Our Mission here */}
-        <motion.div
+        </motion.div> */}
+
+      {/* Our Mission here */}
+      {/* <motion.div
           className="mt-12 md:mt-20 max-w-4xl mx-auto"
           variants={itemVariants}
         >
@@ -114,8 +116,8 @@ const AboutStory = () => {
           <p className="mt-4 text-secondaryColor">
             {t("our_mission_paragraph")}
           </p>
-        </motion.div>
-      </Container>
+        </motion.div> */}
+      {/* </Container> */}
     </motion.div>
   );
 };
