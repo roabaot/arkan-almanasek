@@ -51,7 +51,10 @@ const Faq = () => {
     .filter((category) => category.questions.length > 0);
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-white to-slate-100 section-gap relative py-16 overflow-hidden">
+    <div
+      id="faq"
+      className="bg-gradient-to-br from-slate-50 via-white to-slate-100 section-gap relative py-16 overflow-hidden"
+    >
       <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
       <Container>
         {/* section title start here */}

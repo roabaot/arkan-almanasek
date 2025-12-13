@@ -43,7 +43,7 @@ type MenuItem = TopLevelDirect | TopLevelWithGroup;
 
 // We'll derive titles from translation keys to keep menu fully localized.
 // Keys correspond to entries under `common` namespace in locale JSON files.
-type CommonMenuKey = "home" | "about" | "blog" | "contact" | "services";
+type CommonMenuKey = "home" | "about" | "blog" | "consultation" | "services";
 const menuConfig: Array<
   Omit<TopLevelDirect, "title"> & { key: CommonMenuKey }
 > = [
@@ -51,7 +51,7 @@ const menuConfig: Array<
   { key: "about", href: "/about-v2" },
   { key: "services", href: "/category" },
   { key: "blog", href: "/blog" },
-  { key: "contact", href: "/contact" },
+  { key: "consultation", href: "/consultation" },
 ];
 const NavMenu = () => {
   const [hoveredSubmenu, setHoveredSubmenu] = useState<number | null>(null);

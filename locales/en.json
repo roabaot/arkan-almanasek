@@ -6,6 +6,7 @@
     "projects": "Projects",
     "blog": "Blog",
     "contact": "Contact Us",
+    "consultation": "Free Consultation",
     "privacy_policy": "Privacy Policy",
     "terms_conditions": "Terms & Conditions",
     "language": "Language",
@@ -287,11 +288,11 @@
         "services": "Services provided"
       },
       "list": {
-        "0": "Create a marketing plan",
-        "1": "Identify potential marketing channels",
-        "2": "Develop actionable strategies",
-        "3": "Develop and strengthen brand identity",
-        "4": "Publish monthly reports"
+        "0": "Strategic planning",
+        "1": "Corporate performance indicators",
+        "2": "Premium residency program",
+        "3": "Human resources packages",
+        "4": "Trademark registration"
       },
       "help_text": "Need help? Contact us at"
     }
