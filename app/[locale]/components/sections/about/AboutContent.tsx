@@ -2,9 +2,9 @@
 import React, { useRef } from "react";
 import Container from "../../common/Container";
 import { motion, useInView } from "framer-motion";
-import { FaEye } from "react-icons/fa";
-import { FiTarget } from "react-icons/fi";
+import { FaRegLightbulb } from "react-icons/fa";
 import { useTranslations } from "next-intl";
+import { LuMessageSquare } from "react-icons/lu";
 
 const AboutContent = () => {
   const sectionRef = useRef(null);
@@ -52,7 +52,7 @@ const AboutContent = () => {
               variants={iconVariants}
               className="w-16 h-16 bg-gradient-to-br from-[#21529f] to-[#884194] rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#21529f]/30"
             >
-              <FaEye className="w-8 h-8 text-white" />
+              <FaRegLightbulb className="w-8 h-8 text-white" />
             </motion.div>
 
             <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-6">
@@ -99,7 +99,7 @@ const AboutContent = () => {
               variants={iconVariants}
               className="w-16 h-16 bg-gradient-to-br from-[#e54f44] to-[#ea8125] rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#e54f44]/30"
             >
-              <FiTarget className="w-8 h-8 text-white" />
+              <LuMessageSquare className="w-8 h-8 text-white" />
             </motion.div>
 
             <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-6">
