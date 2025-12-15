@@ -31,7 +31,7 @@ const AboutStory = () => {
         >
           <Image
             className="w-full rounded-[16px]"
-            src={"/assets/about/about-8.webp"}
+            src={"/assets/about/about-1.png"}
             alt="about putech"
             width={350}
             height={440}
@@ -58,7 +58,7 @@ const AboutStory = () => {
         >
           <Image
             className="w-full rounded-[16px]"
-            src={"/assets/about/about-10.webp"}
+            src={"/assets/about/about-2.png"}
             alt="about putech"
             width={400}
             height={272}
@@ -66,7 +66,7 @@ const AboutStory = () => {
           />
           <Image
             className="w-full rounded-[16px]"
-            src={"/assets/about/about-11.webp"}
+            src={"/assets/about/about-3.png"}
             alt="about putech"
             width={400}
             height={272}
@@ -77,7 +77,7 @@ const AboutStory = () => {
         <motion.div className="md:w-[30%] w-full" variants={itemVariants}>
           <Image
             className="w-full rounded-[16px]"
-            src={"/assets/about/about-9.webp"}
+            src={"/assets/about/about-4.png"}
             alt="about putech"
             width={350}
             height={440}

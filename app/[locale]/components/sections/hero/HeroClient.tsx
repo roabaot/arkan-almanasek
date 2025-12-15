@@ -62,7 +62,7 @@ export default function HeroClient({ title, description, locale }: Props) {
                 priority
               />
               <Image
-                className="absolute left-[-10px] top-1/2 -translate-y-1/2"
+                className="absolute left-[-10px] top-1/2 -translate-y-1/2 min-w-[318px]"
                 src={"assets/hero/border-shape.svg"}
                 alt="shape"
                 width={370}
@@ -143,7 +143,7 @@ export default function HeroClient({ title, description, locale }: Props) {
               <motion.div className="" variants={imageVariants}>
                 <Image
                   className="lg:w-[250px] w-[160px] h-[365px] mt-[-30px] object-cover rounded-[20px]"
-                  src={"/assets/hero/sub-hero-2.jpeg"}
+                  src={"/assets/hero/sub-hero-2.png"}
                   alt="macs image"
                   width={250}
                   height={365}

@@ -130,7 +130,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-8.webp"}
+                    src={"/assets/about/about-8.png"}
                     alt="about image"
                     width={285}
                     height={422}
@@ -146,7 +146,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-10.webp"}
+                    src={"/assets/about/about-10.png"}
                     alt="about image"
                     width={275}
                     height={180}
@@ -164,7 +164,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-11.webp"}
+                    src={"/assets/about/about-11.png"}
                     alt="about image"
                     width={275}
                     height={180}
@@ -180,7 +180,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-9.webp"}
+                    src={"/assets/about/about-9.png"}
                     alt="about image"
                     width={285}
                     height={422}
@@ -206,10 +206,10 @@ const About = () => {
               >
                 <div>
                   <Image
-                    src="/icons/about/happy-client.svg"
+                    src="/assets/about/clients.svg"
                     alt="serach icon"
-                    width={65}
-                    height={65}
+                    width={80}
+                    height={80}
                     priority
                   />
                 </div>
@@ -227,11 +227,10 @@ const About = () => {
               >
                 <div>
                   <Image
-                    className="w-full h-auto mix-blend-multiply"
-                    src={"/assets/testimonial/star.jpg"}
+                    src={"/assets/about/panel.svg"}
                     alt="serach icon"
-                    width={54}
-                    height={65}
+                    width={80}
+                    height={80}
                     priority
                   />
                 </div>

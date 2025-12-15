@@ -33,7 +33,7 @@ const OurValues = () => {
           <motion.div className="lg:w-[45%] w-full" variants={itemVariants}>
             <Image
               className="w-full md:max-h-[700px] lg:max-h-[625px] rounded-[16px]"
-              src={"/assets/about/corporate-woman-reading-medium-shot.webp"}
+              src={"/assets/about/about-5.png"}
               alt="women reading"
               width={580}
               height={700}
