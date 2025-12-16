@@ -1,17 +1,18 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import {
-  ConsultationFormDataT,
-  createConsultationSchema,
-} from "@/app/[locale]/actions/contact";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { CiCalendar, CiMail, CiUser } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
+import {
+  ConsultationFormDataT,
+  createConsultationSchema,
+} from "@/app/[locale]/lib/schemas/consultationSchema";
+import { postConsultation } from "@/app/[locale]/actions/consultation";
 
-const NewContactForm = () => {
+const NewConsultationForm = () => {
   const t = useTranslations("consultation.form");
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,23 +28,25 @@ const NewContactForm = () => {
   } = useForm<ConsultationFormDataT>({
     resolver: zodResolver(consultationSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       phone: "",
       consultationType: "",
-      details: "",
+      message: "",
     },
   });
 
-  const detailsValue = watch("details");
+  const messageValue = watch("message");
 
   const onSubmit = async (data: ConsultationFormDataT) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Form data:", data);
+      const res = await postConsultation(data);
+      console.log("res: ", res);
+
       setSubmitted(true);
-      reset();
+      // reset();
       // setDetailsLength(0);
       setTimeout(() => setSubmitted(false), 5000);
     } catch (error) {
@@ -78,7 +81,12 @@ const NewContactForm = () => {
         transition={{ delay: 0.3, duration: 0.6 }}
         className="bg-white rounded-3xl shadow-lg border border-slate-200 p-8 sm:p-10"
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={handleSubmit(onSubmit, (errors) => {
+            console.log("Validation errors:", errors);
+          })}
+          className="space-y-6"
+        >
           <div className="grid sm:grid-cols-2 gap-6">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -87,20 +95,20 @@ const NewContactForm = () => {
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
-                {t("fields.name.label")}
+                {t("fields.first_name.label")}
               </label>
               <div className="relative">
                 <CiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder={t("fields.name.placeholder")}
+                  placeholder={t("fields.first_name.placeholder")}
                   className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
-                  {...register("name")}
+                  {...register("firstName")}
                 />
               </div>
-              {errors.name && (
+              {errors.firstName && (
                 <p className="text-red-500 text-sm mt-2">
-                  {errors.name.message}
+                  {errors.firstName.message}
                 </p>
               )}
             </motion.div>
@@ -109,6 +117,31 @@ const NewContactForm = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.45, duration: 0.4 }}
+              className="flex flex-col"
+            >
+              <label className="text-slate-700 font-semibold mb-3 block">
+                {t("fields.last_name.label")}
+              </label>
+              <div className="relative">
+                <CiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder={t("fields.last_name.placeholder")}
+                  className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
+                  {...register("lastName")}
+                />
+              </div>
+              {errors.lastName && (
+                <p className="text-red-500 text-sm mt-2">
+                  {errors.lastName.message}
+                </p>
+              )}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
@@ -129,13 +162,11 @@ const NewContactForm = () => {
                 </p>
               )}
             </motion.div>
-          </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5, duration: 0.4 }}
+              transition={{ delay: 0.45, duration: 0.4 }}
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
@@ -157,7 +188,7 @@ const NewContactForm = () => {
               )}
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.55, duration: 0.4 }}
@@ -193,7 +224,7 @@ const NewContactForm = () => {
                   {errors.consultationType.message}
                 </p>
               )}
-            </motion.div>
+            </motion.div> */}
           </div>
 
           <motion.div
@@ -209,19 +240,19 @@ const NewContactForm = () => {
               <textarea
                 placeholder={t("fields.details.placeholder")}
                 className="w-full px-4 py-4 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white min-h-32 resize-none"
-                {...register("details")}
+                {...register("message")}
                 onChange={(e) => {
-                  register("details").onChange(e);
+                  register("message").onChange(e);
                   // setDetailsLength(e.target.value.length);
                 }}
               />
               <div className="absolute bottom-3 right-3 text-xs text-slate-400">
-                {detailsValue?.length || 0}/1000
+                {messageValue?.length || 0}/1000
               </div>
             </div>
-            {errors.details && (
+            {errors.message && (
               <p className="text-red-500 text-sm mt-2">
-                {errors.details.message}
+                {errors.message.message}
               </p>
             )}
           </motion.div>
@@ -253,4 +284,4 @@ const NewContactForm = () => {
   );
 };
 
-export default NewContactForm;
+export default NewConsultationForm;

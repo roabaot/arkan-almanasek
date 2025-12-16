@@ -1,12 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
 import { CiCalendar } from "react-icons/ci";
-import NewContactForm from "../form/NewContactForm";
+import NewContactForm from "../form/ConsultationForm";
 import Link from "next/link";
 import Container from "../../common/Container";
 import { useTranslations } from "next-intl";
 
-const ContactClinet = () => {
+const ConsultationClinet = () => {
   const t = useTranslations("consultation.contactSection");
   return (
     <Container className="mt-32 mb-12">
@@ -55,4 +55,4 @@ const ContactClinet = () => {
   );
 };
 
-export default ContactClinet;
+export default ConsultationClinet;

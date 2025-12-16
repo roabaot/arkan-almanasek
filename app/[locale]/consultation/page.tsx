@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import ContactClinet from "../components/ui/contact/ContactClinet";
+import ContactClinet from "../components/ui/contact/ConsultationClinet";
 
 export const metadata: Metadata = {
   title: "Contact Us | Putech – Business & IT Solutions Next.js Template",

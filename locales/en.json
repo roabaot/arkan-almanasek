@@ -356,17 +356,21 @@
         "message": "Thank you for your interest. Our team will contact you within 24 hours to schedule your consultation."
       },
       "fields": {
-        "name": {
-          "label": "Full Name",
-          "placeholder": "John Doe"
+        "first_name": {
+          "label": "First Name",
+          "placeholder": "please enter your first name"
+        },
+        "last_name": {
+          "label": "Last Name",
+          "placeholder": "please enter your last name"
         },
         "email": {
           "label": "Email Address",
-          "placeholder": "john@example.com"
+          "placeholder": "mohammed@example.com"
         },
         "phone": {
           "label": "Phone Number",
-          "placeholder": "+1 (555) 123-4567"
+          "placeholder": "+966 5X XXX XXXX"
         },
         "type": {
           "label": "Consultation Type",
@@ -388,6 +392,27 @@
       "submit": {
         "label": "Request Consultation",
         "loading": "Submitting..."
+      },
+      "validation": {
+        "first_name": {
+          "min": "First name must be at least 2 characters"
+        },
+        "last_name": {
+          "min": "Last name must be at least 2 characters"
+        },
+        "email": {
+          "invalid": "Please enter a valid email"
+        },
+        "phone": {
+          "invalid": "Please enter a valid phone number"
+        },
+        "type": {
+          "required": "Please select a consultation type"
+        },
+        "details": {
+          "min": "Details must be at least 10 characters",
+          "max": "Details must be less than 1000 characters"
+        }
       }
     }
   }

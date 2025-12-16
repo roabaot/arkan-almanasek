@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { submitContactForm2 } from "@/app/[locale]/actions/contact2";
+import { postConsultation } from "@/app/[locale]/actions/consultation";
 import Button from "../../common/Button";
 import { toast } from "react-toastify";
 
@@ -35,13 +35,13 @@ export default function ContactForm() {
         option: data.chooseOption,
         message: data.message,
       };
-      const res = await submitContactForm2(payload);
-      if (res?.success) {
-        toast.success(res.message ?? "Form submitted successfully!");
-        reset();
-      } else {
-        toast.error(res?.message ?? "Submission failed. Please try again.");
-      }
+      // const res = await postConsultation(payload);
+      // if (res?.success) {
+      //   toast.success(res.message ?? "Form submitted successfully!");
+      //   reset();
+      // } else {
+      //   toast.error(res?.message ?? "Submission failed. Please try again.");
+      // }
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please try again.");

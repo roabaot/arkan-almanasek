@@ -4,7 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import Button from "../../common/Button";
-import { submitContactForm2 } from "@/app/[locale]/actions/contact2";
+// import { submitContactForm2 } from "@/app/[locale]/actions/consultation";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -30,11 +30,11 @@ export default function ContactFormTwo() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await submitContactForm2(data); // server-side execution
-      if (res.success) {
-        toast.success(res.message);
-        reset();
-      }
+      // const res = await submitContactForm2(data); // server-side execution
+      // if (res.success) {
+      //   toast.success(res.message);
+      //   reset();
+      // }
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please try again.");
