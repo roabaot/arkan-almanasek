@@ -29,7 +29,10 @@ const ServiceItemCard = ({
       <div className="flex items-center gap-5">
         {icon && (
           <Image
-            src={icon}
+            src={
+              icon ??
+              "https://staging.macs.com.sa/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MjAsInB1ciI6ImJsb2JfaWQifX0=--8373dc8af15b90d5b431b00fb3ffd01f293fdcf2/%D8%B4%D9%87%D8%A7%D8%AF%D8%A9%20%D8%A7%D9%84%D8%A7%D9%85%D8%AA%D8%AB%D8%A7%D9%84%20%D9%84%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%B9%D9%85%D9%84.png"
+            }
             unoptimized
             alt={title}
             width={40}
