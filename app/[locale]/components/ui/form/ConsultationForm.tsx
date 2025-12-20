@@ -11,9 +11,11 @@ import {
   createConsultationSchema,
 } from "@/app/[locale]/lib/schemas/consultationSchema";
 import { postConsultation } from "@/app/[locale]/actions/consultation";
+import { useIsLocaleRtl } from "@/app/lib/utils";
 
 const NewConsultationForm = () => {
   const t = useTranslations("consultation.form");
+  const isRtl = useIsLocaleRtl();
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // const [detailsLength, setDetailsLength] = useState(0);
@@ -177,7 +179,9 @@ const NewConsultationForm = () => {
                 <input
                   type="tel"
                   placeholder={t("fields.phone.placeholder")}
-                  className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
+                  className={`w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white ${
+                    isRtl ? "text-end" : "text-start"
+                  }`}
                   {...register("phone")}
                 />
               </div>
