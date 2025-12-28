@@ -19,11 +19,9 @@ const BlogDetailsClient = ({
 }: {
   blog: BlogT | null;
   blogs: BlogT[];
-  categories: blogClassT[];
-  tags: blogClassT[];
+  categories: blogClassT[] | null;
+  tags: blogClassT[] | null;
 }) => {
-  console.log("categories", categories);
-
   const t = useTranslations();
   return (
     <>
@@ -44,14 +42,14 @@ const BlogDetailsClient = ({
         )}
 
         {/* Category part start here */}
-        {categories.length > 0 && (
+        {categories && categories.length > 0 && (
           <MotionContainer>
             <BlogCatagory isSingleBlog categories={categories} />
           </MotionContainer>
         )}
 
         {/* Popular Tag part start here */}
-        {tags.length > 0 && (
+        {tags && tags.length > 0 && (
           <MotionContainer>
             <PopularTag isSingleBlog tags={tags} />
           </MotionContainer>

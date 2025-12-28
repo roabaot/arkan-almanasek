@@ -5,61 +5,43 @@ import Container from "@/app/[locale]/components/common/Container";
 import { getBlogCategories, getBlogs, getBlogTags } from "../actions/blogs";
 import { getTranslations } from "next-intl/server";
 import MotionContainer from "@/app/[locale]/components/common/MotionContainer";
+import { Suspense } from "react";
+import Loading from "../loading";
 const BlogPageClient = dynamic(
   () => import("@/app/[locale]/components/ui/blog/BlogPageClient"),
   {
-    loading: () => <div>loading blog content...</div>, // your inner fallback
+    loading: () => <Loading className="absolute inset-0 h-[50vh]" />, // your inner fallback
   }
 );
 export const metadata: Metadata = {
-  title: "Blog | Putech – Business & IT Solutions Next.js Template",
+  title: "Blog | Macs – Business & IT Solutions Next.js Template",
   description:
-    "Read the latest articles, insights, and updates on IT solutions and business strategies from Putech – Business & IT Solutions Next.js template.",
+    "Read the latest articles, insights, and updates on IT solutions and business strategies from Macs – Business & IT Solutions Next.js template.",
 };
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const BlogPage = async ({
-  searchParams,
-}: {
-  // Align with Next's generated PageProps: searchParams is a Promise
+type BlogPageProps = {
+  // In this project, Next generates PageProps with Promise-based searchParams
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}) => {
+};
+
+const BlogPage = async ({ searchParams }: BlogPageProps) => {
   // accept query like `?category=Advancing%20with%20innovation`
-  const query = await searchParams;
+  const query = (await searchParams) ?? {};
   const first = (v: string | string[] | undefined) =>
     Array.isArray(v) ? v[0] : v ?? undefined;
 
   const category = first(query?.category);
   const tag = first(query?.tag);
 
-  // const reqBlogs = getBlogs({ debug: true, category, tag });
-  // const reqCategories = getBlogCategories();
-  // const reqTags = getBlogTags();
-  const reqBlogs = (async () => {
-    await delay(10_000);
-    return getBlogs({ debug: true, category, tag });
-  })();
+  const reqBlogs = getBlogs({ debug: true, category, tag });
+  const reqCategories = getBlogCategories();
+  const reqTags = getBlogTags();
 
-  const reqCategories = (async () => {
-    await delay(10_000);
-    return getBlogCategories();
-  })();
-
-  const reqTags = (async () => {
-    await delay(10_000);
-    return getBlogTags();
-  })();
-
-  const [resBlogs, resCategories, resTags] = await Promise.all([
-    reqBlogs,
-    reqCategories,
-    reqTags,
-  ]);
+  const resPromise = Promise.all([reqBlogs, reqCategories, reqTags]);
 
   const t = await getTranslations();
 
-  const { items: blogs } = resBlogs;
+  // const { items: blogs } = resBlogs;
 
   return (
     <div>
@@ -77,16 +59,19 @@ const BlogPage = async ({
       {/************* blog section start here **************/}
       <div className="relative">
         {/* <Suspense fallback="loading..."> */}
-        <section className="section-gap">
+        <section className="section-gap relative">
           <Container>
-            <BlogPageClient
-              blogs={blogs}
-              categories={resCategories || []}
-              tags={resTags || []}
-              emptyLabel={t("blogs.empty")}
-              category={category}
-              tag={tag}
-            />
+            <Suspense fallback={<Loading className="absolute inset-0" />}>
+              <BlogPageClient
+                // blogs={blogs}
+                // categories={resCategories || []}
+                // tags={resTags || []}
+                resPromise={resPromise}
+                emptyLabel={t("blogs.empty")}
+                category={category}
+                tag={tag}
+              />
+            </Suspense>
           </Container>
         </section>
         {/* </Suspense> */}

@@ -2,6 +2,7 @@
 import "server-only";
 import { revalidateTag } from "next/cache";
 import { getLocale } from "next-intl/server";
+import { blogClassT } from "../components/ui/blog/BlogPageClient";
 
 interface GetBlogsOptions {
   page?: number;
@@ -175,7 +176,9 @@ export const getBlogById = async (
   }
 };
 
-export const getBlogCategories = async () => {
+export const getBlogCategories: () => Promise<
+  blogClassT[] | null
+> = async () => {
   try {
     const locale = (await getLocale()) || "ar";
     const base = process.env.NEXT_PUBLIC_BASE_URL;
@@ -193,7 +196,7 @@ export const getBlogCategories = async () => {
   }
 };
 
-export const getBlogTags = async () => {
+export const getBlogTags: () => Promise<blogClassT[] | null> = async () => {
   try {
     const locale = (await getLocale()) || "ar";
     const base = process.env.NEXT_PUBLIC_BASE_URL;

@@ -6,8 +6,10 @@ import BlogSearch from "@/app/[locale]/components/ui/blog/BlogSearch";
 import BlogCatagory from "@/app/[locale]/components/ui/blog/BlogCatagory";
 import PopularTag from "@/app/[locale]/components/ui/blog/PopularTag";
 import MotionContainer from "@/app/[locale]/components/common/MotionContainer";
-import { useState, useEffect, useRef, useCallback } from "react";
-import type { BlogT } from "@/app/[locale]/actions/blogs";
+import { useState, useEffect, useRef, useCallback, use } from "react";
+import { useLocale } from "next-intl";
+import type { BlogsResponseT, BlogT } from "@/app/[locale]/actions/blogs";
+import Loading from "@/app/[locale]/loading";
 
 export type blogClassT = {
   id: number;
@@ -17,22 +19,33 @@ export type blogClassT = {
 };
 
 interface BlogPageClientProps {
-  blogs: BlogT[]; // initial SSR blogs
-  categories: blogClassT[];
-  tags: blogClassT[];
+  // blogs?: BlogT[]; // initial SSR blogs
+  // categories?: blogClassT[];
+  // tags?: blogClassT[];
   emptyLabel: string;
   category?: string;
   tag?: string;
+  resPromise: Promise<
+    [BlogsResponseT, blogClassT[] | null, blogClassT[] | null]
+  >;
 }
 
 const BlogPageClient = ({
-  blogs: initialBlogs,
-  categories,
-  tags,
+  // blogs: initialBlogs,
+  // categories,
+  // tags,
   emptyLabel,
   category,
   tag,
+  resPromise,
 }: BlogPageClientProps) => {
+  const locale = useLocale();
+  const data = use(resPromise);
+  const [resBlogs, resCategories, resTags] = data;
+  const initialBlogs = resBlogs.items;
+  const categories = resCategories || [];
+  const tags = resTags || [];
+
   const [filter, setFilter] = useState({
     search: "",
     category: category || "",
@@ -44,8 +57,9 @@ const BlogPageClient = ({
   const [error, setError] = useState<string | null>(null);
 
   // Unified guarded effect using a stable serialized key to prevent redundant runs.
-  const lastFilterKeyRef = useRef<string>("__init__");
   const filterKey = `${filter.search.trim()}|${filter.category.trim()}|${filter.tag.trim()}`;
+  // Initialize with current filterKey so first render (SSR data) does NOT trigger a duplicate fetch.
+  const lastFilterKeyRef = useRef<string>(filterKey);
 
   useEffect(() => {
     // If key unchanged, do nothing.
@@ -85,7 +99,12 @@ const BlogPageClient = ({
           }
           return;
         }
-        const url = `${base}/blogs?${finalFilter}`;
+        const localeParam = (locale || "ar").toString();
+        const url = finalFilter
+          ? `${base}/blogs?locale=${encodeURIComponent(
+              localeParam
+            )}&${finalFilter}`
+          : `${base}/blogs?locale=${encodeURIComponent(localeParam)}`;
         const res = await fetch(url, {
           cache: "no-store",
           signal: controller.signal,
@@ -99,7 +118,7 @@ const BlogPageClient = ({
         if (errorObj.name === "AbortError") return;
         if (active) setError("Failed to load blogs");
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
     run();
@@ -107,7 +126,7 @@ const BlogPageClient = ({
       active = false;
       controller.abort();
     };
-  }, [filterKey, initialBlogs]);
+  }, [filterKey, initialBlogs, locale]);
 
   // Mark that initial animation has played after first render displaying blogs
   useEffect(() => {
@@ -132,12 +151,12 @@ const BlogPageClient = ({
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-[30px]">
+    <div className="flex flex-col lg:flex-row gap-[30px] pb-12">
       <div className="lg:w-[65%] w-full">
         <div className="space-y-6">
           {loading && (
-            <MotionContainer className="flex flex-col gap-6 items-center justify-center py-10">
-              <p className="text-center text-muted">Loading...</p>
+            <MotionContainer className="flex flex-col gap-6 items-center justify-center py-10 relative">
+              <Loading className="sticky inset-0" />
             </MotionContainer>
           )}
           {!loading && error && (
@@ -180,6 +199,7 @@ const BlogPageClient = ({
         {categories.length > 0 && (
           <MotionContainer>
             <BlogCatagory
+              // loading={loading}
               categories={categories}
               activeCategory={filter.category}
               setActiveCategory={(val) =>
@@ -191,6 +211,7 @@ const BlogPageClient = ({
         {tags.length > 0 && (
           <MotionContainer>
             <PopularTag
+              // loading={loading}
               tags={tags}
               activeTag={filter.tag}
               setActiveTag={(val: string) =>
