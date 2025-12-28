@@ -74,7 +74,9 @@ const Footer = () => {
 
     try {
       setIsSubmitting(true);
-      const res = await postSletters({ email: parsed.data.email });
+      const res = await postSletters({
+        newsletter: { email: parsed.data.email },
+      });
       if (res) {
         showToast({
           type: "success",

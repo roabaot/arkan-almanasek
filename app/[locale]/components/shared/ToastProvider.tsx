@@ -48,6 +48,15 @@ const positionClasses: Record<ToastPosition, string> = {
   "bottom-right": "bottom-4 right-4 items-end justify-end",
 };
 
+const toastPositions: ToastPosition[] = [
+  "top-left",
+  "top-center",
+  "top-right",
+  "bottom-left",
+  "bottom-center",
+  "bottom-right",
+];
+
 const ToastProvider = ({
   children,
   position = "top-center",
@@ -68,10 +77,29 @@ const ToastProvider = ({
       position?: ToastPosition;
     }) => {
       const id = toastIdCounter++;
-      setToasts((prev) => [
-        ...prev,
-        { id, type, message, position: toastPosition ?? position },
-      ]);
+      setToasts((prev) => {
+        const targetPosition = toastPosition ?? position;
+
+        const samePosition = prev.filter(
+          (toast) => toast.position === targetPosition
+        );
+        const otherPositions = prev.filter(
+          (toast) => toast.position !== targetPosition
+        );
+
+        const updatedForPosition = [
+          ...samePosition,
+          { id, type, message, position: targetPosition },
+        ];
+
+        // keep only the last 3 toasts for this specific position
+        const limitedForPosition =
+          updatedForPosition.length > 3
+            ? updatedForPosition.slice(updatedForPosition.length - 3)
+            : updatedForPosition;
+
+        return [...otherPositions, ...limitedForPosition];
+      });
       setTimeout(() => {
         setToasts((prev) => prev.filter((t) => t.id !== id));
       }, 3500);
@@ -84,30 +112,39 @@ const ToastProvider = ({
       {children}
       <div className="fixed inset-0 z-[9999] pointer-events-none">
         <div className="absolute inset-0">
-          <AnimatePresence>
-            {toasts.map((toast) => (
+          {toastPositions.map((toastPosition) => {
+            const positionToasts = toasts.filter(
+              (toast) => toast.position === toastPosition
+            );
+
+            if (positionToasts.length === 0) return null;
+
+            return (
               <div
-                key={toast.id}
-                className={`flex w-full max-w-sm px-4 ${
-                  positionClasses[toast.position]
-                }`}
+                key={toastPosition}
+                className={`pointer-events-none absolute flex flex-col px-4 space-y-2 ${positionClasses[toastPosition]}`}
               >
-                <motion.div
-                  initial={{ opacity: 0, y: -16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.2 }}
-                  className={`mb-2 rounded-md px-4 py-3 shadow-lg pointer-events-auto text-sm font-secondary ${
-                    toast.type === "success"
-                      ? "bg-emerald-600 text-white"
-                      : "bg-red-600 text-white"
-                  }`}
-                >
-                  {toast.message}
-                </motion.div>
+                <AnimatePresence>
+                  {positionToasts.map((toast) => (
+                    <motion.div
+                      key={toast.id}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      transition={{ duration: 0.7, type: "spring" }}
+                      className={`rounded-md px-4 py-3 shadow-lg pointer-events-auto text-sm font-secondary ${
+                        toast.type === "success"
+                          ? "bg-emerald-600 text-white"
+                          : "bg-red-600 text-white"
+                      }`}
+                    >
+                      {toast.message}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
-            ))}
-          </AnimatePresence>
+            );
+          })}
         </div>
       </div>
     </ToastContext.Provider>

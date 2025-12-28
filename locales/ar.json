@@ -200,6 +200,8 @@
     "newsletter_description": "التكنولوجيا تتطور باستمرار، وتشكل الطريقة التي نعيش ونعمل بها",
     "newsletter_placeholder": "بريدك الإلكتروني...",
     "newsletter_hint": "يستغرق الأمر دقيقتين فقط للإكمال.",
+    "newsletter_success": "تم الاشتراك في النشرة البريدية بنجاح",
+    "newsletter_error": "تعذر إرسال الاشتراك، يرجى المحاولة مرة أخرى",
     "copyright": "© MACS {year} | جميع الحقوق محفوظة"
   },
   "sidebar": {

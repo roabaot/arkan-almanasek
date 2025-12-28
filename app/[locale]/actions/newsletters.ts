@@ -1,5 +1,7 @@
 type SlettersBodyT = {
-  email: string;
+  newsletter: {
+    email: string;
+  };
 };
 
 export const postSletters = async (

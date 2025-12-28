@@ -200,6 +200,8 @@
     "newsletter_description": "Technology is constantly evolving, shaping the way we live and work",
     "newsletter_placeholder": "Your email...",
     "newsletter_hint": "It only takes 2 minutes to complete.",
+    "newsletter_success": "You have successfully subscribed to the newsletter.",
+    "newsletter_error": "Unable to send your subscription, please try again.",
     "copyright": "© MACS {year} | All Rights Reserved"
   },
   "sidebar": {
