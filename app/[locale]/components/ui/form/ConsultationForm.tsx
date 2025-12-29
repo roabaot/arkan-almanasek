@@ -24,7 +24,7 @@ const NewConsultationForm = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    // reset,
     formState: { errors },
     watch,
   } = useForm<ConsultationFormDataT>({

@@ -22,13 +22,13 @@ export default function ContactFormTwo() {
   const {
     register,
     handleSubmit,
-    reset,
+    // reset,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async () => {
     try {
       // const res = await submitContactForm2(data); // server-side execution
       // if (res.success) {

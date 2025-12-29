@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { CiCalendarDate, CiUser, CiShoppingTag } from "react-icons/ci";
 import { FaComment } from "react-icons/fa";
 
@@ -18,20 +19,23 @@ interface BlogProps {
 
 const BlogCard = ({ blog }: BlogProps) => {
   const t = useTranslations("blogs");
+  const [loaded, setLoaded] = useState(false);
   return (
     <Link href={`/blog/${blog.id}`}>
       <div className="group w-full relative bg-white shadow-md hover:shadow-xl rounded-[10px] transition-shadow duration-300 ease-in-out overflow-hidden">
-        <div className="overflow-hidden">
+        <div className="overflow-hidden relative">
+          {!loaded && (
+            <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+          )}
           {blog?.image_url && (
             <Image
               className="w-full h-auto group-hover:scale-105 duration-300 ease-in-out aspect-[6/4]"
-              src={blog?.image_url}
+              src={blog.image_url}
               unoptimized
               width={850}
               height={438}
-              priority
-              // loading="lazy"
               alt={blog.title}
+              onLoadingComplete={() => setLoaded(true)}
             />
           )}
         </div>

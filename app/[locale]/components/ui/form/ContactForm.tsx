@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { postConsultation } from "@/app/[locale]/actions/consultation";
 import Button from "../../common/Button";
 import { toast } from "react-toastify";
 
@@ -21,20 +20,20 @@ export default function ContactForm() {
   const {
     register,
     handleSubmit,
-    reset,
+    // reset,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async () => {
     try {
-      const payload = {
-        name: data.name,
-        email: data.email,
-        option: data.chooseOption,
-        message: data.message,
-      };
+      // const payload = {
+      //   name: data.name,
+      //   email: data.email,
+      //   option: data.chooseOption,
+      //   message: data.message,
+      // };
       // const res = await postConsultation(payload);
       // if (res?.success) {
       //   toast.success(res.message ?? "Form submitted successfully!");
