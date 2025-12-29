@@ -134,7 +134,7 @@ const ConsultingSection: React.FC = () => {
               viewport={{ once: true, amount: 0.35 }}
             >
               <Image
-                src={"/assets/digital-service/banner.jpeg"}
+                src={"/assets/digital-service/banner.png"}
                 alt="Consulting"
                 className="w-full rounded-[10px] xl:aspect-[11/9] lg:aspect-square object-cover transform-gpu will-change-transform"
                 width={540}
