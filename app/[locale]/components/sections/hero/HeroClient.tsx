@@ -97,7 +97,7 @@ export default function HeroClient({ title, description, locale }: Props) {
                 transition={{ duration: 0.6, delay: 0.8 }}
                 className="mt-12"
               >
-                <Link href={`/${locale}/contact`}>
+                <Link href={`/${locale}/consultation?type=contact`}>
                   <Button
                     hoverBgColorClass="bg-primaryBlue"
                     className="bg-transparent border border-primaryBlue text-primaryBlue duration-300 ease-in-out"

@@ -1,13 +1,22 @@
 import { Metadata } from "next";
 import ContactClinet from "../components/ui/contact/ConsultationClinet";
 
+type ContactPageProps = {
+  // In this project, Next generates PageProps with Promise-based searchParams
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
 export const metadata: Metadata = {
   title: "Contact Us | Putech – Business & IT Solutions Next.js Template",
   description:
     "Get in touch with Putech – a modern Next.js template for IT companies, startups, and software agencies. Contact us today for business and IT solutions.",
 };
 
-const ContactPage = async () => {
+const ContactPage = async ({ searchParams }: ContactPageProps) => {
+  const query = (await searchParams) ?? {};
+  const rawType = query.type;
+  const type = Array.isArray(rawType) ? rawType[0] : rawType;
+
   // const t = useTranslations("contact_page");
   // const tCommon = useTranslations("common");
   return (
@@ -27,7 +36,7 @@ const ContactPage = async () => {
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
 
-          <ContactClinet />
+          <ContactClinet type={type} />
         </div>
       </div>
     </div>

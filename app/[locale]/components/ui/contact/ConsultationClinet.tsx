@@ -6,8 +6,13 @@ import Link from "next/link";
 import Container from "../../common/Container";
 import { useTranslations } from "next-intl";
 
-const ConsultationClinet = () => {
+type ConsultationClinetProps = {
+  type?: string;
+};
+
+const ConsultationClinet = ({ type }: ConsultationClinetProps) => {
   const t = useTranslations("consultation.contactSection");
+  const tContact = useTranslations("contact_page");
   return (
     <Container className="mt-32 mb-12">
       <motion.div
@@ -26,7 +31,7 @@ const ConsultationClinet = () => {
         </motion.div>
 
         <h1 className="text-5xl sm:text-5xl font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent mb-4">
-          {t("title")}
+          {type === "contact" ? tContact("section_title") : t("title")}
         </h1>
         <p className="text-xl text-slate-600 max-w-xl mx-auto">
           {t("description")}
