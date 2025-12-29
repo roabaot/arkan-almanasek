@@ -11,6 +11,9 @@ import {
 import { getTranslations } from "next-intl/server";
 import BlogDetailsClient from "../../components/ui/blog/BlogDetailsClient";
 
+// Cache each blog details page for 1 hour (ISR)
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Blog Details | MACS – Business & IT Solutions Next.js Template",
   description:
@@ -26,17 +29,14 @@ const BlogDetails = async ({
 
   const blog = await getBlogById(blogId);
 
-  // Fetch related blogs, categories, and tags
+  // Start fetching related blogs, categories, and tags on the server,
+  // but don't block the initial render on them.
   const reqBlogs = getBlogs({ category: blog?.category || "" });
   const reqCategories = getBlogCategories();
   const reqTags = getBlogTags();
 
-  const [resBlogs, categories, tags] = await Promise.all([
-    reqBlogs,
-    reqCategories,
-    reqTags,
-  ]);
-  const { items: blogs } = resBlogs;
+  const resPromise = Promise.all([reqBlogs, reqCategories, reqTags]);
+
   const t = await getTranslations();
 
   return (
@@ -53,13 +53,8 @@ const BlogDetails = async ({
 
       {/************* blog details section start here **************/}
       <section className="section-gap">
-        <Container className="flex flex-col lg:flex-row gap-[30px]">
-          <BlogDetailsClient
-            blog={blog}
-            blogs={blogs}
-            categories={categories}
-            tags={tags}
-          />
+        <Container className="flex flex-col lg:flex-row gap-[30px] relative">
+          <BlogDetailsClient blog={blog} resPromise={resPromise} />
         </Container>
       </section>
     </div>

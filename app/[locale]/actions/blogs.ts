@@ -164,7 +164,7 @@ export const getBlogById = async (
     const base = process.env.NEXT_PUBLIC_BASE_URL;
     if (!base) return null;
     const res = await fetch(`${base}/blogs/${id}?locale=${locale}`, {
-      cache: "no-store",
+      next: { tags: ["blogs"], revalidate: 3600 },
     });
     if (!res.ok) return null;
     const json = await res.json();
@@ -184,7 +184,7 @@ export const getBlogCategories: () => Promise<
     const base = process.env.NEXT_PUBLIC_BASE_URL;
     if (!base) return null;
     const res = await fetch(`${base}/blog_categories?locale=${locale}`, {
-      cache: "no-store",
+      next: { tags: ["blog-categories"], revalidate: 3600 },
     });
     if (!res.ok) return null;
     const json = await res.json();
@@ -202,7 +202,7 @@ export const getBlogTags: () => Promise<blogClassT[] | null> = async () => {
     const base = process.env.NEXT_PUBLIC_BASE_URL;
     if (!base) return null;
     const res = await fetch(`${base}/blog_tags?locale=${locale}`, {
-      cache: "no-store",
+      next: { tags: ["blog-tags"], revalidate: 3600 },
     });
     if (!res.ok) return null;
     const json = await res.json();
