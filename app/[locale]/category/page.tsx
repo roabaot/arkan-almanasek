@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import Service from "../components/sections/service/Service";
 import Breadcrumb from "../components/common/Breadcrumb";
 import { useTranslations } from "next-intl";
+import { Suspense } from "react";
+import Loading from "../loading";
 
 export const metadata: Metadata = {
   title: "Services | MACS – Business & IT Solutions Next.js Template",
@@ -20,7 +22,11 @@ const CategoryPage = () => {
           { name: t("services.title") },
         ]}
       />
-      <Service />
+      <section className="relative">
+        <Suspense fallback={<Loading className="absolute inset-0" />}>
+          <Service />
+        </Suspense>
+      </section>
     </div>
   );
 };

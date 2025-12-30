@@ -1,14 +1,18 @@
 import Container from "../../common/Container";
-import { getServiceCategories } from "../../../actions/services";
-import ServiceClient from "./ServiceClient";
+import { getServiceCategoriesHome } from "../../../actions/services";
+import ServiceHomeClient from "./ServiceHomeClient";
 
 const Service = async () => {
-  const services = await getServiceCategories({ debug: true });
+  const { default_services, service_categories } =
+    await getServiceCategoriesHome({ debug: true });
+
+  const services = [...default_services, ...service_categories];
+  console.log("services:", services);
 
   return (
     <div className="section-gap">
       <Container>
-        <ServiceClient services={services} />
+        <ServiceHomeClient services={services} />
       </Container>
     </div>
   );

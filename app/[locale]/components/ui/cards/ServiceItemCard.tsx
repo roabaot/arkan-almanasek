@@ -16,10 +16,13 @@ const ServiceItemCard = ({
   order?: string | number;
   description?: string;
 }) => {
+  const fallbackIconSrc = "/assets/service/certificates.svg";
   const itemVariants = {
     hidden: { opacity: 0, y: 12 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
   };
+
+  const imageSrc = icon ?? fallbackIconSrc;
 
   // Using whileInView on the motion element to trigger animation when the
   // card is fully visible (amount: 1). This avoids refs and useEffect.
@@ -27,19 +30,20 @@ const ServiceItemCard = ({
   const content = (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-5">
-        {icon && (
-          <Image
-            src={
-              icon ??
-              "https://staging.macs.com.sa/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MjAsInB1ciI6ImJsb2JfaWQifX0=--8373dc8af15b90d5b431b00fb3ffd01f293fdcf2/%D8%B4%D9%87%D8%A7%D8%AF%D8%A9%20%D8%A7%D9%84%D8%A7%D9%85%D8%AA%D8%AB%D8%A7%D9%84%20%D9%84%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%B9%D9%85%D9%84.png"
+        <Image
+          src={imageSrc}
+          unoptimized
+          alt={title}
+          width={40}
+          height={40}
+          priority
+          onError={(event) => {
+            const target = event.currentTarget as HTMLImageElement;
+            if (target.src !== fallbackIconSrc) {
+              target.src = fallbackIconSrc;
             }
-            unoptimized
-            alt={title}
-            width={40}
-            height={40}
-            priority
-          />
-        )}
+          }}
+        />
         <h4 className="text-[18px] md:text-[20px] xl:text-[24px]">{title}</h4>
       </div>
       <div>

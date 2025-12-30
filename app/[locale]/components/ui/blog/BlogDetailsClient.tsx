@@ -21,7 +21,6 @@ const BlogDetailsClient = ({
     [BlogsResponseT, blogClassT[] | null, blogClassT[] | null]
   >;
 }) => {
-  const t = useTranslations();
   return (
     <>
       {/* part 1 */}

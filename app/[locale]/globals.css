@@ -73,7 +73,7 @@
   }
 
   .section-gap {
-    @apply lg:mt-[120px] md:mt-[80px] mt-[60px];
+    @apply lg:my-[120px] md:my-[80px] my-[60px];
   }
   .section-padding {
     @apply lg:py-[120px] md:py-[80px] py-[60px];

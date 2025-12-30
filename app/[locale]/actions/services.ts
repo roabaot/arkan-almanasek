@@ -22,6 +22,11 @@ export interface ServiceCategoryT {
   breadcrumbs?: BreadcrumbsT[];
 }
 
+export interface ServiceCategoryHomeT {
+  default_services: ServiceCategoryT[] & { service_category_ids?: string[] };
+  service_categories: ServiceCategoryT[];
+}
+
 export interface ServiceT {
   id: number;
   code: string;
@@ -241,6 +246,69 @@ export async function getServiceCategories(
     if (debug)
       console.error("[services-category] getServiceCategories error", e);
     return [];
+  }
+}
+
+export async function getServiceCategoriesHome(
+  opts: GetServicesOptions = {}
+): Promise<ServiceCategoryHomeT> {
+  const { noStore = false, debug = false } = opts;
+  const locale = (await getLocale()) || "ar";
+  try {
+    const base = process.env.NEXT_PUBLIC_BASE_URL;
+    if (!base) {
+      if (debug)
+        console.warn(
+          "[services-category] Missing NEXT_PUBLIC_BASE_URL env variable"
+        );
+      return { default_services: [], service_categories: [] };
+    }
+    const url = `${base}/service_categories/home?locale=${locale}`;
+    const fetchOptions: RequestInit & {
+      next?: { tags?: string[]; revalidate?: number };
+      locale?: string;
+    } = noStore
+      ? {
+          cache: "no-store",
+          next: { tags: ["services-category-home"] },
+          locale,
+        }
+      : {
+          next: { tags: ["services-category-home"], revalidate: 3600 },
+          locale,
+        };
+    if (debug) console.log("[services-category] Fetching:", url);
+    const res = await fetch(url, fetchOptions);
+
+    if (!res.ok) {
+      if (debug)
+        console.error(
+          "[services-category] Failed fetch",
+          res.status,
+          res.statusText
+        );
+      return { default_services: [], service_categories: [] };
+    }
+    const json = await res.json();
+    console.log("data from service categories home: ", json);
+
+    if (debug) {
+      console.log(
+        "[services-category] Raw JSON preview:",
+        JSON.stringify(json).slice(0, 400)
+      );
+      if (json && typeof json === "object") {
+        console.log(
+          "[services-category] Keys:",
+          Object.keys(json as Record<string, unknown>)
+        );
+      }
+    }
+    return json.body;
+  } catch (e) {
+    if (debug)
+      console.error("[services-category] getServiceCategories error", e);
+    return { default_services: [], service_categories: [] };
   }
 }
 

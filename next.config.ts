@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
     // Allow optimized loading of remote ActiveStorage blob redirects
     remotePatterns: [
       {
-        protocol: "http", // Staging currently serves over HTTP; prefer HTTPS if available
+        protocol: "https", // Staging now served over HTTPS
         hostname: "staging.macs.com.sa",
         port: "",
         pathname: "/rails/active_storage/blobs/redirect/**",

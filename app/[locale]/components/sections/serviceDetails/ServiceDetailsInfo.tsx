@@ -57,41 +57,10 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
       <Container className="flex flex-col lg:flex-row gap-[30px]">
         {/* left part */}
         <div className="lg:w-[70%] w-full">
-          {/* <Image
-            className="w-full h-auto rounded-[10px]"
-            src={currentService?.image}
-            width={850}
-            height={445}
-            priority
-            alt="Service image"
-          /> */}
           <div className="flex flex-col gap-y-[30px] mt-[30px]">
             <MotionWrapper>
               <div>
                 <h2>{service?.name_i18n}</h2>
-
-                {/* <div className="flex flex-col gap-5 mt-5">
-                {service?.paragraphs?.map((p, index) => (
-                  <div key={index}>
-                    <p>{p}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3>Empowering Your Digital Future</h3>
-              <div className="flex flex-col gap-5 mt-[30px]">
-                {service?.points?.map((point, index) => (
-                  <div key={index} className="flex items-start gap-2">
-                    <FiChevronsRight className="text-[#E5E8F2] w-5 h-5 mt-1 flex-shrink-0" />
-                    <span className="text-textColor text-[16px] font-normal leading-7 font-secondary tracking-[-0.36px]">
-                      {point}
-                    </span>
-                  </div>
-                ))}
-              </div> */}
-
                 <p className="my-[30px]">{service?.description_i18n}</p>
               </div>
             </MotionWrapper>
