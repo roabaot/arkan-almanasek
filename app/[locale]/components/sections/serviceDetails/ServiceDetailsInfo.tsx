@@ -41,6 +41,9 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
     points: service?.required_documents || [],
   };
 
+  console.log("service: ", service);
+  console.log("target_audience: ", service?.target_audience);
+
   const benefits = {
     title: t("services.details.benefits"),
     points: service?.benefits || [],
@@ -71,21 +74,25 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
                 {/* <ConnectingService /> */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] my-[30px]">
                   {details.map((detail, idx) => (
-                    <MotionWrapper key={detail.id} delay={idx * 0.06}>
-                      <ServiceItemCard
-                        key={detail.id}
-                        title={detail.label}
-                        icon={detail.icon}
-                        description={detail.value}
-                      />
-                    </MotionWrapper>
+                    <>
+                      {detail.value && (
+                        <MotionWrapper key={detail.id} delay={idx * 0.06}>
+                          <ServiceItemCard
+                            key={detail.id}
+                            title={detail.label}
+                            icon={detail.icon}
+                            description={detail.value}
+                          />
+                        </MotionWrapper>
+                      )}
+                    </>
                   ))}
                 </div>
               </div>
             </MotionWrapper>
 
             <MotionWrapper>
-              <ServiceForm />
+              <ServiceForm targetAudience={service?.target_audience} />
             </MotionWrapper>
           </div>
         </div>

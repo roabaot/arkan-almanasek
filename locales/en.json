@@ -59,6 +59,7 @@
         "description": "Your request has been submitted successfully and we look forward to reviewing it soon.",
         "back_home": "Return to Home"
       },
+      "no_audience_available": "There are no available types for this service.",
       "placeholders": {
         "first_name": "First name",
         "last_name": "Last name",

@@ -27,6 +27,8 @@ export interface ServiceCategoryHomeT {
   service_categories: ServiceCategoryT[];
 }
 
+export type AudienceType = "individual" | "institution" | "companies";
+
 export interface ServiceT {
   id: number;
   code: string;
@@ -43,6 +45,7 @@ export interface ServiceT {
   required_documents?: string[];
   benefits?: string[];
   service_categories?: ServiceCategoryT[];
+  target_audience?: AudienceType[];
 }
 
 // Server action to fetch services (POST when invoked from client, regular call on server components)

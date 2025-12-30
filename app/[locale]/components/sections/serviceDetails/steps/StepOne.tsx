@@ -5,14 +5,15 @@ import { useFormContext } from "react-hook-form";
 import AnimatedDiv from "../../../ui/animation/AnimatedDiv";
 import Radio from "../../../ui/fields/Radio";
 import { ServiceFormInputsT } from "@/app/[locale]/lib/schemas/serviceFormSchema";
+import { AudienceType } from "@/app/[locale]/actions/services";
 
-const StepOne = ({
-  direction,
-  nextBtnRef,
-}: {
+interface StepOneProps {
   direction: number;
   nextBtnRef: RefObject<HTMLButtonElement | null>;
-}) => {
+  targetAudience?: AudienceType[];
+}
+
+const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
   const {
     register,
     formState: { errors },
@@ -38,28 +39,39 @@ const StepOne = ({
           {t("services.form.step_1.description")}
         </p>
       </div>
+      {targetAudience && targetAudience.length === 0 ? (
+        <p className="text-sm text-red-500 text-center -mb-8">
+          {t("services.form.no_audience_available")}
+        </p>
+      ) : null}
       <div className="grid gap-x-10 gap-y-6 md:grid-cols-2 ">
-        <Radio
-          id="individual"
-          value="individual"
-          label={t("services.form.individual")}
-          icon={<LuUser size={20} />}
-          {...register("role")}
-        />
-        <Radio
-          id="institution"
-          value="institution"
-          label={t("services.form.institution")}
-          icon={<LuGraduationCap size={20} />}
-          {...register("role")}
-        />
-        <Radio
-          id="company"
-          value="company"
-          label={t("services.form.company")}
-          icon={<LuBuilding2 size={20} />}
-          {...register("role")}
-        />
+        {targetAudience?.includes("individual") && (
+          <Radio
+            id="individual"
+            value="individual"
+            label={t("services.form.individual")}
+            icon={<LuUser size={20} />}
+            {...register("role")}
+          />
+        )}
+        {targetAudience?.includes("institution") && (
+          <Radio
+            id="institution"
+            value="institution"
+            label={t("services.form.institution")}
+            icon={<LuGraduationCap size={20} />}
+            {...register("role")}
+          />
+        )}
+        {targetAudience?.includes("companies") && (
+          <Radio
+            id="company"
+            value="company"
+            label={t("services.form.company")}
+            icon={<LuBuilding2 size={20} />}
+            {...register("role")}
+          />
+        )}
       </div>
       {errors.role && (
         <p className="text-xs text-red-500" role="alert">

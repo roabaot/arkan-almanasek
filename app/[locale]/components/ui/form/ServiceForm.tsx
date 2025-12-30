@@ -9,14 +9,18 @@ import AnimatedDiv from "../animation/AnimatedDiv";
 import StepOne from "../../sections/serviceDetails/steps/StepOne";
 import StepTwo from "../../sections/serviceDetails/steps/StepTwo";
 import Button from "../../common/Button";
-import { postService } from "@/app/[locale]/actions/services";
+import { AudienceType, postService } from "@/app/[locale]/actions/services";
 import StepThree from "../../sections/serviceDetails/steps/StepThree";
 import {
   createServiceFormSchema,
   ServiceFormInputsT,
 } from "@/app/[locale]/lib/schemas/serviceFormSchema";
 
-const ServiceForm = () => {
+interface ServiceFormProps {
+  targetAudience?: AudienceType[];
+}
+
+const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -100,6 +104,7 @@ const ServiceForm = () => {
                   direction={direction}
                   key="one"
                   nextBtnRef={nextBtnRef}
+                  targetAudience={targetAudience}
                 />
               ) : null}
               {step === 1 ? <StepTwo direction={direction} key="two" /> : null}
