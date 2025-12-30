@@ -73,8 +73,8 @@ const ServiceHomeClient = ({
                 key={service.id}
                 link={
                   service.service_category_ids
-                    ? `/category/${service.service_category_ids[0]}`
-                    : `/service/${service.id}`
+                    ? `/service/${service.id}`
+                    : `/category/${service.id}`
                 }
                 title={service.name_i18n}
                 icon={service.icon_url}
