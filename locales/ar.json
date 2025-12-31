@@ -40,7 +40,8 @@
       "description": "وصف الخدمة",
       "cost": "تكلفة الخدمة",
       "duration": "مدة الخدمة",
-      "government_fees": "الرسوم الحكومية"
+      "government_fees": "الرسوم الحكومية",
+      "conditions": "الشروط"
     },
     "form": {
       "individual": "فرد",

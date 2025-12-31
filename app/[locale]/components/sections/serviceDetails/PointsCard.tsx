@@ -1,6 +1,7 @@
 import React from "react";
 
 const PointsCard = ({ title, points }: { title: string; points: string[] }) => {
+  if (points.length === 0) return null;
   return (
     <div className="bg-white shadow-navbar-shadow border-t border-primaryBorder rounded-[10px] md:p-10 p-5">
       <h4 className="mb-[30px]">{title}</h4>

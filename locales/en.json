@@ -40,7 +40,8 @@
       "description": "Service Description",
       "cost": "Service Cost",
       "duration": "Service Duration",
-      "government_fees": "Government Fees"
+      "government_fees": "Government Fees",
+      "conditions": "Conditions"
     },
     "form": {
       "individual": "Individual",

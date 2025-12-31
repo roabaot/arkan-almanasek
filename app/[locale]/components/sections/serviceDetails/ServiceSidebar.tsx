@@ -7,11 +7,13 @@ interface PointsT {
 interface ServiceSidebarProps {
   requiredDocuments: PointsT;
   benefits: PointsT;
+  conditions: PointsT;
 }
 
 const ServiceSidebar = ({
   requiredDocuments,
   benefits,
+  conditions,
 }: ServiceSidebarProps) => {
   return (
     <div>
@@ -19,6 +21,7 @@ const ServiceSidebar = ({
         {/* Service Details */}
         <PointsCard {...requiredDocuments} />
         <PointsCard {...benefits} />
+        <PointsCard {...conditions} />
 
         {/* Contact Us Box */}
         {/* <div className="bg-primaryBlue rounded-[10px] md:p-10 p-5 text-center shadow">

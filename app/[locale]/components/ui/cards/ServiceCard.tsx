@@ -10,6 +10,7 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ service }: ServiceCardProps) => {
   const t = useTranslations("buttons");
+  const iconUrl = service.icon_url ?? "/assets/service/certificates.svg";
   return (
     <Link href={`/service/${service.id}`}>
       <div className="group flex flex-col h-full min-h-[340px] bg-white border border-primaryBorder rounded-[20px] 2xl:p-7 md:p-6 p-5 hover:border-primaryBlue hover:shadow-lg hover:scale-105 active:scale-110 transition duration-300 ease-in-out">
@@ -17,12 +18,9 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
         <div className="flex-1">
           <div className="flex items-center 2xl:gap-7 gap-5">
             <div>
-              <div className="bg-primaryBlue w-20 h-20 rounded-full flex justify-center items-center">
+              <div className="border border-primaryBorder w-20 h-20 rounded-full flex justify-center items-center group-hover:border-primaryBlue transition-colors duration-300 ease-in-out">
                 <Image
-                  src={
-                    service.icon_url ||
-                    "https://staging.macs.com.sa/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MjAsInB1ciI6ImJsb2JfaWQifX0=--8373dc8af15b90d5b431b00fb3ffd01f293fdcf2/%D8%B4%D9%87%D8%A7%D8%AF%D8%A9%20%D8%A7%D9%84%D8%A7%D9%85%D8%AA%D8%AB%D8%A7%D9%84%20%D9%84%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%B9%D9%85%D9%84.png"
-                  }
+                  src={iconUrl}
                   alt={service.name_i18n}
                   unoptimized
                   width={45}

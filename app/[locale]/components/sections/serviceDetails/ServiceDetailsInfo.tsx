@@ -13,24 +13,18 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
   const details = [
     {
       id: 1,
-      label: t("services.details.description"),
-      value: service?.conditions,
-      icon: "/icons/services/icon-1.svg",
-    },
-    {
-      id: 2,
       label: t("services.details.cost"),
       value: service?.cost,
       icon: "/icons/services/icon-2.svg",
     },
     {
-      id: 3,
+      id: 2,
       label: t("services.details.duration"),
       value: service?.duration,
       icon: "/icons/services/icon-3.svg",
     },
     {
-      id: 4,
+      id: 3,
       label: t("services.details.government_fees"),
       value: service?.government_fees,
       icon: "/icons/services/icon-4.svg",
@@ -41,12 +35,14 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
     points: service?.required_documents || [],
   };
 
-  console.log("service: ", service);
-  console.log("target_audience: ", service?.target_audience);
-
   const benefits = {
     title: t("services.details.benefits"),
     points: service?.benefits || [],
+  };
+
+  const conditions = {
+    title: t("services.details.conditions"),
+    points: service?.conditions || [],
   };
 
   useEffect(() => {
@@ -102,6 +98,7 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
           <ServiceSidebar
             requiredDocuments={requiredDocuments}
             benefits={benefits}
+            conditions={conditions}
           />
         </div>
       </Container>

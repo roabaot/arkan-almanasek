@@ -38,7 +38,7 @@ export interface ServiceT {
   service_category_ids: Array<number | string>;
   status: "active" | "inactive";
   breadcrumbs?: BreadcrumbsT[];
-  conditions?: string;
+  conditions?: string[];
   cost?: string;
   duration?: string;
   government_fees?: string;

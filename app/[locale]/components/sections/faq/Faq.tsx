@@ -53,7 +53,7 @@ const Faq = () => {
   return (
     <div
       id="faq"
-      className="bg-gradient-to-br from-slate-50 via-white to-slate-100 section-gap relative py-16 overflow-hidden"
+      className="bg-gradient-to-br from-slate-50 via-white to-slate-100 section-gap relative pt-16 pb-32 mb-0 overflow-hidden"
     >
       <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
       <Container>
