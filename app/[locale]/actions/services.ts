@@ -27,7 +27,7 @@ export interface ServiceCategoryHomeT {
   service_categories: ServiceCategoryT[];
 }
 
-export type AudienceType = "individual" | "institution" | "companies";
+export type AudienceType = "individuals" | "institutions" | "companies";
 
 export interface ServiceT {
   id: number;
@@ -270,7 +270,7 @@ export async function getServiceCategoriesHome(
     const fetchOptions: RequestInit & {
       next?: { tags?: string[]; revalidate?: number };
       locale?: string;
-    } = noStore
+    } = !noStore
       ? {
           cache: "no-store",
           next: { tags: ["services-category-home"] },

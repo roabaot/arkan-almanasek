@@ -16,7 +16,8 @@ const ServiceItemCard = ({
   order?: string | number;
   description?: string;
 }) => {
-  const fallbackIconSrc = "/assets/service/certificates.svg";
+  const fallbackIconSrc =
+    "https://img.freepik.com/free-psd/x-symbol-isolated_23-2150500369.jpg";
   const itemVariants = {
     hidden: { opacity: 0, y: 12 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
@@ -40,7 +41,8 @@ const ServiceItemCard = ({
           onError={(event) => {
             const target = event.currentTarget as HTMLImageElement;
             if (target.src !== fallbackIconSrc) {
-              target.src = fallbackIconSrc;
+              target.src =
+                "https://img.freepik.com/free-psd/x-symbol-isolated_23-2150500369.jpg";
             }
           }}
         />

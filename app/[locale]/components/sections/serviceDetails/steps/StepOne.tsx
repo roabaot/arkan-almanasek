@@ -45,7 +45,7 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
         </p>
       ) : null}
       <div className="grid gap-x-10 gap-y-6 md:grid-cols-2 ">
-        {targetAudience?.includes("individual") && (
+        {targetAudience?.includes("individuals") && (
           <Radio
             id="individual"
             value="individual"
@@ -54,7 +54,7 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
             {...register("role")}
           />
         )}
-        {targetAudience?.includes("institution") && (
+        {targetAudience?.includes("institutions") && (
           <Radio
             id="institution"
             value="institution"
