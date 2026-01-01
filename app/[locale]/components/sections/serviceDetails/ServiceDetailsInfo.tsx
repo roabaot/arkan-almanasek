@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { ServiceT } from "@/app/[locale]/actions/services";
 import Container from "../../common/Container";
 import ServiceSidebar from "./ServiceSidebar";
@@ -70,9 +70,9 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
                 {/* <ConnectingService /> */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] my-[30px]">
                   {details.map((detail, idx) => (
-                    <>
+                    <Fragment key={detail.id}>
                       {detail.value && (
-                        <MotionWrapper key={detail.id} delay={idx * 0.06}>
+                        <MotionWrapper delay={idx * 0.06}>
                           <ServiceItemCard
                             key={detail.id}
                             title={detail.label}
@@ -81,7 +81,7 @@ const ServiceDetailsInfo = ({ service }: { service?: ServiceT | null }) => {
                           />
                         </MotionWrapper>
                       )}
-                    </>
+                    </Fragment>
                   ))}
                 </div>
               </div>

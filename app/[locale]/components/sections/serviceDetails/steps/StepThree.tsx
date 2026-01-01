@@ -1,12 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import AnimatedDiv from "../../../ui/animation/AnimatedDiv";
 import { FaRegCheckCircle } from "react-icons/fa";
 import Button from "../../../common/Button";
-import { getLocale, getTranslations } from "next-intl/server";
+import { useLocale, useTranslations } from "next-intl";
 
-const StepThree = async ({ direction }: { direction: number }) => {
-  const t = await getTranslations();
-  const locale = await getLocale();
+const StepThree = ({ direction }: { direction: number }) => {
+  const t = useTranslations();
+  const locale = useLocale();
   return (
     <AnimatedDiv
       className="flex min-h-[396px] flex-col items-center justify-center text-center"

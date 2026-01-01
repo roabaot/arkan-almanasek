@@ -15,7 +15,7 @@ const StepTwo = ({ direction }: { direction: number }) => {
   const t = useTranslations();
 
   const roleFields: Record<string, (keyof ServiceFormInputsT)[]> = {
-    individual: ["first_name", "last_name", "email", "city"],
+    individual: ["first_name", "last_name", "email", "city", "phone"],
     institution: [
       "first_name",
       "last_name",
@@ -24,6 +24,7 @@ const StepTwo = ({ direction }: { direction: number }) => {
       "institution_name",
       "unified_number",
       "employee_count",
+      "phone",
     ],
     company: [
       "first_name",
@@ -33,6 +34,7 @@ const StepTwo = ({ direction }: { direction: number }) => {
       "company_name",
       "unified_number",
       "employee_count",
+      "phone",
     ],
   };
 
@@ -92,6 +94,10 @@ const StepTwo = ({ direction }: { direction: number }) => {
       {
         name: "last_name",
         placeholder: t("services.form.placeholders.last_name"),
+      },
+      {
+        name: "phone",
+        placeholder: t("services.form.placeholders.phone"),
       },
       {
         name: "email",

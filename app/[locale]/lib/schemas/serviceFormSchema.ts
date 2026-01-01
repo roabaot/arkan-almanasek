@@ -33,12 +33,11 @@ export const createServiceFormSchema = (
       employee_count: z.string().optional(),
       city: z.string().optional(),
       country: z.string().optional(),
-      // phoneNumber: z
-      //   .string()
-      //   .regex(new RegExp(/^\+?[0-9][0-9]{7,14}$/), {
-      //     message: t("validation.phoneNumber.invalid"),
-      //   })
-      //   .optional(),
+      phone: z
+        .string()
+        .regex(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, {
+          message: t("validation.phone.invalid"),
+        }),
       // idNumber: z.string().optional(),
       // portfolioGithubLink: z.string().optional(),
       // skillLevel: z.string().optional(), // legacy optional

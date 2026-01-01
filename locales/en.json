@@ -69,7 +69,8 @@
         "institution_name": "Institution name",
         "unified_number": "Unified number",
         "employee_count": "Employee count",
-        "city": "City"
+        "city": "City",
+        "phone": "Phone number"
       },
       "select_default": "Select {selector}",
       "employee_count": {
@@ -323,6 +324,9 @@
     },
     "phoneNumber": {
       "invalid": "Invalid phone number"
+    },
+    "phone": {
+      "invalid": "Please enter a valid phone number"
     },
     "company_name": {
       "required": "Company name is required"

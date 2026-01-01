@@ -45,7 +45,7 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
       // Dynamically validate only the fields relevant to the selected role
       const role = getValues("role");
       const roleFields: Record<string, (keyof ServiceFormInputsT)[]> = {
-        individual: ["first_name", "last_name", "email"],
+        individual: ["first_name", "last_name", "email", "phone"],
         institution: [
           "first_name",
           "last_name",
@@ -53,6 +53,7 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
           "institution_name",
           "unified_number",
           "employee_count",
+          "phone",
         ],
         company: [
           "first_name",
@@ -61,12 +62,14 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
           "company_name",
           "unified_number",
           "employee_count",
+          "phone",
         ],
       };
       const fieldsToValidate = roleFields[role] || [
         "first_name",
         "last_name",
         "email",
+        "phone",
       ];
       goNext = await trigger(fieldsToValidate as (keyof ServiceFormInputsT)[]);
     }
