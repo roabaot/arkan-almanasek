@@ -8,7 +8,7 @@ export const createServiceFormSchema = (
 ) =>
   z
     .object({
-      role: z.enum(["individual", "institution", "company"], {
+      role: z.enum(["individuals", "institutions", "companies"], {
         error: t("validation.role.invalid"),
       }),
       first_name: z
@@ -45,16 +45,16 @@ export const createServiceFormSchema = (
     })
     .superRefine((data, ctx) => {
       const needsCompanyFields =
-        data.role === "institution" || data.role === "company";
+        data.role === "institutions" || data.role === "companies";
       if (needsCompanyFields) {
-        if (!data.company_name && data.role === "company") {
+        if (!data.company_name && data.role === "companies") {
           ctx.addIssue({
             code: "custom",
             path: ["company_name"],
             message: t("validation.company_name.required"),
           });
         }
-        if (!data.institution_name && data.role === "institution") {
+        if (!data.institution_name && data.role === "institutions") {
           ctx.addIssue({
             code: "custom",
             path: ["institution_name"],

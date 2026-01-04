@@ -10,8 +10,8 @@ export type MenuItem =
 // If you need a grouped item later, push: { key: 'services', links: [ { href: '/service/a', label: 'Service A' } ] }
 export const menuItems: MenuItem[] = [
   { key: "home", href: "/" },
-  { key: "about", href: "/about-v2" },
   { key: "services", href: "/category" },
+  { key: "about", href: "/about-v2" },
   { key: "blog", href: "/blog" },
   { key: "contact", href: "/contact" },
 ];

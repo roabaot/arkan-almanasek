@@ -10,12 +10,12 @@ const HomePage = () => {
   return (
     <div>
       <Hero />
-      <About />
       <section className="relative">
         <Suspense fallback={<Loading className="absolute inset-0" />}>
           <Service />
         </Suspense>
       </section>
+      <About />
       <ConsultingSection />
       <Faq />
     </div>

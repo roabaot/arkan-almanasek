@@ -388,10 +388,12 @@ export const postService = async (
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(other),
+        body: JSON.stringify({ request_services: other }),
         cache: "no-store",
       }
-    ).then((res) => res.json());
+    ).then((res) => {
+      return res.json();
+    });
 
     if (serviceRes.status === 200) {
       return serviceRes.body;

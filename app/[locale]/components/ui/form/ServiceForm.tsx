@@ -9,12 +9,13 @@ import AnimatedDiv from "../animation/AnimatedDiv";
 import StepOne from "../../sections/serviceDetails/steps/StepOne";
 import StepTwo from "../../sections/serviceDetails/steps/StepTwo";
 import Button from "../../common/Button";
-import { AudienceType, postService } from "@/app/[locale]/actions/services";
+import { AudienceType } from "@/app/[locale]/actions/services";
 import StepThree from "../../sections/serviceDetails/steps/StepThree";
 import {
   createServiceFormSchema,
   ServiceFormInputsT,
 } from "@/app/[locale]/lib/schemas/serviceFormSchema";
+import { useParams } from "next/navigation";
 
 interface ServiceFormProps {
   targetAudience?: AudienceType[];
@@ -23,6 +24,7 @@ interface ServiceFormProps {
 const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { serviceId } = useParams();
 
   const nextBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -84,8 +86,27 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
   const onSubmitServiceForm = async (data: ServiceFormInputsT) => {
     try {
       setLoading(true);
-      await postService(data);
-      setStep((prev) => prev + 1);
+      const { role, ...other } = data;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/request_services/${role}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            request_services: { ...other, service_id: serviceId },
+          }),
+        }
+      );
+
+      await res.json();
+
+      if (res.status === 200) {
+        setStep((prev) => prev + 1);
+      }
+
       setLoading(false);
     } catch (error) {
       console.log(error);

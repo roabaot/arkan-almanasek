@@ -48,8 +48,8 @@ const menuConfig: Array<
   Omit<TopLevelDirect, "title"> & { key: CommonMenuKey }
 > = [
   { key: "home", href: "/" },
-  { key: "about", href: "/about-v2" },
   { key: "services", href: "/category" },
+  { key: "about", href: "/about-v2" },
   { key: "blog", href: "/blog" },
   { key: "consultation", href: "/consultation" },
 ];

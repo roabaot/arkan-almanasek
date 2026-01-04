@@ -47,8 +47,8 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
       <div className="grid gap-x-10 gap-y-6 md:grid-cols-2 ">
         {targetAudience?.includes("individuals") && (
           <Radio
-            id="individual"
-            value="individual"
+            id="individuals"
+            value="individuals"
             label={t("services.form.individual")}
             icon={<LuUser size={20} />}
             {...register("role")}
@@ -56,8 +56,8 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
         )}
         {targetAudience?.includes("institutions") && (
           <Radio
-            id="institution"
-            value="institution"
+            id="institutions"
+            value="institutions"
             label={t("services.form.institution")}
             icon={<LuGraduationCap size={20} />}
             {...register("role")}
@@ -65,8 +65,8 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
         )}
         {targetAudience?.includes("companies") && (
           <Radio
-            id="company"
-            value="company"
+            id="companies"
+            value="companies"
             label={t("services.form.company")}
             icon={<LuBuilding2 size={20} />}
             {...register("role")}
