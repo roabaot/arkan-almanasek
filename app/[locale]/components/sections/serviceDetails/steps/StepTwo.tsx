@@ -14,28 +14,33 @@ const StepTwo = ({ direction }: { direction: number }) => {
   const role = watch("role");
   const t = useTranslations();
 
+  // Only accept name and phone for all roles in Step Two
   const roleFields: Record<string, (keyof ServiceFormInputsT)[]> = {
-    individuals: ["first_name", "last_name", "email", "city", "phone"],
-    institutions: [
-      "first_name",
-      "last_name",
-      "email",
-      "city",
-      "institution_name",
-      "unified_number",
-      "employee_count",
-      "phone",
-    ],
-    companies: [
-      "first_name",
-      "last_name",
-      "email",
-      "city",
-      "company_name",
-      "unified_number",
-      "employee_count",
-      "phone",
-    ],
+    individuals: ["name", "phone"],
+    institutions: ["name", "phone"],
+    companies: ["name", "phone"],
+    // Previous configuration (commented out):
+    // individuals: ["first_name", "last_name", "email", "city", "phone"],
+    // institutions: [
+    //   "first_name",
+    //   "last_name",
+    //   "email",
+    //   "city",
+    //   "institution_name",
+    //   "unified_number",
+    //   "employee_count",
+    //   "phone",
+    // ],
+    // companies: [
+    //   "first_name",
+    //   "last_name",
+    //   "email",
+    //   "city",
+    //   "company_name",
+    //   "unified_number",
+    //   "employee_count",
+    //   "phone",
+    // ],
   };
 
   const activeFields = roleFields[role as string] || [];
@@ -48,94 +53,99 @@ const StepTwo = ({ direction }: { direction: number }) => {
     options?: { value: string; label: string }[];
   };
 
-  // Options for employee count (used by unified_number select per current schema design)
-  const employeeCountOptions = useMemo(
-    () => [
-      { value: "1-10" },
-      { value: "11-50" },
-      { value: "51-100" },
-      { value: "101-250" },
-      { value: "more" },
-    ],
-    []
-  );
-
-  const saudiCities = useMemo(
-    () => [
-      { value: "riyadh" },
-      { value: "makkah" },
-      { value: "madinah" },
-      { value: "jeddah" },
-      { value: "dammam" },
-      { value: "najran" },
-      { value: "alhasa" },
-      { value: "qassim" },
-      { value: "tabuk" },
-      { value: "abha" },
-      { value: "hail" },
-      { value: "jouf" },
-      { value: "baha" },
-      { value: "taif" },
-      { value: "khobar" },
-      { value: "dhahran" },
-      { value: "jubail" },
-      { value: "jazan" },
-      { value: "other" },
-    ],
-    []
-  );
+  // Options and selects for other fields are no longer used in Step Two
+  // but kept here commented for future reference.
+  //
+  // const employeeCountOptions = useMemo(
+  //   () => [
+  //     { value: "1-10" },
+  //     { value: "11-50" },
+  //     { value: "51-100" },
+  //     { value: "101-250" },
+  //     { value: "more" },
+  //   ],
+  //   []
+  // );
+  //
+  // const saudiCities = useMemo(
+  //   () => [
+  //     { value: "riyadh" },
+  //     { value: "makkah" },
+  //     { value: "madinah" },
+  //     { value: "jeddah" },
+  //     { value: "dammam" },
+  //     { value: "najran" },
+  //     { value: "alhasa" },
+  //     { value: "qassim" },
+  //     { value: "tabuk" },
+  //     { value: "abha" },
+  //     { value: "hail" },
+  //     { value: "jouf" },
+  //     { value: "baha" },
+  //     { value: "taif" },
+  //     { value: "khobar" },
+  //     { value: "dhahran" },
+  //     { value: "jubail" },
+  //     { value: "jazan" },
+  //     { value: "other" },
+  //   ],
+  //   []
+  // );
 
   const allFieldMeta: FieldMeta[] = useMemo(
     () => [
+      // Original first_name field kept for reference but disabled.
+      // {
+      //   name: "first_name",
+      //   placeholder: t("services.form.placeholders.first_name"),
+      // },
       {
-        name: "first_name",
-        placeholder: t("services.form.placeholders.first_name"),
-      },
-      {
-        name: "last_name",
-        placeholder: t("services.form.placeholders.last_name"),
+        name: "name",
+        // Reuse the same placeholder translation key as first_name.
+        placeholder: t("services.form.placeholders.name"),
       },
       {
         name: "phone",
         placeholder: t("services.form.placeholders.phone"),
       },
-      {
-        name: "email",
-        placeholder: t("services.form.placeholders.email"),
-        type: "email",
-      },
-      {
-        name: "city",
-        placeholder: t("services.form.placeholders.city"),
-        variant: "select",
-        options: saudiCities.map((city) => ({
-          value: city.value,
-          label: t(`services.form.Saudi_citizen.options.${city.value}`),
-        })),
-      },
-      {
-        name: "company_name",
-        placeholder: t("services.form.placeholders.company_name"),
-      },
-      {
-        name: "institution_name",
-        placeholder: t("services.form.placeholders.institution_name"),
-      },
-      {
-        name: "unified_number",
-        placeholder: t("services.form.placeholders.unified_number"),
-      },
-      {
-        name: "employee_count",
-        placeholder: t("services.form.placeholders.employee_count"),
-        variant: "select",
-        options: employeeCountOptions.map((o) => ({
-          value: o.value,
-          label: t(`services.form.employee_count.options.${o.value}`),
-        })),
-      },
+      // The rest of the fields are currently disabled for Step Two.
+      // {
+      //   name: "email",
+      //   placeholder: t("services.form.placeholders.email"),
+      //   type: "email",
+      // },
+      // {
+      //   name: "city",
+      //   placeholder: t("services.form.placeholders.city"),
+      //   variant: "select",
+      //   options: saudiCities.map((city) => ({
+      //     value: city.value,
+      //     label: t(`services.form.Saudi_citizen.options.${city.value}`),
+      //   })),
+      // },
+      // {
+      //   name: "company_name",
+      //   placeholder: t("services.form.placeholders.company_name"),
+      // },
+      // {
+      //   name: "institution_name",
+      //   placeholder: t("services.form.placeholders.institution_name"),
+      // },
+      // {
+      //   name: "unified_number",
+      //   placeholder: t("services.form.placeholders.unified_number"),
+      // },
+      // {
+      //   name: "employee_count",
+      //   placeholder: t("services.form.placeholders.employee_count"),
+      //   variant: "select",
+      //   options: employeeCountOptions.map((o) => ({
+      //     value: o.value,
+      //     label: t(`services.form.employee_count.options.${o.value}`),
+      //   })),
+      // },
     ],
-    [t, employeeCountOptions, saudiCities]
+    [t]
   );
 
   const inputClass = (field: keyof ServiceFormInputsT) =>

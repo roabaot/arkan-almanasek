@@ -10,18 +10,19 @@ import StepOne from "../../sections/serviceDetails/steps/StepOne";
 import StepTwo from "../../sections/serviceDetails/steps/StepTwo";
 import Button from "../../common/Button";
 import { AudienceType } from "@/app/[locale]/actions/services";
-import StepThree from "../../sections/serviceDetails/steps/StepThree";
+// import StepThree from "../../sections/serviceDetails/steps/StepThree";
 import {
   createServiceFormSchema,
   ServiceFormInputsT,
 } from "@/app/[locale]/lib/schemas/serviceFormSchema";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface ServiceFormProps {
   targetAudience?: AudienceType[];
 }
 
 const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const { serviceId } = useParams();
@@ -37,43 +38,43 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
   const methods = useForm<ServiceFormInputsT>({
     resolver: zodResolver(translatedSchema),
   });
-  const { handleSubmit, trigger, getValues } = methods;
+  const { handleSubmit, trigger } = methods;
 
   const nextStepsHandler = async () => {
     let goNext = false;
     if (step === 0) {
       goNext = await trigger(["role"]);
-    } else if (step === 1) {
-      // Dynamically validate only the fields relevant to the selected role
-      const role = getValues("role");
-      const roleFields: Record<string, (keyof ServiceFormInputsT)[]> = {
-        individual: ["first_name", "last_name", "email", "phone"],
-        institution: [
-          "first_name",
-          "last_name",
-          "email",
-          "institution_name",
-          "unified_number",
-          "employee_count",
-          "phone",
-        ],
-        company: [
-          "first_name",
-          "last_name",
-          "email",
-          "company_name",
-          "unified_number",
-          "employee_count",
-          "phone",
-        ],
-      };
-      const fieldsToValidate = roleFields[role] || [
-        "first_name",
-        "last_name",
-        "email",
-        "phone",
-      ];
-      goNext = await trigger(fieldsToValidate as (keyof ServiceFormInputsT)[]);
+      // } else if (step === 1) {
+      //   // Dynamically validate only the fields relevant to the selected role
+      //   const role = getValues("role");
+      //   const roleFields: Record<string, (keyof ServiceFormInputsT)[]> = {
+      //     individual: ["first_name", "last_name", "email", "phone"],
+      //     institution: [
+      //       "first_name",
+      //       "last_name",
+      //       "email",
+      //       "institution_name",
+      //       "unified_number",
+      //       "employee_count",
+      //       "phone",
+      //     ],
+      //     company: [
+      //       "first_name",
+      //       "last_name",
+      //       "email",
+      //       "company_name",
+      //       "unified_number",
+      //       "employee_count",
+      //       "phone",
+      //     ],
+      //   };
+      //   const fieldsToValidate = roleFields[role] || [
+      //     "first_name",
+      //     "last_name",
+      //     "email",
+      //     "phone",
+      //   ];
+      //   goNext = await trigger(fieldsToValidate as (keyof ServiceFormInputsT)[]);
     }
     if (goNext) {
       setStep((prev) => {
@@ -104,7 +105,7 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
       await res.json();
 
       if (res.status === 200) {
-        setStep((prev) => prev + 1);
+        router.push("/success");
       }
 
       setLoading(false);
@@ -117,7 +118,7 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
   return (
     <div className="w-full overflow-hidden rounded-2xl bg-white p-3 shadow-[0px_0px_15px_-3px_var(--tw-shadow-color,_rgb(0_0_0_/_0.1)),_0_4px_6px_-4px_var(--tw-shadow-color,_rgb(0_0_0_/_0.1))] xs:p-5 md:p-8 ">
       <AnimatePresence custom={1} mode="wait">
-        <ProgressBar step={step} stepsCount={3} />
+        <ProgressBar step={step} stepsCount={2} />
       </AnimatePresence>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmitServiceForm)}>
@@ -132,17 +133,9 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
                 />
               ) : null}
               {step === 1 ? <StepTwo direction={direction} key="two" /> : null}
-              {step === 2 ? (
-                <StepThree direction={direction} key="three" />
-              ) : null}
               {/* {step === 2 ? (
-                    <StepThree direction={direction} key="three" />
-                  ) : null}
-                  {step === 3 ? (
-                    <StepFour direction={direction} key="four" />
-                  ) : null}
-                  {step === 4 ? <StepFive key="five" /> : null} */}
-              {/* {RenderStep()} */}
+                <StepThree direction={direction} key="three" />
+              ) : null} */}
             </AnimatePresence>
           </div>
           <AnimatePresence mode="wait">

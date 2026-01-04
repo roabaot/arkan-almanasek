@@ -423,5 +423,14 @@
         }
       }
     }
+  },
+  "success_page": {
+    "title": "تم بنجاح!",
+    "message": "تم استقبال طلبك بنجاح. سنتواصل معك قريبًا على رقم الهاتف المسجل.",
+    "reference_label": "معرّف الطلب",
+    "reference_value": "#TRX-8829-AB",
+    "copy_button": "نسخ",
+    "back_home": "العودة إلى الرئيسية",
+    "view_submission": "عرض الطلب"
   }
 }
