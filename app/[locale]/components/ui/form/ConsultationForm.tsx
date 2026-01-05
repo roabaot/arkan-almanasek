@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { CiCalendar, CiMail, CiUser } from "react-icons/ci";
+import { CiMail, CiUser } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
 import {
   ConsultationFormDataT,
@@ -12,11 +12,13 @@ import {
 } from "@/app/[locale]/lib/schemas/consultationSchema";
 import { postConsultation } from "@/app/[locale]/actions/consultation";
 import { useIsLocaleRtl } from "@/app/lib/utils";
+import { useRouter } from "next/navigation";
 
 const NewConsultationForm = () => {
+  const router = useRouter();
   const t = useTranslations("consultation.form");
   const isRtl = useIsLocaleRtl();
-  const [submitted, setSubmitted] = useState(false);
+  // const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // const [detailsLength, setDetailsLength] = useState(0);
   const consultationSchema = createConsultationSchema((key) => t(key));
@@ -44,13 +46,14 @@ const NewConsultationForm = () => {
   const onSubmit = async (data: ConsultationFormDataT) => {
     setIsLoading(true);
     try {
-      const res = await postConsultation(data);
-      console.log("res: ", res);
+      await postConsultation(data);
 
-      setSubmitted(true);
+      // setSubmitted(true);
       // reset();
       // setDetailsLength(0);
-      setTimeout(() => setSubmitted(false), 5000);
+      // setTimeout(() => setSubmitted(false), 5000);
+
+      router.push("/success");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -59,7 +62,7 @@ const NewConsultationForm = () => {
   };
   return (
     <>
-      {submitted && (
+      {/* {submitted && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -76,7 +79,7 @@ const NewConsultationForm = () => {
             <p className="text-green-700">{t("success.message")}</p>
           </div>
         </motion.div>
-      )}
+      )} */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
