@@ -130,6 +130,7 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
                   key="one"
                   nextBtnRef={nextBtnRef}
                   targetAudience={targetAudience}
+                  nextStepsHandler={nextStepsHandler}
                 />
               ) : null}
               {step === 1 ? <StepTwo direction={direction} key="two" /> : null}
@@ -145,7 +146,7 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
                 direction={1}
                 className="flex flex-row-reverse justify-between border-t-2 border-gray-200 pt-8"
               >
-                {step === 0 ? (
+                {/* {step === 0 ? (
                   <Button
                     type="button"
                     onClick={nextStepsHandler}
@@ -154,7 +155,7 @@ const ServiceForm = ({ targetAudience }: ServiceFormProps) => {
                   >
                     {t("common.next_step")}
                   </Button>
-                ) : null}
+                ) : null} */}
                 {step === 1 ? (
                   <Button type="submit" variant={"primary"} disabled={loading}>
                     {t("common.submit")}

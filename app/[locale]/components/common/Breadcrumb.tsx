@@ -32,7 +32,7 @@ const Breadcrumb = ({ title, breadcrumb }: PageHeaderProps) => {
         >
           {title}
         </motion.h2>
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 md:flex gap-2 hidden">
           {breadcrumb?.map((item, index) => (
             <span
               key={index}

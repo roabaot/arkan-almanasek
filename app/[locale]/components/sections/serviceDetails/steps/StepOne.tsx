@@ -11,17 +11,31 @@ interface StepOneProps {
   direction: number;
   nextBtnRef: RefObject<HTMLButtonElement | null>;
   targetAudience?: AudienceType[];
+  nextStepsHandler?: () => Promise<void>;
 }
 
-const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
+const StepOne = ({
+  direction,
+  nextBtnRef,
+  targetAudience,
+  nextStepsHandler,
+}: StepOneProps) => {
   const {
     register,
     formState: { errors },
     watch,
   } = useFormContext<ServiceFormInputsT>();
+  const { onChange, ...roleField } = register("role");
 
   // When role selected, focus next button for smoother UX
   const roleValue = watch("role");
+
+  const onRoleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    await onChange(e);
+    if (nextStepsHandler) {
+      await nextStepsHandler();
+    }
+  };
   useEffect(() => {
     if (roleValue && nextBtnRef?.current) {
       nextBtnRef.current.focus();
@@ -51,7 +65,8 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
             value="individuals"
             label={t("services.form.individual")}
             icon={<LuUser size={20} />}
-            {...register("role")}
+            {...roleField}
+            onChange={onRoleChange}
           />
         )}
         {targetAudience?.includes("institutions") && (
@@ -60,7 +75,8 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
             value="institutions"
             label={t("services.form.institution")}
             icon={<LuGraduationCap size={20} />}
-            {...register("role")}
+            {...roleField}
+            onChange={onRoleChange}
           />
         )}
         {targetAudience?.includes("companies") && (
@@ -69,7 +85,8 @@ const StepOne = ({ direction, nextBtnRef, targetAudience }: StepOneProps) => {
             value="companies"
             label={t("services.form.company")}
             icon={<LuBuilding2 size={20} />}
-            {...register("role")}
+            {...roleField}
+            onChange={onRoleChange}
           />
         )}
       </div>
