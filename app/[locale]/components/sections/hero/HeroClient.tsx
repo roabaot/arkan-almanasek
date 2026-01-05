@@ -55,7 +55,7 @@ export default function HeroClient({ title, description, locale }: Props) {
             >
               <Image
                 className="w-full h-auto transform rotate-[-5deg] rounded-[20px]"
-                src={"/assets/hero/main.png"}
+                src={"/assets/hero/main.webp"}
                 alt="Putech image"
                 width={300}
                 height={440}
@@ -134,7 +134,7 @@ export default function HeroClient({ title, description, locale }: Props) {
               <motion.div variants={imagesVariants}>
                 <Image
                   className="lg:w-[290px] w-[200px] lg:h-[380px] h-[310px] object-cover rounded-[20px]"
-                  src={"/assets/hero/sub-hero-1.png"}
+                  src={"/assets/hero/sub-hero-1.webp"}
                   alt="macs image"
                   width={290}
                   height={380}
@@ -143,7 +143,7 @@ export default function HeroClient({ title, description, locale }: Props) {
               <motion.div className="" variants={imageVariants}>
                 <Image
                   className="lg:w-[250px] w-[160px] h-[365px] mt-[-30px] object-cover rounded-[20px]"
-                  src={"/assets/hero/sub-hero-2.png"}
+                  src={"/assets/hero/sub-hero-2.webp"}
                   alt="macs image"
                   width={250}
                   height={365}

@@ -130,7 +130,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-8.png"}
+                    src={"/assets/about/about-8.webp"}
                     alt="about image"
                     width={285}
                     height={422}
@@ -146,7 +146,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-10.png"}
+                    src={"/assets/about/about-10.webp"}
                     alt="about image"
                     width={275}
                     height={180}
@@ -164,7 +164,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-11.png"}
+                    src={"/assets/about/about-11.webp"}
                     alt="about image"
                     width={275}
                     height={180}
@@ -180,7 +180,7 @@ const About = () => {
                 >
                   <Image
                     className="rounded-[10px]"
-                    src={"/assets/about/about-9.png"}
+                    src={"/assets/about/about-9.webp"}
                     alt="about image"
                     width={285}
                     height={422}

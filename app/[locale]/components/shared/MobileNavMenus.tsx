@@ -11,7 +11,7 @@ export type MenuItem =
 export const menuItems: MenuItem[] = [
   { key: "home", href: "/" },
   { key: "services", href: "/category" },
-  { key: "about", href: "/about-v2" },
+  { key: "about", href: "/about" },
   { key: "blog", href: "/blog" },
   { key: "contact", href: "/contact" },
 ];

@@ -49,7 +49,7 @@ const menuConfig: Array<
 > = [
   { key: "home", href: "/" },
   { key: "services", href: "/category" },
-  { key: "about", href: "/about-v2" },
+  { key: "about", href: "/about" },
   { key: "blog", href: "/blog" },
   { key: "consultation", href: "/consultation" },
 ];
