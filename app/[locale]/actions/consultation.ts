@@ -4,8 +4,7 @@ export const postConsultation = async (
   body: ConsultationFormDataT
 ): Promise<ConsultationFormDataT | null> => {
   try {
-    const { firstName, lastName, ...other } = body;
-    const fullName = `${firstName} ${lastName}`;
+    const { name, ...other } = body;
     const serviceRes = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/contacts`,
       {
@@ -13,7 +12,7 @@ export const postConsultation = async (
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ contact: { full_name: fullName, ...other } }),
+        body: JSON.stringify({ contact: { full_name: name, ...other } }),
         cache: "no-store",
       }
     ).then((res) => res.json());

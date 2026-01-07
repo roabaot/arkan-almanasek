@@ -13,7 +13,8 @@
     "empty": "لا توجد بيانات متاحة",
     "next_step": "الخطوة التالية",
     "previous_step": "الخطوة السابقة",
-    "submit": "إرسال"
+    "submit": "إرسال",
+    "error": "حدث خطأ ما"
   },
   "languages": {
     "ar": "العربية",
@@ -387,7 +388,7 @@
         },
         "phone": {
           "label": "رقم الجوال",
-          "placeholder": "+966 5X XXX XXXX"
+          "placeholder": "05X XXX XXXX"
         },
         "type": {
           "label": "نوع الاستشارة",

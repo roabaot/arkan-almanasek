@@ -5,6 +5,7 @@ import Faq from "./components/sections/faq/Faq";
 import Hero from "./components/sections/hero/Hero";
 import Service from "./components/sections/service/Service";
 import Loading from "./loading";
+import Brand from "./components/sections/brand/Brand";
 
 const HomePage = () => {
   return (
@@ -16,6 +17,7 @@ const HomePage = () => {
         </Suspense>
       </section>
       <About />
+      <Brand />
       <ConsultingSection />
       <Faq />
     </div>

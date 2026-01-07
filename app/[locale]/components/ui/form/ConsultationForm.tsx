@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { CiMail, CiUser } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
 import {
   ConsultationFormDataT,
@@ -17,9 +17,11 @@ import { useRouter } from "next/navigation";
 const NewConsultationForm = () => {
   const router = useRouter();
   const t = useTranslations("consultation.form");
+  const tCommon = useTranslations("common");
   const isRtl = useIsLocaleRtl();
   // const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   // const [detailsLength, setDetailsLength] = useState(0);
   const consultationSchema = createConsultationSchema((key) => t(key));
 
@@ -32,9 +34,7 @@ const NewConsultationForm = () => {
   } = useForm<ConsultationFormDataT>({
     resolver: zodResolver(consultationSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
+      name: "",
       phone: "",
       consultationType: "",
       message: "",
@@ -46,14 +46,19 @@ const NewConsultationForm = () => {
   const onSubmit = async (data: ConsultationFormDataT) => {
     setIsLoading(true);
     try {
-      await postConsultation(data);
+      const res = await postConsultation(data);
 
       // setSubmitted(true);
       // reset();
       // setDetailsLength(0);
       // setTimeout(() => setSubmitted(false), 5000);
+      if (res) {
+        router.push("/success");
+      } else {
+        setIsError(true);
 
-      router.push("/success");
+        setTimeout(() => setIsError(false), 5000);
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -100,50 +105,25 @@ const NewConsultationForm = () => {
               className="flex flex-col"
             >
               <label className="text-slate-700 font-semibold mb-3 block">
-                {t("fields.first_name.label")}
+                {t("fields.name.label")}
               </label>
               <div className="relative">
                 <CiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder={t("fields.first_name.placeholder")}
+                  placeholder={t("fields.name.placeholder")}
                   className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
-                  {...register("firstName")}
+                  {...register("name")}
                 />
               </div>
-              {errors.firstName && (
+              {errors.name && (
                 <p className="text-red-500 text-sm mt-2">
-                  {errors.firstName.message}
+                  {errors.name.message}
                 </p>
               )}
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.45, duration: 0.4 }}
-              className="flex flex-col"
-            >
-              <label className="text-slate-700 font-semibold mb-3 block">
-                {t("fields.last_name.label")}
-              </label>
-              <div className="relative">
-                <CiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder={t("fields.last_name.placeholder")}
-                  className="w-full pl-10 pr-4 py-3 h-12 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-300 bg-white"
-                  {...register("lastName")}
-                />
-              </div>
-              {errors.lastName && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.lastName.message}
-                </p>
-              )}
-            </motion.div>
-
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 0.4 }}
@@ -166,7 +146,7 @@ const NewConsultationForm = () => {
                   {errors.email.message}
                 </p>
               )}
-            </motion.div>
+            </motion.div> */}
 
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -285,6 +265,12 @@ const NewConsultationForm = () => {
               )}
             </button>
           </motion.div>
+
+          {isError && (
+            <motion.div>
+              <p className="text-red-500 text-sm mt-2">{tCommon("error")}</p>
+            </motion.div>
+          )}
         </form>
       </motion.div>
     </>

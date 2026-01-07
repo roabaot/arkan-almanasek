@@ -13,19 +13,20 @@ export const createConsultationSchema = (
   t: (key: string) => string = (k) => k
 ) =>
   z.object({
-    firstName: z.string().min(2, { message: t("validation.first_name.min") }),
-    lastName: z.string().min(2, { message: t("validation.last_name.min") }),
-    email: z.string().email({ message: t("validation.email.invalid") }),
-    phone: z
+    name: z.string().min(2, { message: t("validation.name.min") }),
+    email: z
       .string()
-      .regex(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, {
-        message: t("validation.phone.invalid"),
-      }),
+      .email({ message: t("validation.email.invalid") })
+      .or(z.literal(""))
+      .optional(),
+    phone: z.string().regex(/^(?:\+966|00966|0)?5[0-9]{8}$/, {
+      message: t("validation.phone.invalid"),
+    }),
     consultationType: z.string().optional(),
     message: z
       .string()
-      .min(10, { message: t("validation.details.min") })
-      .max(1000, { message: t("validation.details.max") }),
+      .max(1000, { message: t("validation.details.max") })
+      .optional(),
   });
 
 const consultationSchema = createConsultationSchema();
