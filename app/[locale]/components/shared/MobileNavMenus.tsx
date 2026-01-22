@@ -13,5 +13,5 @@ export const menuItems: MenuItem[] = [
   { key: "services", href: "/category" },
   { key: "about", href: "/about" },
   { key: "blog", href: "/blog" },
-  { key: "contact", href: "/contact" },
+  { key: "consultation", href: "/consultation" },
 ];
