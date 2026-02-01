@@ -4,12 +4,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import "./globals.css";
 import { inter, spaceGrotesk } from "./fonts";
-import ClientLayout from "./components/common/ClientLayout";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
-import Navbar from "./components/shared/Navbar";
-import Footer from "./components/shared/Footer";
-import ToastProvider from "./components/shared/ToastProvider";
+import AppShell from "../components/layout/AppShell";
 
 const APP_NAME = "MACS App";
 const APP_DEFAULT_TITLE = "My Awesome MACS App";
@@ -81,13 +78,7 @@ export default async function RootLayout({
     >
       <body>
         <NextIntlClientProvider messages={messages}>
-          <ToastProvider>
-            <Navbar />
-            {children}
-            <Footer />
-            {/* All client-side extras are isolated */}
-            <ClientLayout />
-          </ToastProvider>
+          <AppShell>{children}</AppShell>
         </NextIntlClientProvider>
       </body>
     </html>

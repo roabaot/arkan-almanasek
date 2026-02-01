@@ -36,7 +36,6 @@
 @layer base {
   * {
     @apply m-0 p-0 box-border;
-    cursor: none !important;
   }
 
   html {
@@ -186,24 +185,37 @@
   }
 }
 
-button {
-  @apply font-primary cursor-pointer;
+@font-face {
+  font-family: "BSinaBold";
+  src: url("/fonts/BSINABD.TTF") format("truetype"); /* استخدم الصيغة ttf */
+  font-weight: normal;
+  font-style: normal;
 }
 
-.glow {
-  width: 200px;
-  height: 200px;
-  border-radius: 50px;
-  filter: blur(150px);
+.st0 {
+  fill: #d8a241;
 }
 
-.glow.yellow {
-  background: #ffdc7899;
+.st1 {
+  fill: #a56c37;
 }
 
-.text-number {
-  color: transparent;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #1a1a1a;
-  opacity: 0.2;
+.st-white {
+  fill: #fff;
+  font-family: BSinaBold, "B Sina";
+  font-size: 45px;
+}
+
+.st-text {
+  font-family: BSinaBold, "B Sina";
+  font-size: 62.7px;
+}
+
+.st-gold {
+  fill: #d8a241;
+}
+
+.st-gold,
+.st-text {
+  fill: #a56c37;
 }
