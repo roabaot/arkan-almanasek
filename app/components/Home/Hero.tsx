@@ -17,9 +17,9 @@ export default function HomeHero() {
         style={{ backgroundImage: `url('${HERO_BG_URL}')` }}
       />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-[#022c22]/90 via-emerald-900/60 to-transparent [dir=rtl]:bg-gradient-to-l" />
+      <div className="absolute inset-0 bg-gradient-to-r from-grey/90 via-grey/60 to-transparent rtl:bg-gradient-to-l" />
       {/* <div className="absolute inset-0 bg-gradient-to-t from-[#f6f8f6] via-[#f6f8f6]/45 to-transparent" /> */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#f6f8f6] via-[#f6f8f6]/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-background via-background/70 to-transparent" />
       <div className="bg-islamic-pattern pointer-events-none absolute inset-0 opacity-10" />
 
       <div className="relative z-10 flex h-full w-full max-w-7xl items-center px-4 sm:px-6 lg:mx-auto lg:px-8">
@@ -29,8 +29,8 @@ export default function HomeHero() {
               className="animate-fade-up inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md"
               style={{ animationDelay: "0.1s" }}
             >
-              <span className="size-2 animate-pulse rounded-full bg-[#d4af37]" />
-              <span className="text-sm font-medium tracking-wide text-[#d4af37]">
+              <span className="size-2 animate-pulse rounded-full bg-primary" />
+              <span className="text-sm font-medium tracking-wide text-primary">
                 موسم الحج ١٤٤٥هـ
               </span>
             </div>
@@ -40,7 +40,7 @@ export default function HomeHero() {
               style={{ animationDelay: "0.3s" }}
             >
               رحلة العمر <br />
-              <span className="text-shadow-gold bg-gradient-to-l from-[#d4af37] via-[#fceabb] to-[#d4af37] bg-clip-text text-transparent">
+              <span className="text-shadow-gold bg-gradient-to-l from-primary via-[#fceabb] to-primary bg-clip-text text-transparent">
                 تبدأ بلمسة إتقان
               </span>
             </h1>
@@ -59,7 +59,7 @@ export default function HomeHero() {
             >
               <button
                 type="button"
-                className="group relative overflow-hidden rounded-xl bg-[#d4af37] px-8 py-4 text-lg font-bold text-white shadow-[0_0_25px_rgba(212,175,55,0.4)] transition-all hover:-translate-y-1 hover:bg-[#c5a028]"
+                className="group relative overflow-hidden rounded-xl bg-primary px-8 py-4 text-lg font-bold text-white shadow-[0_0_25px_rgba(212,175,55,0.4)] transition-all hover:-translate-y-1 hover:bg-[#c5a028]"
               >
                 <div className="absolute inset-0 h-full w-full -translate-x-full bg-white/20 group-hover:animate-shimmer" />
                 <div className="relative flex items-center gap-3">
@@ -70,19 +70,19 @@ export default function HomeHero() {
 
               <button
                 type="button"
-                className="group flex items-center gap-3 rounded-xl border border-white/30 bg-white/5 px-8 py-4 text-lg font-bold text-white backdrop-blur-md transition-all hover:border-[#d4af37]/50 hover:bg-white/10"
+                className="group flex items-center gap-3 rounded-xl border border-white/30 bg-white/5 px-8 py-4 text-lg font-bold text-white backdrop-blur-md transition-all hover:border-primary/50 hover:bg-white/10"
               >
                 <span>اكتشف خدماتنا</span>
-                <RiCompass3Line className="size-6 text-[#d4af37] opacity-70 transition-opacity group-hover:opacity-100" />
+                <RiCompass3Line className="size-6 text-primary opacity-70 transition-opacity group-hover:opacity-100" />
               </button>
             </div>
           </div>
 
           <div className="relative hidden h-full min-h-[500px] w-full items-center justify-center lg:col-span-5 lg:flex">
             <div className="animate-float absolute top-20 right-0 z-20">
-              <div className="glass-card w-64 rounded-2xl border-r-4 border-r-[#d4af37] p-6 shadow-2xl">
+              <div className="glass-card w-64 rounded-2xl border-r-4 border-r-primary p-6 shadow-2xl">
                 <div className="mb-3 flex items-center gap-4">
-                  <div className="flex size-12 items-center justify-center rounded-full bg-[#d4af37]/20 text-[#d4af37]">
+                  <div className="flex size-12 items-center justify-center rounded-full bg-primary/20 text-primary">
                     <RiGroupLine className="size-6" />
                   </div>
                   <div>
@@ -92,7 +92,7 @@ export default function HomeHero() {
                 </div>
                 <div className="mt-2 h-1.5 w-full rounded-full bg-white/10">
                   <div
-                    className="h-1.5 rounded-full bg-[#d4af37]"
+                    className="h-1.5 rounded-full bg-primary"
                     style={{ width: "85%" }}
                   />
                 </div>
@@ -100,14 +100,14 @@ export default function HomeHero() {
             </div>
 
             <div className="animate-float-delayed absolute bottom-32 left-10 z-20">
-              <div className="glass-card w-64 rounded-2xl border-l-4 border-l-[#14b814] p-6 shadow-2xl">
+              <div className="glass-card w-64 rounded-2xl border-l-4 border-l-secondary p-6 shadow-2xl">
                 <div className="mb-2 flex items-center gap-4">
-                  <div className="flex size-12 items-center justify-center rounded-full bg-[#14b814]/20 text-[#14b814]">
+                  <div className="flex size-12 items-center justify-center rounded-full bg-secondary/20 text-secondary">
                     <RiCustomerService2Line className="size-6" />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-white">دعم متواصل</h3>
-                    <p className="text-sm font-bold text-emerald-300">
+                    <p className="text-sm font-bold text-secondary">
                       ٢٤/٧ طوال الرحلة
                     </p>
                   </div>
@@ -120,7 +120,7 @@ export default function HomeHero() {
 
             <div className="pointer-events-none absolute inset-0 opacity-30">
               <svg
-                className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-[spin_60s_linear_infinite] text-[#d4af37]/20"
+                className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-[spin_60s_linear_infinite] text-primary/20"
                 fill="currentColor"
                 viewBox="0 0 100 100"
                 xmlns="http://www.w3.org/2000/svg"

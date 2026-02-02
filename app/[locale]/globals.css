@@ -8,7 +8,7 @@
   --color-primary: #daa342; /* ذهبي */
   --color-secondary: #a66c37; /* بني */
   --color-background: #fff2eb; /* خلفية فاتحة */
-  --color-text: #252524; /* نص داكن */
+  --color-grey: #252524; /* نص داكن */
   --color-accent: #f2bc77; /* لون مميز ذهبي فاتح */
 }
 
@@ -36,6 +36,10 @@
 .st-text {
   font-family: BSinaBold, "B Sina";
   font-size: 62.7px;
+}
+
+.st0.st-text {
+  font-size: 45px;
 }
 
 .st-gold {

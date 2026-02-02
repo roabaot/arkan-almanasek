@@ -59,12 +59,12 @@ export default function HomeProducts() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-2xl font-bold text-[#111811] dark:text-white md:text-3xl">
-            <span className="block h-8 w-2 rounded-full bg-[#14b814]" />
+            <span className="block h-8 w-2 rounded-full bg-primary" />
             منتجات مختارة
           </h2>
 
           <a
-            className="group flex items-center gap-1 font-bold text-[#14b814] hover:text-[#109e10]"
+            className="group flex items-center gap-1 font-bold text-primary hover:text-[#109e10]"
             href="#"
           >
             عرض الكل
@@ -76,7 +76,7 @@ export default function HomeProducts() {
           {PRODUCTS.map((product) => (
             <div
               key={product.title}
-              className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg dark:bg-[#1e2e1e]"
+              className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm cursor-pointer transition duration-300 hover:shadow-lg hover:bg-gray-50 dark:bg-[#1e2e1e]"
             >
               <div className="relative h-64 bg-gray-100 dark:bg-gray-800">
                 <div
@@ -103,13 +103,13 @@ export default function HomeProducts() {
                 </p>
 
                 <div className="mt-auto flex items-center justify-between">
-                  <span className="text-lg font-bold text-[#14b814]">
+                  <span className="text-lg font-bold text-primary">
                     {product.price}
                   </span>
 
                   <button
                     type="button"
-                    className="flex size-10 items-center justify-center rounded-lg bg-gray-100 text-gray-900 transition-colors hover:bg-[#14b814] hover:text-white dark:bg-[#2a4a2a] dark:text-white dark:hover:bg-[#14b814]"
+                    className="flex size-10 items-center justify-center rounded-lg bg-gray-100 text-gray-900 transition-colors hover:bg-primary hover:text-white dark:bg-[#2a4a2a] dark:text-white dark:hover:bg-primary"
                     aria-label={`إضافة ${product.title} إلى السلة`}
                   >
                     <RiShoppingCartLine className="text-xl" />
