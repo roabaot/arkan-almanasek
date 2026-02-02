@@ -3,6 +3,8 @@
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import LoadingOverlay from "./LoadingOverlay";
+import Footer from "./Footer";
+import Header from "./Header";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -43,7 +45,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
       <Header onMenuClick={() => setDrawerOpen(true)} /> */}
       <AnimatePresence mode="wait">
-        {loading ? <LoadingOverlay key="loader" /> : children}
+        {loading ? (
+          <LoadingOverlay key="loader" />
+        ) : (
+          <>
+            <Header />
+            {children}
+            <Footer />
+          </>
+        )}
       </AnimatePresence>
     </div>
   );
