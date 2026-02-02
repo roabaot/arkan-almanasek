@@ -7,6 +7,7 @@ import { inter, spaceGrotesk } from "./fonts";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import AppShell from "../components/layout/AppShell";
+import ThemeProvider from "../components/providers/ThemeProvider";
 
 const APP_NAME = "MACS App";
 const APP_DEFAULT_TITLE = "My Awesome MACS App";
@@ -75,10 +76,13 @@ export default async function RootLayout({
       lang={locale}
       className={`${inter.variable} ${spaceGrotesk.variable}`}
       dir={locale === "ar" ? "rtl" : "ltr"}
+      suppressHydrationWarning
     >
       <body>
         <NextIntlClientProvider messages={messages}>
-          <AppShell>{children}</AppShell>
+          <ThemeProvider defaultTheme="light">
+            <AppShell>{children}</AppShell>
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
