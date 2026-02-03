@@ -217,8 +217,9 @@ export default function StorePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
               {products.map((product) => (
-                <div
+                <Link
                   key={product.id}
+                  href={`store/${product.id}/details`}
                   className="group bg-white dark:bg-[#2a241a] rounded-xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:-translate-y-2 transition-all duration-500 ease-out border border-gray-50 dark:border-[#332e25] flex flex-col"
                 >
                   <div className="relative h-64 overflow-hidden bg-gray-50">
@@ -287,7 +288,7 @@ export default function StorePage() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
 
