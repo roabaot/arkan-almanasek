@@ -11,9 +11,9 @@ const LogoHorizontal = () => {
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
-      viewBox={isRTL ? "150 150 10 170" : "150 150 10 170"}
+      viewBox="240 150 10 170"
       height={52}
-      width={200}
+      width={135}
     >
       <text
         className="st0 st-text"
