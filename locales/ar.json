@@ -12,6 +12,14 @@
     "submit": "إرسال",
     "error": "حدث خطأ ما"
   },
+  "languages": {
+    "ar": "العربية",
+    "en": "English",
+    "id": "Bahasa Indonesia",
+    "tr": "Türkçe",
+    "si": "Slovenščina",
+    "ms": "Bahasa Melayu"
+  },
   "services": {
     "title": "خدماتنا",
     "qurbani": {

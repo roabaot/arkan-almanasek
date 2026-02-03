@@ -11,7 +11,6 @@ import {
   RiUser3Line,
   RiUserAddLine,
 } from "react-icons/ri";
-import { FaMosque } from "react-icons/fa6";
 
 const AVATARS = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBaKAYZJkjrGWisLEZewKzxdELAyheWwarb9M7cPaZhWAj4tvhjEpf4O0NJTzuuEzsmWizHIJsIzj9uzhpCyL-vLG1kkaLuL2rEiXpFE5oDYDra8HHzFYjj6BvkbbOMJiNTvx0eF5m5-CfACkBujc7S4fdYhK8Gr5ixend7r6j4bz3r5jFs3Ghm2SADxKxp33EZdkynLA0uIViHvGX8IhkJxOuJtfqZ88zQv-JI4hOj0XHIx6w2S1I9ZTkkLbrV5XikZUo-jSSQSZzB",
@@ -29,9 +28,9 @@ export default function HomeCta() {
         <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-20">
           <div className="flex w-full flex-col gap-8 text-center lg:w-1/2 lg:text-right">
             <div>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 backdrop-blur-sm animate-pulse">
-                <RiHourglassLine className="text-sm text-red-400" />
-                <span className="text-sm font-bold text-red-200">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-red-500/50 bg-red-500/10 px-4 py-2 backdrop-blur-sm animate-pulse">
+                <RiHourglassLine className="text-sm text-red-500" />
+                <span className="text-sm font-bold text-red-100">
                   الأماكن محدودة لموسم هذا العام
                 </span>
               </div>
@@ -99,12 +98,12 @@ export default function HomeCta() {
           </div>
 
           <div className="relative flex w-full items-center justify-center lg:h-[500px] lg:w-1/2 [perspective:1000px]">
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d4af37]/10 blur-[100px]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/10 blur-[100px]" />
 
             <div className="group relative z-10 w-[280px] rotate-[-6deg] overflow-hidden rounded-[3rem] border-8 border-gray-800 bg-gray-900 shadow-2xl transition-all duration-700 ease-out hover:rotate-0 md:w-[320px]">
               <div className="absolute left-1/2 top-0 z-20 h-7 w-40 -translate-x-1/2 rounded-b-2xl bg-gray-800" />
 
-              <div className="relative flex h-[580px] flex-col overflow-hidden bg-gradient-to-b from-emerald-50 to-white">
+              <div className="relative flex h-[580px] flex-col overflow-hidden bg-gradient-to-b from-background to-white">
                 <div className="relative z-10 rounded-b-[2.5rem] bg-primary p-6 pb-8 pt-12 text-center text-white shadow-lg">
                   {/* <FaMosque className="mb-2 inline-block text-4xl text-[#d4af37]" />
                   <h3 className="text-lg font-bold text-white">رفيق الحج</h3> */}

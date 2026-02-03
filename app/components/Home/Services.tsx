@@ -63,9 +63,9 @@ export default function HomeServices() {
           {SERVICES.map(({ title, description, Icon }) => (
             <div
               key={title}
-              className="group flex w-full flex-col items-center rounded-2xl border border-[#e5e7eb] bg-white p-8 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-primary/30 hover:shadow-xl md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)]"
+              className="group flex w-full flex-col items-center rounded-2xl border border-[#e5e7eb] bg-white p-8 text-center shadow-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:border-primary/30 hover:shadow-xl md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)]"
             >
-              <div className="mb-6 flex size-20 items-center justify-center rounded-2xl bg-[#f0f9f0] text-primary shadow-inner transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+              <div className="mb-6 flex size-20 items-center justify-center rounded-2xl bg-primary/5 text-primary shadow-inner transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
                 <Icon className="text-4xl" />
               </div>
               <h3 className="mb-3 text-xl font-bold text-gray-900">{title}</h3>
@@ -76,7 +76,7 @@ export default function HomeServices() {
           ))}
 
           {/* Spacer card to match the original 6-card layout if needed */}
-          <div className="hidden w-full md:block md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)]" />
+          {/* <div className="hidden w-full md:block md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)]" /> */}
         </div>
       </div>
     </section>

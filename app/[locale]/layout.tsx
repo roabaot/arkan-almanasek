@@ -2,7 +2,9 @@ import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { hasLocale } from "next-intl";
 import "./globals.css";
+import "flag-icons/css/flag-icons.min.css";
 import { inter, spaceGrotesk } from "./fonts";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
@@ -64,7 +66,7 @@ export default async function RootLayout({
   const { locale } = await params; // Await the params promise
 
   // Validate that the incoming `locale` parameter is valid
-  if (!routing.locales.includes(locale as "ar" | "en")) {
+  if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
