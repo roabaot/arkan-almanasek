@@ -114,14 +114,14 @@ export default function Header() {
                   >
                     <RiUser3Line className="text-lg" />
                   </button>
-                  <button
-                    type="button"
+                  <Link
+                    href="/cart"
                     className="relative flex items-center justify-center rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-800 dark:bg-[#0f1f0f] dark:text-gray-200 dark:hover:bg-[#132813]"
                     aria-label="السلة"
                   >
                     <RiShoppingBag3Line className="text-lg" />
                     <span className="absolute right-2 top-2 size-2 rounded-full bg-[#d4af37]" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function Header() {
             >
               <Link
                 className="rounded-lg px-3 py-2 text-sm font-bold text-gray-800 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-100 dark:hover:bg-background"
-                href="#"
+                href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 الرئيسية

@@ -16,6 +16,55 @@
     "submit": "Submit",
     "error": "An error occurred"
   },
+  "cart": {
+    "step2": {
+      "fields": {
+        "fullNameLabel": "Ad soyad",
+        "fullNamePlaceholder": "Mohammed Ahmed",
+        "phoneLabel": "Telefon numarası",
+        "phonePlaceholder": "55 000 0000",
+        "emailLabel": "E-posta",
+        "emailPlaceholder": "example@mail.com",
+        "countryLabel": "Ülke",
+        "countryPlaceholder": "Ülke seçin",
+        "nationalAddressLabel": "Ulusal adres (isteğe bağlı)",
+        "birthDateLabel": "Doğum tarihi",
+        "birthDatePlaceholder": "dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeLabel": "Daha önce Hac veya Umre yaptınız mı?"
+      },
+      "options": {
+        "countries": {
+          "id": "Endonezya",
+          "ms": "Malezya",
+          "tr": "Türkiye",
+          "lk": "Sri Lanka"
+        },
+        "phoneCountries": {
+          "sa": "Suudi Arabistan"
+        },
+        "yesNo": {
+          "yes": "Evet",
+          "no": "Hayır"
+        }
+      },
+      "actions": {
+        "back": "Geri",
+        "next": "İleri"
+      },
+      "validation": {
+        "fullNameRequired": "Ad soyad zorunludur",
+        "phoneCountryRequired": "Ülke kodu zorunludur",
+        "phoneRequired": "Telefon numarası zorunludur",
+        "phoneInvalid": "Telefon numarası geçersiz",
+        "emailRequired": "E-posta zorunludur",
+        "emailInvalid": "E-posta geçersiz",
+        "countryRequired": "Ülke zorunludur",
+        "birthDateRequired": "Doğum tarihi zorunludur",
+        "birthDateInvalid": "Doğum tarihi dd/mm/yyyy formatında olmalıdır",
+        "performedHajjOrUmrahBeforeRequired": "Bu alan zorunludur"
+      }
+    }
+  },
   "languages": {
     "ar": "العربية",
     "en": "English",

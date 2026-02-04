@@ -28,10 +28,17 @@
 
 @theme {
   --color-primary: #daa342; /* ذهبي */
+  --color-primary-dark: #c99231; /* نسخة أغمق للـ hover */
   --color-secondary: #a66c37; /* بني */
   --color-background: #fff2eb; /* خلفية فاتحة */
+  --color-background-light: #f9fafb; /* بديل لـ bg-gray-50 */
+  --color-background-dark: #1a160e;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #2a241a;
   --color-grey: #252524; /* نص داكن */
   --color-accent: #f2bc77; /* لون مميز ذهبي فاتح */
+
+  --shadow-soft: 0 8px 30px rgb(0 0 0 / 0.04);
 }
 
 @font-face {

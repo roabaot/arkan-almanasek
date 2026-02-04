@@ -16,6 +16,55 @@
     "submit": "Submit",
     "error": "An error occurred"
   },
+  "cart": {
+    "step2": {
+      "fields": {
+        "fullNameLabel": "Nama penuh",
+        "fullNamePlaceholder": "Mohammed Ahmed",
+        "phoneLabel": "Nombor telefon",
+        "phonePlaceholder": "55 000 0000",
+        "emailLabel": "E-mel",
+        "emailPlaceholder": "example@mail.com",
+        "countryLabel": "Negara",
+        "countryPlaceholder": "Pilih negara",
+        "nationalAddressLabel": "Alamat kebangsaan (pilihan)",
+        "birthDateLabel": "Tarikh lahir",
+        "birthDatePlaceholder": "dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeLabel": "Pernah menunaikan Haji atau Umrah sebelum ini?"
+      },
+      "options": {
+        "countries": {
+          "id": "Indonesia",
+          "ms": "Malaysia",
+          "tr": "Turki",
+          "lk": "Sri Lanka"
+        },
+        "phoneCountries": {
+          "sa": "Arab Saudi"
+        },
+        "yesNo": {
+          "yes": "Ya",
+          "no": "Tidak"
+        }
+      },
+      "actions": {
+        "back": "Kembali",
+        "next": "Seterusnya"
+      },
+      "validation": {
+        "fullNameRequired": "Nama penuh diperlukan",
+        "phoneCountryRequired": "Kod negara diperlukan",
+        "phoneRequired": "Nombor telefon diperlukan",
+        "phoneInvalid": "Nombor telefon tidak sah",
+        "emailRequired": "E-mel diperlukan",
+        "emailInvalid": "E-mel tidak sah",
+        "countryRequired": "Negara diperlukan",
+        "birthDateRequired": "Tarikh lahir diperlukan",
+        "birthDateInvalid": "Format tarikh lahir mestilah dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeRequired": "Medan ini diperlukan"
+      }
+    }
+  },
   "languages": {
     "ar": "العربية",
     "en": "English",

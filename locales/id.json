@@ -16,6 +16,55 @@
     "submit": "Submit",
     "error": "An error occurred"
   },
+  "cart": {
+    "step2": {
+      "fields": {
+        "fullNameLabel": "Nama lengkap",
+        "fullNamePlaceholder": "Mohammed Ahmed",
+        "phoneLabel": "Nomor ponsel",
+        "phonePlaceholder": "55 000 0000",
+        "emailLabel": "Email",
+        "emailPlaceholder": "example@mail.com",
+        "countryLabel": "Negara",
+        "countryPlaceholder": "Pilih negara",
+        "nationalAddressLabel": "Alamat nasional (opsional)",
+        "birthDateLabel": "Tanggal lahir",
+        "birthDatePlaceholder": "dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeLabel": "Apakah Anda pernah melakukan Haji atau Umrah sebelumnya?"
+      },
+      "options": {
+        "countries": {
+          "id": "Indonesia",
+          "ms": "Malaysia",
+          "tr": "Turki",
+          "lk": "Sri Lanka"
+        },
+        "phoneCountries": {
+          "sa": "Arab Saudi"
+        },
+        "yesNo": {
+          "yes": "Ya",
+          "no": "Tidak"
+        }
+      },
+      "actions": {
+        "back": "Kembali",
+        "next": "Berikutnya"
+      },
+      "validation": {
+        "fullNameRequired": "Nama lengkap wajib diisi",
+        "phoneCountryRequired": "Kode negara wajib diisi",
+        "phoneRequired": "Nomor ponsel wajib diisi",
+        "phoneInvalid": "Nomor ponsel tidak valid",
+        "emailRequired": "Email wajib diisi",
+        "emailInvalid": "Email tidak valid",
+        "countryRequired": "Negara wajib dipilih",
+        "birthDateRequired": "Tanggal lahir wajib diisi",
+        "birthDateInvalid": "Format tanggal lahir harus dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeRequired": "Kolom ini wajib diisi"
+      }
+    }
+  },
   "languages": {
     "ar": "العربية",
     "en": "English",

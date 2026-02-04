@@ -16,6 +16,55 @@
     "submit": "Submit",
     "error": "An error occurred"
   },
+  "cart": {
+    "step2": {
+      "fields": {
+        "fullNameLabel": "Full name",
+        "fullNamePlaceholder": "Mohammed Ahmed",
+        "phoneLabel": "Mobile number",
+        "phonePlaceholder": "55 000 0000",
+        "emailLabel": "Email",
+        "emailPlaceholder": "example@mail.com",
+        "countryLabel": "Country",
+        "countryPlaceholder": "Select a country",
+        "nationalAddressLabel": "National address (optional)",
+        "birthDateLabel": "Date of birth",
+        "birthDatePlaceholder": "dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeLabel": "Have you performed Hajj or Umrah before?"
+      },
+      "options": {
+        "countries": {
+          "id": "Indonesia",
+          "ms": "Malaysia",
+          "tr": "Turkey",
+          "lk": "Sri Lanka"
+        },
+        "phoneCountries": {
+          "sa": "Saudi Arabia"
+        },
+        "yesNo": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "actions": {
+        "back": "Back",
+        "next": "Next"
+      },
+      "validation": {
+        "fullNameRequired": "Full name is required",
+        "phoneCountryRequired": "Country code is required",
+        "phoneRequired": "Mobile number is required",
+        "phoneInvalid": "Mobile number is invalid",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Email is invalid",
+        "countryRequired": "Country is required",
+        "birthDateRequired": "Date of birth is required",
+        "birthDateInvalid": "Date of birth must be in dd/mm/yyyy format",
+        "performedHajjOrUmrahBeforeRequired": "This field is required"
+      }
+    }
+  },
   "languages": {
     "ar": "العربية",
     "en": "English",

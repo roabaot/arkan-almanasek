@@ -11,10 +11,10 @@ import { routing } from "../../i18n/routing";
 import AppShell from "../components/layout/AppShell";
 import ThemeProvider from "../components/providers/ThemeProvider";
 
-const APP_NAME = "MACS App";
-const APP_DEFAULT_TITLE = "My Awesome MACS App";
-const APP_TITLE_TEMPLATE = "%s - MACS App";
-const APP_DESCRIPTION = "Best MACS app in the world!";
+const APP_NAME = "Arkan Almnasek";
+const APP_DEFAULT_TITLE = "My Awesome Arkan Almnasek";
+const APP_TITLE_TEMPLATE = "%s - Arkan Almnasek";
+const APP_DESCRIPTION = "Arkan Almnasek for Hajj and Umrah services.";
 
 export const metadata: Metadata = {
   title: {

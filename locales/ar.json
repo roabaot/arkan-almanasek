@@ -12,6 +12,55 @@
     "submit": "إرسال",
     "error": "حدث خطأ ما"
   },
+  "cart": {
+    "step2": {
+      "fields": {
+        "fullNameLabel": "الاسم الكامل",
+        "fullNamePlaceholder": "محمد أحمد",
+        "phoneLabel": "رقم الجوال",
+        "phonePlaceholder": "55 000 0000",
+        "emailLabel": "البريد الإلكتروني",
+        "emailPlaceholder": "example@mail.com",
+        "countryLabel": "الدولة",
+        "countryPlaceholder": "اختر الدولة",
+        "nationalAddressLabel": "العنوان الوطني (اختياري)",
+        "birthDateLabel": "تاريخ الميلاد",
+        "birthDatePlaceholder": "dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeLabel": "هل قد حج أو اعتمر من قبل؟"
+      },
+      "options": {
+        "countries": {
+          "id": "إندونيسيا",
+          "ms": "ماليزيا",
+          "tr": "تركيا",
+          "lk": "سريلانكا"
+        },
+        "phoneCountries": {
+          "sa": "السعودية"
+        },
+        "yesNo": {
+          "yes": "نعم",
+          "no": "لا"
+        }
+      },
+      "actions": {
+        "back": "رجوع",
+        "next": "التالي"
+      },
+      "validation": {
+        "fullNameRequired": "الاسم الكامل مطلوب",
+        "phoneCountryRequired": "مفتاح الدولة مطلوب",
+        "phoneRequired": "رقم الجوال مطلوب",
+        "phoneInvalid": "رقم الجوال غير صحيح",
+        "emailRequired": "البريد الإلكتروني مطلوب",
+        "emailInvalid": "البريد الإلكتروني غير صحيح",
+        "countryRequired": "الدولة مطلوبة",
+        "birthDateRequired": "تاريخ الميلاد مطلوب",
+        "birthDateInvalid": "صيغة تاريخ الميلاد غير صحيحة (dd/mm/yyyy)",
+        "performedHajjOrUmrahBeforeRequired": "هذا الحقل مطلوب"
+      }
+    }
+  },
   "languages": {
     "ar": "العربية",
     "en": "English",

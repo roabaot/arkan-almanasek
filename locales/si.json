@@ -16,6 +16,55 @@
     "submit": "Submit",
     "error": "An error occurred"
   },
+  "cart": {
+    "step2": {
+      "fields": {
+        "fullNameLabel": "Polno ime",
+        "fullNamePlaceholder": "Mohammed Ahmed",
+        "phoneLabel": "Mobilna številka",
+        "phonePlaceholder": "55 000 0000",
+        "emailLabel": "E-pošta",
+        "emailPlaceholder": "example@mail.com",
+        "countryLabel": "Država",
+        "countryPlaceholder": "Izberite državo",
+        "nationalAddressLabel": "Nacionalni naslov (neobvezno)",
+        "birthDateLabel": "Datum rojstva",
+        "birthDatePlaceholder": "dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeLabel": "Ali ste že opravili hadž ali umro?"
+      },
+      "options": {
+        "countries": {
+          "id": "Indonezija",
+          "ms": "Malezija",
+          "tr": "Turčija",
+          "lk": "Šrilanka"
+        },
+        "phoneCountries": {
+          "sa": "Savdska Arabija"
+        },
+        "yesNo": {
+          "yes": "Da",
+          "no": "Ne"
+        }
+      },
+      "actions": {
+        "back": "Nazaj",
+        "next": "Naprej"
+      },
+      "validation": {
+        "fullNameRequired": "Polno ime je obvezno",
+        "phoneCountryRequired": "Klicna koda države je obvezna",
+        "phoneRequired": "Mobilna številka je obvezna",
+        "phoneInvalid": "Mobilna številka ni veljavna",
+        "emailRequired": "E-pošta je obvezna",
+        "emailInvalid": "E-pošta ni veljavna",
+        "countryRequired": "Država je obvezna",
+        "birthDateRequired": "Datum rojstva je obvezen",
+        "birthDateInvalid": "Datum rojstva mora biti v obliki dd/mm/yyyy",
+        "performedHajjOrUmrahBeforeRequired": "To polje je obvezno"
+      }
+    }
+  },
   "languages": {
     "ar": "العربية",
     "en": "English",

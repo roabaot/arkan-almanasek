@@ -163,10 +163,10 @@ export default function ProductMainSection({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+        <div className="flex flex-row gap-4 mt-auto">
           <button
             type="button"
-            className="flex-1 h-14 bg-primary text-[#171512] text-lg font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-[#c9953a] hover:shadow-xl transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-3"
+            className="flex-1 min-h-14 bg-primary text-[#171512] text-lg font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-[#c9953a] hover:shadow-xl transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-3"
             aria-label="إضافة إلى السلة"
             onClick={() => {
               // Placeholder: wire this to your cart store/action
@@ -185,7 +185,7 @@ export default function ProductMainSection({
 
           <button
             type="button"
-            className="flex-none sm:w-14 h-14 border-2 border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center text-text-main dark:text-white hover:border-primary hover:text-primary transition-colors"
+            className="flex-none w-14 h-14 border-2 border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center text-text-main dark:text-white hover:border-primary hover:text-primary transition-colors"
             aria-label="مشاركة المنتج"
             onClick={async () => {
               try {

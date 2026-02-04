@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion, useAnimation } from "framer-motion";
-import Logo from "./Logo";
+import { motion } from "framer-motion";
 
 const overlayStyle: React.CSSProperties = {
   position: "fixed",
