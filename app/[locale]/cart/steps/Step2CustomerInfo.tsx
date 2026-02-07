@@ -4,7 +4,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+
+import {
+  createStep2CustomerInfoSchema,
+  type Step2CustomerInfoValues,
+} from "@/lib/validation";
+
+import {
+  ddmmyyyyFromISODate,
+  formatBirthDateInput,
+  isoDateFromDDMMYYYY,
+} from "@/lib/utils";
 
 type CountryValue = "id" | "ms" | "tr" | "lk";
 type PhoneCountryValue = "sa" | CountryValue;
@@ -22,48 +32,6 @@ type PhoneCountryOption = {
   flag: string;
   label: string;
 };
-
-type YesNo = "yes" | "no";
-
-function formatBirthDateInput(rawValue: string) {
-  const digits = rawValue.replace(/\D/g, "").slice(0, 8);
-  const day = digits.slice(0, 2);
-  const month = digits.slice(2, 4);
-  const year = digits.slice(4, 8);
-  return [day, month, year].filter(Boolean).join("/");
-}
-
-function isValidBirthDateDDMMYYYY(value: string) {
-  const match = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/.exec(
-    value,
-  );
-  if (!match) return false;
-
-  const day = Number(match[1]);
-  const month = Number(match[2]);
-  const year = Number(match[3]);
-
-  const dt = new Date(year, month - 1, day);
-  return (
-    dt.getFullYear() === year &&
-    dt.getMonth() === month - 1 &&
-    dt.getDate() === day
-  );
-}
-
-function ddmmyyyyFromISODate(value: string) {
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
-  if (!match) return "";
-  const [, year, month, day] = match;
-  return `${day}/${month}/${year}`;
-}
-
-function isoDateFromDDMMYYYY(value: string) {
-  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
-  if (!match) return "";
-  const [, day, month, year] = match;
-  return `${year}-${month}-${day}`;
-}
 
 function PhoneCountrySelect({
   options,
@@ -209,54 +177,10 @@ export default function Step2CustomerInfo({
     [countryOptions],
   );
 
-  const schema = z.object({
-    fullName: z.string().trim().min(1, t("validation.fullNameRequired")),
-    phoneCountry: z
-      .string()
-      .trim()
-      .min(1, t("validation.phoneCountryRequired")),
-    phone: z
-      .string()
-      .trim()
-      .min(1, t("validation.phoneRequired"))
-      .transform((value) => value.replace(/\s+/g, ""))
-      .refine(
-        (value) => /^\d{8,12}$/.test(value),
-        t("validation.phoneInvalid"),
-      ),
-    email: z
-      .string()
-      .trim()
-      .min(1, t("validation.emailRequired"))
-      .email(t("validation.emailInvalid")),
-    country: z
-      .string()
-      .trim()
-      .min(1, t("validation.countryRequired"))
-      .refine(
-        (value): value is CountryValue =>
-          allowedCountryValues.includes(value as CountryValue),
-        t("validation.countryRequired"),
-      ),
-    birthDate: z
-      .string()
-      .trim()
-      .min(1, t("validation.birthDateRequired"))
-      .refine(
-        (value) => isValidBirthDateDDMMYYYY(value),
-        t("validation.birthDateInvalid"),
-      ),
-    performedHajjOrUmrahBefore: z
-      .string()
-      .trim()
-      .min(1, t("validation.performedHajjOrUmrahBeforeRequired"))
-      .refine(
-        (value): value is YesNo => value === "yes" || value === "no",
-        t("validation.performedHajjOrUmrahBeforeRequired"),
-      ),
-  });
-
-  type FormValues = z.infer<typeof schema>;
+  const schema = useMemo(
+    () => createStep2CustomerInfoSchema(t, allowedCountryValues),
+    [t, allowedCountryValues],
+  );
 
   const {
     register,
@@ -265,7 +189,7 @@ export default function Step2CustomerInfo({
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
+  } = useForm<Step2CustomerInfoValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       fullName: "",
@@ -433,7 +357,10 @@ export default function Step2CustomerInfo({
                 onClick={() => {
                   const el = birthDatePickerRef.current;
                   if (!el) return;
-                  if (typeof (el as unknown as { showPicker?: () => void }).showPicker === "function") {
+                  if (
+                    typeof (el as unknown as { showPicker?: () => void })
+                      .showPicker === "function"
+                  ) {
                     (el as unknown as { showPicker: () => void }).showPicker();
                     return;
                   }
@@ -443,7 +370,10 @@ export default function Step2CustomerInfo({
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                 aria-label={t("fields.birthDateLabel")}
               >
-                <span className="material-symbols-outlined text-[20px]" aria-hidden>
+                <span
+                  className="material-symbols-outlined text-[20px]"
+                  aria-hidden
+                >
                   calendar_month
                 </span>
               </button>

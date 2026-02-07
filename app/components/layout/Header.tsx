@@ -181,7 +181,7 @@ export default function Header() {
               <nav className="hidden gap-8 lg:flex">
                 <Link
                   className="text-sm font-bold text-gray-700 transition-colors hover:text-secondary dark:text-gray-200"
-                  href="#"
+                  href="/"
                 >
                   الرئيسية
                 </Link>
@@ -215,14 +215,14 @@ export default function Header() {
                   <RiUser3Line />
                 </button>
 
-                <button
-                  type="button"
+                <Link
+                  href="/cart"
                   className="relative flex items-center justify-center rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-background"
                   aria-label="السلة"
                 >
                   <RiShoppingBag3Line />
                   <span className="absolute right-1 top-1 size-2 rounded-full bg-[#d4af37]" />
-                </button>
+                </Link>
 
                 <button
                   type="button"
