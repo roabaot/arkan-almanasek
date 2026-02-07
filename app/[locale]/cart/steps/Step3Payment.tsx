@@ -1,6 +1,12 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import {
+  RiBankCardLine,
+  RiBankLine,
+  RiLock2Line,
+  RiUploadCloud2Line,
+} from "react-icons/ri";
 
 import { step3PaymentSchema, type PaymentMethod } from "@/lib/validation";
 
@@ -182,7 +188,7 @@ export default function Step3Payment({
             </span>
           </div>
           <div className="flex gap-2 text-gray-400">
-            <span className="material-symbols-outlined">credit_card</span>
+            <RiBankCardLine aria-hidden />
           </div>
         </label>
 
@@ -217,7 +223,7 @@ export default function Step3Payment({
             </span>
           </div>
           <div className="flex gap-2 text-gray-400">
-            <span className="material-symbols-outlined">account_balance</span>
+            <RiBankLine aria-hidden />
           </div>
         </label>
       </div>
@@ -229,7 +235,7 @@ export default function Step3Payment({
               بيانات البطاقة
             </h4>
             <div className="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-2">
-              <span className="material-symbols-outlined text-base">lock</span>
+              <RiLock2Line className="text-base" aria-hidden />
               <span>مشفرة وآمنة</span>
             </div>
           </div>
@@ -374,9 +380,10 @@ export default function Step3Payment({
               }
             >
               <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">
-                  upload_file
-                </span>
+                <RiUploadCloud2Line
+                  className="text-gray-500 dark:text-gray-400"
+                  aria-hidden
+                />
                 <div className="flex-1">
                   <div className="font-bold text-gray-900 dark:text-white">
                     {bankReceipt ? "تم اختيار ملف" : "اضغط لرفع الإيصال"}

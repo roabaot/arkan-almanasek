@@ -2,6 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  RiArrowLeftLine,
+  RiArrowLeftSLine,
+  RiCustomerService2Line,
+  RiLock2Line,
+} from "react-icons/ri";
 
 import Step1CartReview from "./steps/Step1CartReview";
 import Step2CustomerInfo from "./steps/Step2CustomerInfo";
@@ -88,9 +94,10 @@ function Stepper({ step }: { step: Step }) {
             </div>
 
             {index < steps.length - 1 ? (
-              <span className="text-gray-300 dark:text-gray-600 material-symbols-outlined text-sm">
-                chevron_left
-              </span>
+              <RiArrowLeftSLine
+                className="text-sm text-gray-300 dark:text-gray-600"
+                aria-hidden
+              />
             ) : null}
           </div>
         );
@@ -243,15 +250,14 @@ export default function CheckoutWizard() {
                         ? "متابعة للدفع"
                         : "تأكيد الدفع"}
                   </span>
-                  <span className="material-symbols-outlined group-hover:-translate-x-1 transition-transform">
-                    arrow_left_alt
-                  </span>
+                  <RiArrowLeftLine
+                    className="group-hover:-translate-x-1 transition-transform"
+                    aria-hidden
+                  />
                 </button>
 
                 <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-400">
-                  <span className="material-symbols-outlined text-sm">
-                    lock
-                  </span>
+                  <RiLock2Line className="text-sm" aria-hidden />
                   <span>مدفوعات آمنة ومشفرة 100%</span>
                 </div>
               </div>
@@ -260,9 +266,7 @@ export default function CheckoutWizard() {
                 <div className="absolute inset-0 bg-primary/80" />
                 <div className="relative z-10 flex flex-col items-center text-center">
                   <div className="size-10 rounded-full bg-white/20 flex items-center justify-center mb-3 backdrop-blur-sm">
-                    <span className="material-symbols-outlined">
-                      support_agent
-                    </span>
+                    <RiCustomerService2Line aria-hidden />
                   </div>
                   <h4 className="font-bold mb-1">هل تحتاج مساعدة؟</h4>
                   <p className="text-sm opacity-90 mb-4">

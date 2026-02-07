@@ -1,6 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { FaShirt, FaSoap } from "react-icons/fa6";
+import {
+  RiShieldCheckLine,
+  RiStarFill,
+  RiStarHalfFill,
+  RiStarLine,
+  RiTruckLine,
+} from "react-icons/ri";
 
 import type { TabKey } from "./types";
 
@@ -77,7 +85,7 @@ export default function ProductDetailsTabs() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
               <div className="flex gap-4">
                 <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <span className="material-symbols-outlined">checkroom</span>
+                  <FaShirt className="text-xl" aria-hidden="true" />
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
@@ -91,7 +99,7 @@ export default function ProductDetailsTabs() {
 
               <div className="flex gap-4">
                 <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <span className="material-symbols-outlined">soap</span>
+                  <FaSoap className="text-xl" aria-hidden="true" />
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
@@ -105,9 +113,7 @@ export default function ProductDetailsTabs() {
 
               <div className="flex gap-4">
                 <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <span className="material-symbols-outlined">
-                    verified_user
-                  </span>
+                  <RiShieldCheckLine className="text-xl" aria-hidden="true" />
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
@@ -121,9 +127,7 @@ export default function ProductDetailsTabs() {
 
               <div className="flex gap-4">
                 <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <span className="material-symbols-outlined">
-                    local_shipping
-                  </span>
+                  <RiTruckLine className="text-xl" aria-hidden="true" />
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
@@ -149,21 +153,11 @@ export default function ProductDetailsTabs() {
                       4.8
                     </p>
                     <div className="flex gap-1 text-primary">
-                      <span className="material-symbols-outlined filled text-xl">
-                        star
-                      </span>
-                      <span className="material-symbols-outlined filled text-xl">
-                        star
-                      </span>
-                      <span className="material-symbols-outlined filled text-xl">
-                        star
-                      </span>
-                      <span className="material-symbols-outlined filled text-xl">
-                        star
-                      </span>
-                      <span className="material-symbols-outlined text-xl">
-                        star_rate
-                      </span>
+                      <RiStarFill className="text-xl" aria-hidden="true" />
+                      <RiStarFill className="text-xl" aria-hidden="true" />
+                      <RiStarFill className="text-xl" aria-hidden="true" />
+                      <RiStarFill className="text-xl" aria-hidden="true" />
+                      <RiStarHalfFill className="text-xl" aria-hidden="true" />
                     </div>
                     <p className="text-text-sub text-base font-normal leading-normal">
                       بناءً على 125 تقييم
@@ -251,21 +245,11 @@ export default function ProductDetailsTabs() {
                             عبدالله المحمد
                           </h5>
                           <div className="flex text-primary text-xs">
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill className="text-sm" aria-hidden="true" />
                           </div>
                         </div>
                       </div>
@@ -288,21 +272,11 @@ export default function ProductDetailsTabs() {
                             سارة أحمد
                           </h5>
                           <div className="flex text-primary text-xs">
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined filled text-sm">
-                              star
-                            </span>
-                            <span className="material-symbols-outlined text-sm">
-                              star_border
-                            </span>
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarLine className="text-sm" aria-hidden="true" />
                           </div>
                         </div>
                       </div>

@@ -30,6 +30,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/rails/active_storage/blobs/redirect/**",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/aida-public/**",
+      },
     ],
   },
 };

@@ -1,6 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import {
+  RiAddLine,
+  RiHeartFill,
+  RiHeartLine,
+  RiShareLine,
+  RiShoppingBagLine,
+  RiStarFill,
+  RiStarHalfFill,
+  RiSubtractLine,
+} from "react-icons/ri";
 
 import type { GalleryImage, PageParams } from "./types";
 
@@ -37,7 +47,11 @@ export default function ProductMainSection({
               aria-label={isFavorite ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
               onClick={() => setIsFavorite((v) => !v)}
             >
-              <span className="material-symbols-outlined">favorite</span>
+              {isFavorite ? (
+                <RiHeartFill className="text-xl" aria-hidden="true" />
+              ) : (
+                <RiHeartLine className="text-xl" aria-hidden="true" />
+              )}
             </button>
           </div>
         </div>
@@ -86,21 +100,11 @@ export default function ProductMainSection({
           </h1>
           <div className="flex items-center gap-2">
             <div className="flex text-primary" aria-label="التقييم">
-              <span className="material-symbols-outlined filled text-lg">
-                star
-              </span>
-              <span className="material-symbols-outlined filled text-lg">
-                star
-              </span>
-              <span className="material-symbols-outlined filled text-lg">
-                star
-              </span>
-              <span className="material-symbols-outlined filled text-lg">
-                star
-              </span>
-              <span className="material-symbols-outlined text-lg">
-                star_half
-              </span>
+              <RiStarFill className="text-lg" aria-hidden="true" />
+              <RiStarFill className="text-lg" aria-hidden="true" />
+              <RiStarFill className="text-lg" aria-hidden="true" />
+              <RiStarFill className="text-lg" aria-hidden="true" />
+              <RiStarHalfFill className="text-lg" aria-hidden="true" />
             </div>
             <span className="text-sm text-text-sub">(125 تقييم)</span>
           </div>
@@ -141,7 +145,7 @@ export default function ProductMainSection({
                 aria-label="زيادة الكمية"
                 onClick={() => setQuantity((q) => Math.min(99, q + 1))}
               >
-                <span className="material-symbols-outlined">add</span>
+                <RiAddLine className="text-xl" aria-hidden="true" />
               </button>
               <input
                 className="w-12 text-center border-none focus:ring-0 bg-transparent text-text-main dark:text-white font-bold h-10 p-0"
@@ -156,7 +160,7 @@ export default function ProductMainSection({
                 aria-label="تقليل الكمية"
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               >
-                <span className="material-symbols-outlined">remove</span>
+                <RiSubtractLine className="text-xl" aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -177,9 +181,7 @@ export default function ProductMainSection({
               });
             }}
           >
-            <span className="material-symbols-outlined filled">
-              shopping_bag
-            </span>
+            <RiShoppingBagLine className="text-xl" aria-hidden="true" />
             إضافة إلى السلة
           </button>
 
@@ -207,7 +209,7 @@ export default function ProductMainSection({
               }
             }}
           >
-            <span className="material-symbols-outlined">share</span>
+            <RiShareLine className="text-xl" aria-hidden="true" />
           </button>
         </div>
       </div>

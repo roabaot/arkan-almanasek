@@ -154,7 +154,7 @@ export default function Header() {
               </Link>
               <Link
                 className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
-                href="#"
+                href="/about-us"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 من نحن
@@ -199,7 +199,7 @@ export default function Header() {
                 </Link>
                 <Link
                   className="text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300"
-                  href="#"
+                  href="/about-us"
                 >
                   من نحن
                 </Link>

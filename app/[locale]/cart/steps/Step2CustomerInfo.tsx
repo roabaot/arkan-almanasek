@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { RiArrowDownSLine, RiCalendar2Line } from "react-icons/ri";
 
 import {
   createStep2CustomerInfoSchema,
@@ -75,9 +76,7 @@ function PhoneCountrySelect({
         <span className="text-sm font-medium" dir="ltr">
           {selected.dial}
         </span>
-        <span className="material-symbols-outlined text-base" aria-hidden>
-          expand_more
-        </span>
+        <RiArrowDownSLine className="text-base" aria-hidden />
       </button>
 
       {open ? (
@@ -370,12 +369,7 @@ export default function Step2CustomerInfo({
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                 aria-label={t("fields.birthDateLabel")}
               >
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  aria-hidden
-                >
-                  calendar_month
-                </span>
+                <RiCalendar2Line className="text-[20px]" aria-hidden />
               </button>
 
               <input

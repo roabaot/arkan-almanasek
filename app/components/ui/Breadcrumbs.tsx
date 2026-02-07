@@ -1,6 +1,7 @@
 import Link from "next/link";
 import * as React from "react";
 import type { UrlObject } from "url";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
 export type BreadcrumbHref = string | UrlObject;
 
@@ -17,9 +18,22 @@ export type BreadcrumbsProps = {
   linkClassName?: string;
   currentClassName?: string;
   separatorClassName?: string;
+  separatorIcon?: React.ReactNode;
   separatorIconName?: string;
   ariaLabel?: string;
 };
+
+function getSeparatorIconByName(name: string) {
+  switch (name) {
+    case "chevron_left":
+    case "navigate_before":
+      return RiArrowLeftSLine;
+    case "chevron_right":
+    case "navigate_next":
+    default:
+      return RiArrowRightSLine;
+  }
+}
 
 function isItemCurrent(
   items: BreadcrumbItem[],
@@ -36,14 +50,15 @@ export function Breadcrumbs({
   linkClassName,
   currentClassName,
   separatorClassName,
+  separatorIcon,
   separatorIconName = "chevron_right",
   ariaLabel = "Breadcrumb",
 }: BreadcrumbsProps) {
   const baseNavClass = "flex items-center text-sm text-text-sub";
   const baseLinkClass = "hover:text-primary transition-colors";
   const baseCurrentClass = "text-primary font-medium";
-  const baseSeparatorClass =
-    "material-symbols-outlined self-center !text-sm mx-2 rtl:rotate-180";
+  const baseSeparatorClass = "self-center mx-2 inline-flex text-sm rtl:rotate-180";
+  const SeparatorIcon = getSeparatorIconByName(separatorIconName);
 
   return (
     <nav
@@ -87,7 +102,7 @@ export function Breadcrumbs({
                   .filter(Boolean)
                   .join(" ")}
               >
-                {separatorIconName}
+                {separatorIcon ?? <SeparatorIcon className="block" />}
               </span>
             ) : null}
           </React.Fragment>

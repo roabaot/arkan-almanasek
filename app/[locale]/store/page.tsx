@@ -1,4 +1,13 @@
 import { Link } from "@/i18n/navigation";
+import {
+  RiApps2Line,
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiHeartLine,
+  RiPriceTag3Line,
+  RiSearchLine,
+  RiShoppingBagLine,
+} from "react-icons/ri";
 
 const products = [
   {
@@ -120,17 +129,16 @@ export default function StorePage() {
                   placeholder="ابحث عن منتج..."
                   type="text"
                 />
-                <span className="material-symbols-outlined absolute top-3 right-3 text-gray-400">
-                  search
-                </span>
+                <RiSearchLine
+                  className="absolute top-3 right-3 text-gray-400 text-xl"
+                  aria-hidden="true"
+                />
               </div>
             </div>
 
             <div className="bg-white dark:bg-[#2a241a] rounded-xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-[#332e25]">
               <h3 className="text-lg font-bold text-[#171511] dark:text-white mb-4 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">
-                  category
-                </span>
+                <RiApps2Line className="text-primary text-xl" aria-hidden="true" />
                 التصنيفات
               </h3>
 
@@ -156,9 +164,10 @@ export default function StorePage() {
 
             <div className="bg-white dark:bg-[#2a241a] rounded-xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-[#332e25]">
               <h3 className="text-lg font-bold text-[#171511] dark:text-white mb-4 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">
-                  payments
-                </span>
+                <RiPriceTag3Line
+                  className="text-primary text-xl"
+                  aria-hidden="true"
+                />
                 السعر
               </h3>
 
@@ -197,9 +206,10 @@ export default function StorePage() {
                   placeholder="ابحث عن ملابس إحرام، مصاحف..."
                   type="text"
                 />
-                <span className="material-symbols-outlined absolute top-3 right-3 text-gray-400">
-                  search
-                </span>
+                <RiSearchLine
+                  className="absolute top-3 right-3 text-gray-400 text-xl"
+                  aria-hidden="true"
+                />
               </div>
 
               <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -251,9 +261,7 @@ export default function StorePage() {
                         className="text-gray-400 hover:text-red-500 transition-colors"
                         aria-label="إضافة إلى المفضلة"
                       >
-                        <span className="material-symbols-outlined text-[20px]">
-                          favorite
-                        </span>
+                        <RiHeartLine className="text-[20px]" aria-hidden="true" />
                       </button>
                     </div>
 
@@ -281,9 +289,10 @@ export default function StorePage() {
                         type="button"
                         className="bg-primary/10 hover:bg-primary text-primary hover:text-white px-4 py-2 rounded-lg font-bold text-sm transition-all duration-300 flex items-center gap-2 group/btn"
                       >
-                        <span className="material-symbols-outlined text-[18px]">
-                          add_shopping_cart
-                        </span>
+                        <RiShoppingBagLine
+                          className="text-[18px]"
+                          aria-hidden="true"
+                        />
                         إضافة للسلة
                       </button>
                     </div>
@@ -299,9 +308,7 @@ export default function StorePage() {
                   href="/store"
                   aria-label="الصفحة السابقة"
                 >
-                  <span className="material-symbols-outlined text-sm">
-                    chevron_right
-                  </span>
+                  <RiArrowRightSLine className="text-xl" aria-hidden="true" />
                 </Link>
 
                 <Link
@@ -339,9 +346,7 @@ export default function StorePage() {
                   href="/store"
                   aria-label="الصفحة التالية"
                 >
-                  <span className="material-symbols-outlined text-sm">
-                    chevron_left
-                  </span>
+                  <RiArrowLeftSLine className="text-xl" aria-hidden="true" />
                 </Link>
               </nav>
             </div>

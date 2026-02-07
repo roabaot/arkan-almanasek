@@ -1,4 +1,12 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
+import {
+  RiAddLine,
+  RiDeleteBin6Line,
+  RiFlightTakeoffLine,
+  RiPriceTag3Line,
+  RiSubtractLine,
+} from "react-icons/ri";
 
 export type CartItem = {
   id: string;
@@ -15,6 +23,15 @@ export type CartItem = {
     label: string;
   };
 };
+
+function getBadgeIcon(iconName: string): ReactNode {
+  switch (iconName) {
+    case "flight":
+      return <RiFlightTakeoffLine className="text-sm" aria-hidden />;
+    default:
+      return <RiPriceTag3Line className="text-sm" aria-hidden />;
+  }
+}
 
 export default function CartItemCard({
   item,
@@ -52,7 +69,7 @@ export default function CartItemCard({
               className="text-red-400 hover:text-red-600 transition-colors"
               aria-label="حذف العنصر"
             >
-              <span className="material-symbols-outlined text-xl">delete</span>
+              <RiDeleteBin6Line className="text-xl" aria-hidden />
             </button>
           </div>
 
@@ -62,9 +79,7 @@ export default function CartItemCard({
 
           {item.badge ? (
             <div className="flex items-center gap-2 text-sm text-secondary bg-primary/10 w-fit px-2 py-1 rounded-md">
-              <span className="material-symbols-outlined text-sm">
-                {item.badge.icon}
-              </span>
+              {getBadgeIcon(item.badge.icon)}
               <span>{item.badge.label}</span>
             </div>
           ) : null}
@@ -77,7 +92,7 @@ export default function CartItemCard({
               className="flex p-2 text-gray-500 hover:text-primary transition-colors"
               aria-label="تقليل الكمية"
             >
-              <span className="material-symbols-outlined text-sm">remove</span>
+              <RiSubtractLine className="text-sm" aria-hidden />
             </button>
             <span className="px-2 font-medium w-8 text-center text-gray-900 dark:text-white">
               {item.quantity}
@@ -87,7 +102,7 @@ export default function CartItemCard({
               className="flex p-2 text-gray-500 hover:text-primary transition-colors"
               aria-label="زيادة الكمية"
             >
-              <span className="material-symbols-outlined text-sm">add</span>
+              <RiAddLine className="text-sm" aria-hidden />
             </button>
           </div>
           <p className="text-xl font-bold text-primary">{item.priceLabel}</p>
