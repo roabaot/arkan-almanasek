@@ -332,4 +332,36 @@
       0 18px 40px rgba(0, 0, 0, 0.35),
       0 0 30px rgba(212, 175, 55, 0.35);
   }
+
+  @keyframes subtlePattern {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 160px 160px;
+    }
+  }
+
+  .animate-subtle-pattern {
+    animation: subtlePattern 22s linear infinite;
+  }
+
+  .shimmer-btn {
+    overflow: hidden;
+  }
+
+  .shimmer-btn::after {
+    content: "";
+    position: absolute;
+    inset: -60% -30%;
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.5) 50%,
+      transparent 70%
+    );
+    opacity: 0.35;
+    animation: shimmer 2.6s infinite linear;
+    pointer-events: none;
+  }
 }

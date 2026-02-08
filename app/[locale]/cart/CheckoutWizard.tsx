@@ -13,6 +13,7 @@ import Step1CartReview from "./steps/Step1CartReview";
 import Step2CustomerInfo from "./steps/Step2CustomerInfo";
 import Step3Payment from "./steps/Step3Payment";
 import { type CartItem } from "./CartItemCard";
+import Link from "next/link";
 
 type Step = 1 | 2 | 3;
 
@@ -272,12 +273,12 @@ export default function CheckoutWizard() {
                   <p className="text-sm opacity-90 mb-4">
                     فريقنا متاح 24/7 لمساعدتك في إتمام حجزك
                   </p>
-                  <button
-                    type="button"
+                  <Link
+                    href="/contact-us"
                     className="bg-white text-primary text-sm font-bold px-6 py-2 rounded-full hover:bg-gray-50 transition-colors"
                   >
                     تواصل معنا
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

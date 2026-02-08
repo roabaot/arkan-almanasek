@@ -115,7 +115,7 @@ export default function Footer() {
               <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
-                  href="#"
+                  href="/contact-us"
                 >
                   اتصل بنا
                 </Link>
