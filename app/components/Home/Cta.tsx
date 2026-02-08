@@ -1,3 +1,5 @@
+"use client";
+
 import {
   RiBookOpenLine,
   RiCalendar2Line,
@@ -11,6 +13,7 @@ import {
   RiUser3Line,
   RiUserAddLine,
 } from "react-icons/ri";
+import { useLocale } from "use-intl";
 
 const AVATARS = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBaKAYZJkjrGWisLEZewKzxdELAyheWwarb9M7cPaZhWAj4tvhjEpf4O0NJTzuuEzsmWizHIJsIzj9uzhpCyL-vLG1kkaLuL2rEiXpFE5oDYDra8HHzFYjj6BvkbbOMJiNTvx0eF5m5-CfACkBujc7S4fdYhK8Gr5ixend7r6j4bz3r5jFs3Ghm2SADxKxp33EZdkynLA0uIViHvGX8IhkJxOuJtfqZ88zQv-JI4hOj0XHIx6w2S1I9ZTkkLbrV5XikZUo-jSSQSZzB",
@@ -19,6 +22,8 @@ const AVATARS = [
 ];
 
 export default function HomeCta() {
+  const locale = useLocale();
+  const isRTL = locale === "ar";
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-primary to-accent px-4 py-16 md:py-24">
       <div className="bg-islamic-pattern absolute inset-0 bg-[length:60px_60px] opacity-20" />
@@ -119,7 +124,11 @@ export default function HomeCta() {
                   >
                     <text
                       className="st-white"
-                      transform="translate(390.4 347.4)"
+                      transform={
+                        isRTL
+                          ? "translate(390.4 347.4)"
+                          : "translate(104.4 347.4)"
+                      }
                     >
                       <tspan x="0" y="0">
                         أركان المناسك

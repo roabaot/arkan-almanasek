@@ -70,11 +70,11 @@ export default function HomeProducts() {
           </h2>
 
           <Link
-            className="group flex items-center gap-1 font-bold text-primary hover:text-[#109e10]"
+            className="group flex items-center gap-1 font-bold text-primary hover:text-primary/90 transition-colors"
             href="/store"
           >
             عرض الكل
-            <RiArrowLeftLine className="text-xl transition-transform group-hover:-translate-x-1" />
+            <RiArrowLeftLine className="text-xl transition-transform rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 ltr:rotate-180" />
           </Link>
         </div>
 

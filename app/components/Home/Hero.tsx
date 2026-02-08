@@ -1,8 +1,10 @@
+import Link from "next/link";
 import {
   RiArrowLeftLine,
   RiCompass3Line,
   RiCustomerService2Line,
   RiGroupLine,
+  RiPhoneFill,
 } from "react-icons/ri";
 
 const HERO_BG_URL =
@@ -68,13 +70,13 @@ export default function HomeHero() {
                 </div>
               </button>
 
-              <button
-                type="button"
+              <Link
+                href="/contact-us"
                 className="group flex items-center gap-3 rounded-xl border border-white/30 bg-white/5 px-8 py-4 text-lg font-bold text-white backdrop-blur-md transition-all hover:border-primary/50 hover:bg-white/10"
               >
-                <span>اكتشف خدماتنا</span>
-                <RiCompass3Line className="size-6 text-primary opacity-70 transition-opacity group-hover:opacity-100" />
-              </button>
+                <span>اتصل بنا</span>
+                <RiPhoneFill className="size-6 text-primary opacity-70 transition-opacity group-hover:opacity-100" />
+              </Link>
             </div>
           </div>
 

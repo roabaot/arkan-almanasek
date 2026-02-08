@@ -117,7 +117,7 @@ export default function LanguageSwitcher() {
       {open && (
         <div
           role="menu"
-          className="absolute left-0 mt-2 w-56 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-[#1a2e1a]"
+          className="absolute rtl:left-0 rtl:right-auto ltr:right-0 ltr:left-auto mt-2 w-56 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-[#1a2e1a]"
         >
           {OPTIONS.map((opt) => {
             const active = opt.locale === currentLocale;
