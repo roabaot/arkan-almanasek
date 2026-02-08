@@ -192,8 +192,7 @@ export default function Header() {
                 <button
                   type="button"
                   className={
-                    "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background " +
-                    (isRtl ? "flex-row-reverse" : "flex-row")
+                    "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background "
                   }
                   onClick={() => setIsMobileServicesMenuOpen((open) => !open)}
                   aria-expanded={isMobileServicesMenuOpen}
@@ -353,7 +352,7 @@ export default function Header() {
                 </Link>
               </nav>
 
-              <div className="mr-2 flex items-center gap-3 border-r border-gray-200 pr-6 dark:border-gray-700">
+              <div className="rtl:mr-2 ltr:ml-2 flex items-center gap-3 rtl:border-r ltr:border-l border-gray-200 rtl:pr-6 ltr:pl-6 dark:border-gray-700">
                 <LanguageSwitcher />
                 <button
                   type="button"

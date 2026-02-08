@@ -51,7 +51,7 @@ export default function Footer() {
               <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
-                  href="#"
+                  href="/about-us"
                 >
                   عن الشركة
                 </Link>
@@ -59,9 +59,9 @@ export default function Footer() {
               <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
-                  href="#"
+                  href="/store"
                 >
-                  الخدمات والمنتجات
+                  المنتجات
                 </Link>
               </li>
               <li>
@@ -144,7 +144,7 @@ export default function Footer() {
               />
               <button
                 type="submit"
-                className="rounded-lg bg-secondary px-4 py-2 text-white transition-colors hover:bg-[#109e10]"
+                className="rounded-lg bg-secondary px-4 py-2 text-white cursor-pointer transition-colors hover:bg-secondary/90"
                 aria-label="إرسال"
               >
                 <RiSendPlane2Line className="text-lg" />

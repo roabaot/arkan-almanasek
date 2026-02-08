@@ -8,3 +8,5 @@ export {
   createStep2CustomerInfoSchema,
   type Step2CustomerInfoValues,
 } from "./step2CustomerInfoSchema";
+
+export { contactUsSchema, type ContactUsValues } from "./contactUsSchema";

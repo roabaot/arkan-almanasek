@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { useLocale } from "use-intl";
 
 const overlayStyle: React.CSSProperties = {
   position: "fixed",
@@ -45,6 +46,8 @@ const pulseVariants = {
 };
 
 const LoadingOverlay = () => {
+  const locale = useLocale();
+  const isRTL = locale === "ar";
   return (
     <div style={overlayStyle}>
       <motion.div variants={loadingVariant} exit="exit">
@@ -127,7 +130,10 @@ const LoadingOverlay = () => {
             initial="hidden"
             animate="visible"
           >
-            <text className="st-text" transform="translate(450 347.4)">
+            <text
+              className="st-text"
+              transform={isRTL ? "translate(450 347.4)" : "translate(50 347.4)"}
+            >
               <tspan x="0" y="0">
                 أركان المناسك
               </tspan>

@@ -1,3 +1,9 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { contactUsSchema, type ContactUsValues } from "@/lib/validation";
+
 import {
   RiArrowDownSLine,
   RiArrowRightLine,
@@ -12,6 +18,24 @@ import {
 } from "react-icons/ri";
 
 export default function ContactUsPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactUsValues>({
+    resolver: zodResolver(contactUsSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    },
+    mode: "onSubmit",
+  });
+
+  const onSubmit = (_values: ContactUsValues) => {};
+
   return (
     <main className="flex-grow flex flex-col items-center w-full text-[#111811] antialiased">
       <section className="w-full max-w-[1280px] px-4 md:px-10 py-12 md:py-20 text-center fade-in-up">
@@ -30,7 +54,11 @@ export default function ContactUsPage() {
             <h3 className="text-2xl font-bold mb-8 text-secondary dark:text-primary">
               أرسل لنا رسالة
             </h3>
-            <form className="flex flex-col gap-6">
+            <form
+              className="flex flex-col gap-6"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <label className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-[#171512] dark:text-gray-200">
@@ -40,7 +68,17 @@ export default function ContactUsPage() {
                     className="h-12 px-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-gray-400"
                     placeholder="أدخل اسمك الكريم"
                     type="text"
+                    aria-invalid={!!errors.fullName}
+                    {...register("fullName")}
                   />
+                  {errors.fullName?.message ? (
+                    <span
+                      className="text-sm text-red-600 dark:text-red-400"
+                      role="alert"
+                    >
+                      {errors.fullName.message}
+                    </span>
+                  ) : null}
                 </label>
                 <label className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-[#171512] dark:text-gray-200">
@@ -50,7 +88,17 @@ export default function ContactUsPage() {
                     className="h-12 px-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-gray-400"
                     placeholder="example@email.com"
                     type="email"
+                    aria-invalid={!!errors.email}
+                    {...register("email")}
                   />
+                  {errors.email?.message ? (
+                    <span
+                      className="text-sm text-red-600 dark:text-red-400"
+                      role="alert"
+                    >
+                      {errors.email.message}
+                    </span>
+                  ) : null}
                 </label>
               </div>
 
@@ -65,12 +113,22 @@ export default function ContactUsPage() {
                       dir="ltr"
                       placeholder="+9xxxxxxxxx"
                       type="tel"
+                      aria-invalid={!!errors.phone}
+                      {...register("phone")}
                     />
                     <RiPhoneLine
                       className="absolute right-3 top-3 text-gray-400 pointer-events-none text-lg mt-1"
                       aria-hidden
                     />
                   </div>
+                  {errors.phone?.message ? (
+                    <span
+                      className="text-sm text-red-600 dark:text-red-400"
+                      role="alert"
+                    >
+                      {errors.phone.message}
+                    </span>
+                  ) : null}
                 </label>
 
                 <label className="flex flex-col gap-2">
@@ -81,6 +139,8 @@ export default function ContactUsPage() {
                     <select
                       className="w-full h-12 px-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none cursor-pointer"
                       defaultValue=""
+                      aria-invalid={!!errors.subject}
+                      {...register("subject")}
                     >
                       <option disabled value="">
                         اختر موضوع الاستفسار
@@ -95,6 +155,14 @@ export default function ContactUsPage() {
                       aria-hidden
                     />
                   </div>
+                  {errors.subject?.message ? (
+                    <span
+                      className="text-sm text-red-600 dark:text-red-400"
+                      role="alert"
+                    >
+                      {errors.subject.message}
+                    </span>
+                  ) : null}
                 </label>
               </div>
 
@@ -106,12 +174,23 @@ export default function ContactUsPage() {
                   className="w-full p-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none placeholder:text-gray-400"
                   placeholder="اكتب رسالتك هنا..."
                   rows={5}
+                  aria-invalid={!!errors.message}
+                  {...register("message")}
                 />
+                {errors.message?.message ? (
+                  <span
+                    className="text-sm text-red-600 dark:text-red-400"
+                    role="alert"
+                  >
+                    {errors.message.message}
+                  </span>
+                ) : null}
               </label>
 
               <button
                 className="mt-2 h-12 rounded-lg bg-primary hover:bg-primary-dark text-[#171512] font-bold text-base transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group"
                 type="submit"
+                disabled={isSubmitting}
               >
                 <span>إرسال الرسالة</span>
                 <RiSendPlane2Line
