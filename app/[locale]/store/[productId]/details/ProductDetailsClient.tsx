@@ -56,7 +56,7 @@ export default function ProductDetailsClient({
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h2 className="text-3xl font-black text-[#171511] dark:text-white mb-2">
-            مناسك الحج
+            أركان المناسك
           </h2>
           <p className="text-secondary dark:text-[#d4a86a] text-lg">
             أفضل المنتجات لرحلتك الإيمانية بأسعار تنافسية

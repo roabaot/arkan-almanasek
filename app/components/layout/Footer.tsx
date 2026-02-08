@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-gray-200 bg-white pb-8 pt-16 dark:border-gray-800 dark:bg-[#1a2e1a]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-4">
+        <div className="mb-12 grid 2xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-12">
           <div className="md:col-span-1">
             <div className="mb-6 flex items-center gap-2">
               <LogoHorizontal />
@@ -155,7 +155,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-100 pt-8 text-center dark:border-gray-800">
           <p className="text-sm text-gray-400">
-            © 2026 مناسك الحج. جميع الحقوق محفوظة.
+            © 2026 أركان المناسك. جميع الحقوق محفوظة.
           </p>
         </div>
       </div>

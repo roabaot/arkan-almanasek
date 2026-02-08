@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
+  RiArrowDownSLine,
   RiCloseLine,
   RiMenuLine,
   RiShoppingBag3Line,
@@ -10,13 +11,17 @@ import {
 } from "react-icons/ri";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoHorizontal from "../ui/LogoHorizontal";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false);
+  const [isMobileServicesMenuOpen, setIsMobileServicesMenuOpen] =
+    useState(false);
   const locale = useLocale();
+  const servicesMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -39,11 +44,56 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
+  useEffect(() => {
+    if (!isServicesMenuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsServicesMenuOpen(false);
+    };
+
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (servicesMenuRef.current?.contains(target)) return;
+      setIsServicesMenuOpen(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+    };
+  }, [isServicesMenuOpen]);
+
   const isRtl = locale === "ar";
   const drawerSideClass = isRtl ? "right-0" : "left-0";
   const drawerClosedTransformClass = isRtl
     ? "translate-x-full"
     : "-translate-x-full";
+
+  const servicesItems = useMemo(
+    () =>
+      [
+        {
+          label: "الهدي والأضاحي",
+          href: "/services/hadi-and-udhiyah",
+          disabled: false,
+        },
+        { label: "بدل", href: "/services/badal", disabled: true },
+        {
+          label: "الاستشارات",
+          href: "/services/consultations",
+          disabled: true,
+        },
+        { label: "المناسك", href: "/services/manasik", disabled: true },
+        { label: "التصاريح", href: "/services/permits", disabled: true },
+      ] as const,
+    [],
+  );
 
   const mobileMenu =
     isMounted &&
@@ -138,13 +188,62 @@ export default function Header() {
               >
                 الرئيسية
               </Link>
-              <Link
-                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
-                href="#services"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                الخدمات
-              </Link>
+              <div>
+                <button
+                  type="button"
+                  className={
+                    "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background " +
+                    (isRtl ? "flex-row-reverse" : "flex-row")
+                  }
+                  onClick={() => setIsMobileServicesMenuOpen((open) => !open)}
+                  aria-expanded={isMobileServicesMenuOpen}
+                  aria-controls="mobile-services-submenu"
+                >
+                  <span>الخدمات</span>
+                  <RiArrowDownSLine
+                    className={
+                      "text-lg transition-transform " +
+                      (isMobileServicesMenuOpen ? "rotate-180" : "rotate-0")
+                    }
+                  />
+                </button>
+
+                <div
+                  id="mobile-services-submenu"
+                  className={
+                    "mt-1 flex flex-col gap-1 " +
+                    (isRtl ? "pr-3" : "pl-3") +
+                    (isMobileServicesMenuOpen ? "" : " hidden")
+                  }
+                >
+                  {servicesItems.map((item) =>
+                    item.disabled ? (
+                      <div
+                        key={item.href}
+                        className={
+                          "rounded-lg px-3 py-2 text-sm text-gray-400 dark:text-gray-500 " +
+                          (isRtl ? "text-right" : "text-left")
+                        }
+                        aria-disabled="true"
+                      >
+                        {item.label} <span className="text-xs">(قريباً)</span>
+                      </div>
+                    ) : (
+                      <Link
+                        key={item.href}
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
+                        href={item.href}
+                        onClick={() => {
+                          setIsMobileServicesMenuOpen(false);
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        {item.label}
+                      </Link>
+                    ),
+                  )}
+                </div>
+              </div>
               <Link
                 className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
                 href="/store"
@@ -178,19 +277,68 @@ export default function Header() {
             </div>
 
             <div className="flex items-center gap-6">
-              <nav className="hidden gap-8 lg:flex">
+              <nav className="hidden gap-8 md:flex">
                 <Link
                   className="text-sm font-bold text-gray-700 transition-colors hover:text-secondary dark:text-gray-200"
                   href="/"
                 >
                   الرئيسية
                 </Link>
-                <Link
-                  className="text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300"
-                  href="#services"
-                >
-                  الخدمات
-                </Link>
+
+                <div ref={servicesMenuRef} className="relative">
+                  <button
+                    type="button"
+                    className={
+                      "flex items-center gap-1 text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300 " +
+                      (isRtl ? "flex-row-reverse" : "flex-row")
+                    }
+                    aria-haspopup="menu"
+                    aria-expanded={isServicesMenuOpen}
+                    onClick={() => setIsServicesMenuOpen((open) => !open)}
+                  >
+                    الخدمات
+                    <RiArrowDownSLine className="text-lg" />
+                  </button>
+
+                  {isServicesMenuOpen ? (
+                    <div
+                      role="menu"
+                      aria-label="قائمة الخدمات"
+                      className={
+                        "absolute z-50 mt-2 w-64 rounded-xl border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-800 dark:bg-[#0f1f0f] " +
+                        (isRtl ? "right-0" : "left-0")
+                      }
+                    >
+                      {servicesItems.map((item) =>
+                        item.disabled ? (
+                          <div
+                            key={item.href}
+                            role="menuitem"
+                            aria-disabled="true"
+                            className={
+                              "flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2 text-sm text-gray-400 dark:text-gray-500 " +
+                              (isRtl ? "flex-row-reverse" : "flex-row")
+                            }
+                          >
+                            <span>{item.label}</span>
+                            <span className="text-xs">قريباً</span>
+                          </div>
+                        ) : (
+                          <Link
+                            key={item.href}
+                            role="menuitem"
+                            className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-[#132813]"
+                            href={item.href}
+                            onClick={() => setIsServicesMenuOpen(false)}
+                          >
+                            {item.label}
+                          </Link>
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+
                 <Link
                   className="text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300"
                   href="/store"

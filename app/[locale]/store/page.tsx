@@ -93,7 +93,7 @@ export default function StorePage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
             <div>
               <h2 className="text-3xl font-black text-[#171511] dark:text-white mb-2">
-                مناسك الحج
+                أركان المناسك
               </h2>
               <p className="text-secondary dark:text-[#d4a86a] text-lg">
                 أفضل المنتجات لرحلتك الإيمانية بأسعار تنافسية
@@ -138,7 +138,10 @@ export default function StorePage() {
 
             <div className="bg-white dark:bg-[#2a241a] rounded-xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-[#332e25]">
               <h3 className="text-lg font-bold text-[#171511] dark:text-white mb-4 flex items-center gap-2">
-                <RiApps2Line className="text-primary text-xl" aria-hidden="true" />
+                <RiApps2Line
+                  className="text-primary text-xl"
+                  aria-hidden="true"
+                />
                 التصنيفات
               </h3>
 
@@ -261,7 +264,10 @@ export default function StorePage() {
                         className="text-gray-400 hover:text-red-500 transition-colors"
                         aria-label="إضافة إلى المفضلة"
                       >
-                        <RiHeartLine className="text-[20px]" aria-hidden="true" />
+                        <RiHeartLine
+                          className="text-[20px]"
+                          aria-hidden="true"
+                        />
                       </button>
                     </div>
 
