@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import {
   RiAddLine,
   RiDeleteBin6Line,
@@ -17,7 +18,7 @@ export type CartItem = {
     alt: string;
   };
   quantity: number;
-  priceLabel: string;
+  unitPriceSar: number;
   badge?: {
     icon: string;
     label: string;
@@ -40,6 +41,14 @@ export default function CartItemCard({
   item: CartItem;
   variant: "first" | "stacked";
 }) {
+  const t = useTranslations("cart");
+  const tItemCard = useTranslations("cart.itemCard");
+  const locale = useLocale();
+
+  const priceLabel = `${new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 2,
+  }).format(item.unitPriceSar * item.quantity)} ${t("currency.sar")}`;
+
   const containerClassName =
     variant === "first"
       ? "flex flex-col sm:flex-row gap-4 mb-6"
@@ -67,7 +76,7 @@ export default function CartItemCard({
             <button
               type="button"
               className="text-red-400 hover:text-red-600 transition-colors"
-              aria-label="حذف العنصر"
+              aria-label={tItemCard("removeItemAria", { item: item.title })}
             >
               <RiDeleteBin6Line className="text-xl" aria-hidden />
             </button>
@@ -90,7 +99,7 @@ export default function CartItemCard({
             <button
               type="button"
               className="flex p-2 text-gray-500 hover:text-primary transition-colors"
-              aria-label="تقليل الكمية"
+              aria-label={tItemCard("decreaseQtyAria", { item: item.title })}
             >
               <RiSubtractLine className="text-sm" aria-hidden />
             </button>
@@ -100,12 +109,12 @@ export default function CartItemCard({
             <button
               type="button"
               className="flex p-2 text-gray-500 hover:text-primary transition-colors"
-              aria-label="زيادة الكمية"
+              aria-label={tItemCard("increaseQtyAria", { item: item.title })}
             >
               <RiAddLine className="text-sm" aria-hidden />
             </button>
           </div>
-          <p className="text-xl font-bold text-primary">{item.priceLabel}</p>
+          <p className="text-xl font-bold text-primary">{priceLabel}</p>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export type VideoSectionProps = {
   eyebrow?: string;
@@ -26,11 +27,17 @@ export type VideoSectionProps = {
 };
 
 export default function VideoSection({
-  eyebrow = "تعرف علينا",
-  heading = "خدمات متكاملة لضيوف الرحمن",
-  description = "نصنع تجربة رقمية تُشبه روح الرحلة: واضحة، مطمئنة، ومحترمة لقدسية المناسك لنكون رفيقكم من التخطيط حتى تمام النسك.",
+  eyebrow,
+  heading,
+  description,
   video = { kind: "placeholder" },
 }: VideoSectionProps) {
+  const t = useTranslations("home.video");
+
+  const resolvedEyebrow = eyebrow ?? t("eyebrow");
+  const resolvedHeading = heading ?? t("heading");
+  const resolvedDescription = description ?? t("description");
+
   const containerRef = useRef<HTMLElement | null>(null);
 
   const isInView = useInView(containerRef, { once: true, amount: 0.35 });
@@ -75,10 +82,13 @@ export default function VideoSection({
               transition={{ duration: 0.55, ease: "easeOut" }}
               className="w-full max-w-3xl text-center"
             >
-              {eyebrow ? (
+              {resolvedEyebrow ? (
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-[var(--color-surface-light)] px-4 py-2 text-sm font-semibold tracking-wide text-[var(--color-text-muted)]">
-                  <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
-                  <span>{eyebrow}</span>
+                  <span
+                    className="size-1.5 rounded-full bg-primary"
+                    aria-hidden="true"
+                  />
+                  <span>{resolvedEyebrow}</span>
                 </div>
               ) : null}
 
@@ -86,11 +96,11 @@ export default function VideoSection({
                 id="home-video-section-heading"
                 className="mb-4 text-3xl font-black leading-tight text-[var(--color-text-main)] md:text-4xl"
               >
-                {heading}
+                {resolvedHeading}
               </h2>
 
               <p className="max-w-xl mx-auto text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
-                {description}
+                {resolvedDescription}
               </p>
             </motion.div>
 
@@ -110,7 +120,7 @@ export default function VideoSection({
                     <iframe
                       className="absolute inset-0 h-full w-full"
                       src={video.src}
-                      title={video.title ?? "Video"}
+                      title={video.title ?? t("iframeTitle")}
                       loading="lazy"
                       allow="autoplay; fullscreen"
                     />
@@ -128,7 +138,7 @@ export default function VideoSection({
                     {isInView && video.src ? (
                       <source src={video.src} type={videoMimeType} />
                     ) : null}
-                    Your browser does not support the video tag.
+                    {t("html5Fallback")}
                   </video>
                 ) : (
                   <div className="absolute inset-0" aria-hidden="true" />

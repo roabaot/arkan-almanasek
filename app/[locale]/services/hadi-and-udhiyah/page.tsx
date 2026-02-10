@@ -1,6 +1,7 @@
 "use client";
 
 import Breadcrumbs, { BreadcrumbItem } from "@/app/components/ui/Breadcrumbs";
+import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { GiSheep } from "react-icons/gi";
 
@@ -19,56 +20,132 @@ type Section = {
   items: Item[];
 };
 
-const SECTIONS: Section[] = [
-  {
-    id: "udhiyah",
-    label: "الأضحية",
-    icon: "pets",
-    items: [
-      { id: "european", label: "أوروبي", price: 1050 },
-      { id: "sawakni-1", label: "سواكني", price: 850 },
-      { id: "african", label: "إفريقي", price: 450 },
-      { id: "hari", label: "حري", price: 1200 },
-      { id: "naimi", label: "نعيمي", price: 1300 },
-    ],
-  },
-  {
-    id: "fidya",
-    label: "الفدية",
-    icon: "volunteer_activism",
-    items: [
-      { id: "barbary", label: "بربري", price: 750 },
-      { id: "sawakni-2", label: "سواكني", price: 850 },
-    ],
-  },
-  {
-    id: "aqiqah",
-    label: "العقيقة",
-    icon: "child_care",
-    items: [
-      { id: "naimi-2", label: "نعيمي", price: 1500 },
-      { id: "sawakni-3", label: "سواكني", price: 1100 },
-    ],
-  },
-];
-
-const BreadcrumbItems: BreadcrumbItem[] = [
-  { label: "الرئيسية", href: "/" },
-  { label: "الهدي والأضاحي", current: true },
-];
-
-function formatSAR(value: number) {
-  const formatted = new Intl.NumberFormat("ar-SA", {
-    maximumFractionDigits: 2,
-  }).format(value);
-  return `${formatted} ر.س`;
-}
-
 function clampQty(next: number) {
   return Math.max(0, Math.min(99, next));
 }
 
 export default function QurbaniPage() {
+  const t = useTranslations("qurbani");
+  const locale = useLocale();
+
+  const sections: Section[] = useMemo(
+    () => [
+      {
+        id: "udhiyah",
+        label: t("sections.udhiyah.label"),
+        icon: "pets",
+        items: [
+          {
+            id: "european",
+            label: t("sections.udhiyah.items.european"),
+            price: 1050,
+          },
+          {
+            id: "sawakni-1",
+            label: t("sections.udhiyah.items.sawakni"),
+            price: 850,
+          },
+          {
+            id: "african",
+            label: t("sections.udhiyah.items.african"),
+            price: 450,
+          },
+          {
+            id: "hari",
+            label: t("sections.udhiyah.items.hari"),
+            price: 1200,
+          },
+          {
+            id: "naimi",
+            label: t("sections.udhiyah.items.naimi"),
+            price: 1300,
+          },
+        ],
+      },
+      {
+        id: "fidya",
+        label: t("sections.fidya.label"),
+        icon: "volunteer_activism",
+        items: [
+          {
+            id: "barbary",
+            label: t("sections.fidya.items.barbary"),
+            price: 750,
+          },
+          {
+            id: "sawakni-2",
+            label: t("sections.fidya.items.sawakni"),
+            price: 850,
+          },
+        ],
+      },
+      {
+        id: "aqiqah",
+        label: t("sections.aqiqah.label"),
+        icon: "child_care",
+        items: [
+          {
+            id: "naimi-2",
+            label: t("sections.aqiqah.items.naimi"),
+            price: 1500,
+          },
+          {
+            id: "sawakni-3",
+            label: t("sections.aqiqah.items.sawakni"),
+            price: 1100,
+          },
+        ],
+      },
+    ],
+    [t],
+  );
+
+  const breadcrumbItems: BreadcrumbItem[] = useMemo(
+    () => [
+      { label: t("breadcrumbs.home"), href: "/" },
+      { label: t("breadcrumbs.current"), current: true },
+    ],
+    [t],
+  );
+
+  const steps = useMemo(
+    () => [
+      {
+        icon: "search_check",
+        title: t("steps.selectType.title"),
+        desc: t("steps.selectType.desc"),
+      },
+      {
+        icon: "account_balance_wallet",
+        title: t("steps.securePayment.title"),
+        desc: t("steps.securePayment.desc"),
+      },
+      {
+        icon: "verified",
+        title: t("steps.sharia.title"),
+        desc: t("steps.sharia.desc"),
+      },
+      {
+        icon: "description",
+        title: t("steps.confirmation.title"),
+        desc: t("steps.confirmation.desc"),
+      },
+    ],
+    [t],
+  );
+
+  const formatNumber = useMemo(
+    () =>
+      new Intl.NumberFormat(locale, {
+        maximumFractionDigits: 2,
+      }),
+    [locale],
+  );
+
+  function formatSAR(value: number) {
+    return `${formatNumber.format(value)} ${t("currency.sar")}`;
+  }
+
   const [selection, setSelection] = useState<
     Record<SectionId, Record<string, number>>
   >(() => ({ udhiyah: {}, fidya: {}, aqiqah: {} }));
@@ -80,13 +157,13 @@ export default function QurbaniPage() {
 
   const itemIndex = useMemo(() => {
     const index = new Map<string, { section: Section; item: Item }>();
-    for (const section of SECTIONS) {
+    for (const section of sections) {
       for (const item of section.items) {
         index.set(`${section.id}:${item.id}`, { section, item });
       }
     }
     return index;
-  }, []);
+  }, [sections]);
 
   const selectionTotals = useMemo(() => {
     const totals: Record<SectionId, number> = {
@@ -94,7 +171,7 @@ export default function QurbaniPage() {
       fidya: 0,
       aqiqah: 0,
     };
-    for (const section of SECTIONS) {
+    for (const section of sections) {
       const perItem = selection[section.id] ?? {};
       let sum = 0;
       for (const item of section.items) {
@@ -103,7 +180,7 @@ export default function QurbaniPage() {
       totals[section.id] = sum;
     }
     return totals;
-  }, [selection]);
+  }, [selection, sections]);
 
   const cartLines = useMemo(() => {
     const lines: Array<{
@@ -130,9 +207,9 @@ export default function QurbaniPage() {
       });
     }
 
-    lines.sort((a, b) => a.sectionLabel.localeCompare(b.sectionLabel, "ar"));
+    lines.sort((a, b) => a.sectionLabel.localeCompare(b.sectionLabel, locale));
     return lines;
-  }, [cart, itemIndex]);
+  }, [cart, itemIndex, locale]);
 
   const subtotal = useMemo(
     () => cartLines.reduce((acc, line) => acc + line.lineTotal, 0),
@@ -143,7 +220,7 @@ export default function QurbaniPage() {
 
   const outOfSyncSectionLabels = useMemo(() => {
     const labels: string[] = [];
-    for (const section of SECTIONS) {
+    for (const section of sections) {
       const current = selection[section.id] ?? {};
       const committed = committedSelection[section.id] ?? {};
 
@@ -160,7 +237,7 @@ export default function QurbaniPage() {
       if (dirty) labels.push(section.label);
     }
     return labels;
-  }, [selection, committedSelection]);
+  }, [selection, committedSelection, sections]);
 
   const hasOutOfSyncSections = outOfSyncSectionLabels.length > 0;
 
@@ -234,43 +311,26 @@ export default function QurbaniPage() {
   return (
     <main className="text-[#111811] antialiased">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <Breadcrumbs items={BreadcrumbItems} />
+        <Breadcrumbs
+          items={breadcrumbItems}
+          ariaLabel={t("breadcrumbs.ariaLabel")}
+        />
       </div>
       <header className="py-12 px-4 max-w-7xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-extralight mb-4 tracking-tight">
-          شراء{" "}
-          <span className="font-bold text-[var(--color-primary)]">النسك</span>
+          {t("hero.titlePrefix")}{" "}
+          <span className="font-bold text-[var(--color-primary)]">
+            {t("hero.titleHighlight")}
+          </span>
         </h1>
         <p className="text-black/60 font-light max-w-2xl mx-auto leading-relaxed">
-          خدمات ذبح وتوزيع الأضاحي والهدي والفدية وفق الشريعة الإسلامية، بكل
-          سهولة ويسر.
+          {t("hero.description")}
         </p>
       </header>
 
       <section className="max-w-7xl mx-auto px-4 mb-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            {
-              icon: "search_check",
-              title: "حدد نوع النسك",
-              desc: "اختر النوع المناسب لك",
-            },
-            {
-              icon: "account_balance_wallet",
-              title: "دفع آمن",
-              desc: "بوابات دفع موثوقة",
-            },
-            {
-              icon: "verified",
-              title: "تنفيذ شرعي",
-              desc: "ذبح بإشراف مختصين",
-            },
-            {
-              icon: "description",
-              title: "تأكيد الإنجاز",
-              desc: "تقرير عبر رسالة نصية",
-            },
-          ].map((step) => (
+          {steps.map((step) => (
             <div
               key={step.icon}
               className="group text-center flex flex-col items-center"
@@ -298,16 +358,15 @@ export default function QurbaniPage() {
               </div>
               <div>
                 <h3 className="font-bold text-sm mb-1 uppercase tracking-wider">
-                  تنبيه شرعي
+                    {t("notice.title")}
                 </h3>
                 <p className="text-sm text-black/60 font-light leading-relaxed">
-                  جميع الذبائح تخضع للفحص البيطري والشرعي الدقيق، وتوزع على
-                  فقراء الحرم في أوقاتها المحددة شرعاً.
+                    {t("notice.body")}
                 </p>
               </div>
             </div>
 
-            {SECTIONS.map((section) => {
+            {sections.map((section) => {
               const sectionTotal = selectionTotals[section.id];
               const current = selection[section.id] ?? {};
               const committed = committedSelection[section.id] ?? {};
@@ -332,10 +391,10 @@ export default function QurbaniPage() {
 
               const canCommit = !hasCommitted ? sectionTotal > 0 : isDirty;
               const commitLabel = !hasCommitted
-                ? "إضافة إلى الطلب"
+                ? t("section.commit.addToOrder")
                 : isDirty
-                  ? "تحديث الطلب"
-                  : "تمت الإضافة";
+                  ? t("section.commit.updateOrder")
+                  : t("section.commit.added");
 
               return (
                 <section
@@ -356,17 +415,15 @@ export default function QurbaniPage() {
                       <div className="rounded-2xl border border-[var(--color-accent)] bg-white p-6 shadow-[var(--shadow-soft)] flex flex-col">
                         <div className="flex justify-between items-start mb-4">
                           <span className="text-3xl font-bold text-[#111811]">
-                            {new Intl.NumberFormat("ar-SA").format(
-                              sectionTotal,
-                            )}
+                            {formatNumber.format(sectionTotal)}
                           </span>
                           <span className="text-sm text-black/60 font-medium">
-                            التكلفة
+                            {t("section.costLabel")}
                           </span>
                         </div>
 
                         <div className="text-3xl font-bold text-[var(--color-primary)] mb-6">
-                          ر.س
+                          {t("currency.sar")}
                         </div>
 
                         <div className="space-y-3 mt-auto">
@@ -375,7 +432,7 @@ export default function QurbaniPage() {
                             onClick={() => clearSection(section.id)}
                             className="w-full py-2.5 rounded-xl border border-[var(--color-accent)] text-black/60 text-sm hover:bg-white hover:text-red-500 transition-colors"
                           >
-                            مسح
+                            {t("section.clear")}
                           </button>
                           <button
                             type="button"
@@ -420,14 +477,14 @@ export default function QurbaniPage() {
                                         )
                                       }
                                       className="py-1.5 text-sm font-bold hover:bg-[var(--color-background-light)]"
-                                      aria-label={`زيادة كمية ${item.label}`}
+                                      aria-label={t("items.increaseAria", {
+                                        item: item.label,
+                                      })}
                                     >
                                       +
                                     </button>
                                     <div className="py-1.5 text-sm font-bold bg-white">
-                                      {new Intl.NumberFormat("ar-SA").format(
-                                        qty,
-                                      )}
+                                      {formatNumber.format(qty)}
                                     </div>
                                     <button
                                       type="button"
@@ -439,7 +496,9 @@ export default function QurbaniPage() {
                                         )
                                       }
                                       className="py-1.5 text-sm font-bold hover:bg-[var(--color-background-light)]"
-                                      aria-label={`إنقاص كمية ${item.label}`}
+                                      aria-label={t("items.decreaseAria", {
+                                        item: item.label,
+                                      })}
                                     >
                                       -
                                     </button>
@@ -448,12 +507,10 @@ export default function QurbaniPage() {
 
                                 <div className="mt-4 flex items-baseline gap-2">
                                   <span className="text-lg font-bold">
-                                    {new Intl.NumberFormat("ar-SA").format(
-                                      item.price,
-                                    )}
+                                    {formatNumber.format(item.price)}
                                   </span>
                                   <span className="text-sm text-black/60">
-                                    ر.س
+                                    {t("currency.sar")}
                                   </span>
                                 </div>
                               </div>
@@ -472,7 +529,7 @@ export default function QurbaniPage() {
             <div className="sticky top-28 space-y-6">
               <div className="rounded-2xl border border-[var(--color-accent)] bg-white/80 backdrop-blur shadow-[var(--shadow-soft)] p-8">
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-[var(--color-accent)]">
-                  <h3 className="font-bold text-lg">تفاصيل الطلب</h3>
+                  <h3 className="font-bold text-lg">{t("cart.title")}</h3>
                   <span className="material-symbols-outlined text-[var(--color-primary)]">
                     shopping_basket
                   </span>
@@ -480,7 +537,7 @@ export default function QurbaniPage() {
 
                 {cartLines.length === 0 ? (
                   <div className="text-sm text-black/60 font-light">
-                    لم تقم بإضافة أي عناصر بعد.
+                    {t("cart.empty")}
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -494,8 +551,8 @@ export default function QurbaniPage() {
                             {line.itemLabel} ({line.sectionLabel})
                           </h5>
                           <p className="text-xs text-black/60 font-light mt-1">
-                            الكمية:{" "}
-                            {new Intl.NumberFormat("ar-SA").format(line.qty)}
+                            {t("cart.quantityLabel")}{" "}
+                            {formatNumber.format(line.qty)}
                           </p>
                         </div>
                         <span className="text-sm font-bold text-[var(--color-primary)]">
@@ -507,7 +564,7 @@ export default function QurbaniPage() {
                     <div className="pt-6 border-t border-dashed border-[var(--color-accent)] space-y-4">
                       <div className="flex justify-between items-center">
                         <span className="text-black/60 font-light">
-                          المجموع الفرعي
+                          {t("summary.subtotal")}
                         </span>
                         <span className="font-medium">
                           {formatSAR(subtotal)}
@@ -515,12 +572,14 @@ export default function QurbaniPage() {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-black/60 font-light">
-                          الضريبة (15%)
+                          {t("summary.tax", { rate: 15 })}
                         </span>
                         <span className="font-medium">{formatSAR(tax)}</span>
                       </div>
                       <div className="flex justify-between items-center pt-2">
-                        <span className="font-bold text-lg">الإجمالي</span>
+                        <span className="font-bold text-lg">
+                          {t("summary.total")}
+                        </span>
                         <span className="text-[var(--color-primary)] text-2xl font-bold">
                           {formatSAR(total)}
                         </span>
@@ -533,20 +592,23 @@ export default function QurbaniPage() {
                         onClick={clearCart}
                         className="py-2.5 rounded-xl border border-[var(--color-accent)] text-sm text-black/60 hover:text-red-500 hover:bg-white transition-colors"
                       >
-                        مسح الطلب
+                        {t("cart.clear")}
                       </button>
                       <button
                         type="button"
                         onClick={handleCheckout}
                         className="py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-bold hover:bg-[var(--color-primary-dark)] transition-colors"
                       >
-                        إتمام الدفع
+                        {t("cart.checkout")}
                       </button>
 
                       {checkoutAttempted && hasOutOfSyncSections && (
                         <div className="col-span-2 text-xs text-red-600 font-medium">
-                          القيمة غير متوافقة. يرجى تحديث الطلب في:{" "}
-                          {outOfSyncSectionLabels.join("، ")}.
+                          {t("cart.outOfSync", {
+                            sections: outOfSyncSectionLabels.join(
+                              t("listSeparator"),
+                            ),
+                          })}
                         </div>
                       )}
                     </div>
@@ -560,7 +622,7 @@ export default function QurbaniPage() {
                     shield
                   </span>
                   <span className="text-[10px] font-bold text-black/50 uppercase tracking-tighter">
-                    دفع آمن
+                    {t("badges.securePayment")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[var(--color-accent)] bg-white/80 backdrop-blur shadow-[var(--shadow-soft)]">
@@ -568,7 +630,7 @@ export default function QurbaniPage() {
                     support_agent
                   </span>
                   <span className="text-[10px] font-bold text-black/50 uppercase tracking-tighter">
-                    دعم 24/7
+                    {t("badges.support247")}
                   </span>
                 </div>
               </div>

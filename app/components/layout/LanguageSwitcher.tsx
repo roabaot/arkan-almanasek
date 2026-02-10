@@ -8,23 +8,23 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { RiCheckLine, RiGlobalLine } from "react-icons/ri";
+import { useTranslations } from "next-intl";
 
 type Locale = "ar" | "en" | "id" | "tr" | "si" | "ms";
 
 type Option = {
   locale: Locale;
   shortLabel: string;
-  name: string;
   country: "sa" | "us" | "id" | "tr" | "si" | "my";
 };
 
 const OPTIONS: Option[] = [
-  { locale: "ar", shortLabel: "AR", name: "العربية", country: "sa" },
-  { locale: "en", shortLabel: "EN", name: "English", country: "us" },
-  { locale: "id", shortLabel: "ID", name: "Bahasa Indonesia", country: "id" },
-  { locale: "tr", shortLabel: "TR", name: "Türkçe", country: "tr" },
-  { locale: "si", shortLabel: "SI", name: "Slovenščina", country: "si" },
-  { locale: "ms", shortLabel: "MS", name: "Bahasa Melayu", country: "my" },
+  { locale: "ar", shortLabel: "AR", country: "sa" },
+  { locale: "en", shortLabel: "EN", country: "us" },
+  { locale: "id", shortLabel: "ID", country: "id" },
+  { locale: "tr", shortLabel: "TR", country: "tr" },
+  { locale: "si", shortLabel: "SI", country: "si" },
+  { locale: "ms", shortLabel: "MS", country: "my" },
 ];
 
 function Flag({ country }: { country: Option["country"] }) {
@@ -52,6 +52,8 @@ function toLocalePath(pathname: string, nextLocale: Locale) {
 }
 
 export default function LanguageSwitcher() {
+  const tCommon = useTranslations("common");
+  const tLanguages = useTranslations("languages");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -64,11 +66,6 @@ export default function LanguageSwitcher() {
     }
     return "ar";
   }, [params]);
-
-  const current = useMemo(
-    () => OPTIONS.find((o) => o.locale === currentLocale) ?? OPTIONS[0],
-    [currentLocale],
-  );
 
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -107,7 +104,7 @@ export default function LanguageSwitcher() {
         className="flex items-center justify-center rounded-full p-2 text-gray-600 cursor-pointer transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-background"
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Language"
+        aria-label={tCommon("language")}
       >
         <RiGlobalLine className="text-lg" />
         {/* <Flag country={current.country} /> */}
@@ -138,7 +135,7 @@ export default function LanguageSwitcher() {
                   <span className="flex flex-col leading-tight">
                     {/* <span className="font-semibold">{opt.shortLabel}</span> */}
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {opt.name}
+                      {tLanguages(opt.locale)}
                     </span>
                   </span>
                 </span>

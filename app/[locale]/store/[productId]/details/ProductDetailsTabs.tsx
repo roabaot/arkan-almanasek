@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { FaShirt, FaSoap } from "react-icons/fa6";
 import {
   RiShieldCheckLine,
@@ -13,6 +14,7 @@ import {
 import type { TabKey } from "./types";
 
 export default function ProductDetailsTabs() {
+  const t = useTranslations("store");
   const [activeTab, setActiveTab] = useState<TabKey>("description");
 
   const tabButtonBase =
@@ -32,7 +34,7 @@ export default function ProductDetailsTabs() {
           }
           onClick={() => setActiveTab("description")}
         >
-          وصف المنتج
+          {t("product.tabs.description")}
         </button>
         <button
           type="button"
@@ -44,7 +46,7 @@ export default function ProductDetailsTabs() {
           }
           onClick={() => setActiveTab("specs")}
         >
-          المواصفات
+          {t("product.tabs.specs")}
         </button>
         <button
           type="button"
@@ -56,7 +58,7 @@ export default function ProductDetailsTabs() {
           }
           onClick={() => setActiveTab("reviews")}
         >
-          التقييمات (125)
+          {t("product.tabs.reviews", { count: 125 })}
         </button>
       </div>
 
@@ -65,20 +67,13 @@ export default function ProductDetailsTabs() {
         {activeTab === "description" ? (
           <div className="max-w-4xl">
             <h3 className="text-2xl font-bold text-text-main dark:text-white mb-6">
-              تفاصيل المجموعة الكاملة
+              {t("product.description.title")}
             </h3>
             <p className="text-text-sub dark:text-gray-400 leading-relaxed mb-6">
-              تم تصميم مجموعة الحج الفاخرة هذه بعناية فائقة لتلبية احتياجات
-              الحاج والمعتمر العصري. ندرك أن رحلة الحج تتطلب تجهيزات خاصة، ولذلك
-              جمعنا لكم أفضل المنتجات التي تضمن راحتكم وخشوعكم. الإحرام مصنوع من
-              القطن المصري 100% لضمان الامتصاص والتهوية، مع عدم وجود أي خياطة
-              لضمان الالتزام بالسنة.
+              {t("product.description.paragraph1")}
             </p>
             <p className="text-text-sub dark:text-gray-400 leading-relaxed mb-8">
-              تتضمن الحقيبة أيضاً مجموعة العناية الشخصية الخالية من العطور
-              والمحرمات، مما يجعلها مثالية للاستخدام أثناء فترة الإحرام. الحقيبة
-              نفسها مصممة لتكون خفيفة الوزن ومقاومة للماء، مع جيوب متعددة لتنظيم
-              أغراضكم الشخصية.
+              {t("product.description.paragraph2")}
             </p>
 
             {/* Features Grid */}
@@ -89,10 +84,10 @@ export default function ProductDetailsTabs() {
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    قطن طبيعي 100%
+                    {t("product.features.cotton.title")}
                   </h4>
                   <p className="text-sm text-text-sub">
-                    إحرام ناعم الملمس يمنع التعرق والتهيج.
+                    {t("product.features.cotton.description")}
                   </p>
                 </div>
               </div>
@@ -103,10 +98,10 @@ export default function ProductDetailsTabs() {
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    خالية من العطور
+                    {t("product.features.fragranceFree.title")}
                   </h4>
                   <p className="text-sm text-text-sub">
-                    منتجات عناية متوافقة مع شروط الإحرام.
+                    {t("product.features.fragranceFree.description")}
                   </p>
                 </div>
               </div>
@@ -117,10 +112,10 @@ export default function ProductDetailsTabs() {
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    جودة مضمونة
+                    {t("product.features.quality.title")}
                   </h4>
                   <p className="text-sm text-text-sub">
-                    ضمان استبدال في حال وجود عيب مصنعي.
+                    {t("product.features.quality.description")}
                   </p>
                 </div>
               </div>
@@ -131,10 +126,10 @@ export default function ProductDetailsTabs() {
                 </div>
                 <div>
                   <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    توصيل سريع
+                    {t("product.features.shipping.title")}
                   </h4>
                   <p className="text-sm text-text-sub">
-                    شحن مباشر لمكة المكرمة والمدينة المنورة.
+                    {t("product.features.shipping.description")}
                   </p>
                 </div>
               </div>
@@ -143,7 +138,7 @@ export default function ProductDetailsTabs() {
             {/* Rating Section */}
             <div className="mt-16 pt-10 border-t border-gray-100 dark:border-[#332d22]">
               <h3 className="text-2xl font-bold text-text-main dark:text-white mb-8">
-                تقييمات العملاء
+                {t("product.reviews.title")}
               </h3>
               <div className="flex flex-col lg:flex-row gap-12">
                 {/* Rating Summary */}
@@ -160,7 +155,7 @@ export default function ProductDetailsTabs() {
                       <RiStarHalfFill className="text-xl" aria-hidden="true" />
                     </div>
                     <p className="text-text-sub text-base font-normal leading-normal">
-                      بناءً على 125 تقييم
+                      {t("product.reviews.basedOn", { count: 125 })}
                     </p>
                   </div>
 
@@ -238,11 +233,11 @@ export default function ProductDetailsTabs() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
                         <div className="size-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 font-bold">
-                          ع
+                          {t("product.reviews.items.0.initial")}
                         </div>
                         <div>
                           <h5 className="text-sm font-bold text-text-main dark:text-white">
-                            عبدالله المحمد
+                            {t("product.reviews.items.0.name")}
                           </h5>
                           <div className="flex text-primary text-xs">
                             <RiStarFill className="text-sm" aria-hidden="true" />
@@ -253,11 +248,12 @@ export default function ProductDetailsTabs() {
                           </div>
                         </div>
                       </div>
-                      <span className="text-xs text-text-sub">منذ يومين</span>
+                      <span className="text-xs text-text-sub">
+                        {t("product.reviews.items.0.timeAgo")}
+                      </span>
                     </div>
                     <p className="text-text-main dark:text-gray-300 text-sm leading-relaxed">
-                      المنتج ممتاز جداً والخامة قطنية مريحة. التغليف كان فاخر
-                      ومناسب للإهداء. وصلني الطلب خلال يومين فقط. شكراً لكم.
+                      {t("product.reviews.items.0.text")}
                     </p>
                   </div>
 
@@ -265,11 +261,11 @@ export default function ProductDetailsTabs() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
                         <div className="size-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 font-bold">
-                          س
+                          {t("product.reviews.items.1.initial")}
                         </div>
                         <div>
                           <h5 className="text-sm font-bold text-text-main dark:text-white">
-                            سارة أحمد
+                            {t("product.reviews.items.1.name")}
                           </h5>
                           <div className="flex text-primary text-xs">
                             <RiStarFill className="text-sm" aria-hidden="true" />
@@ -280,11 +276,12 @@ export default function ProductDetailsTabs() {
                           </div>
                         </div>
                       </div>
-                      <span className="text-xs text-text-sub">منذ أسبوع</span>
+                      <span className="text-xs text-text-sub">
+                        {t("product.reviews.items.1.timeAgo")}
+                      </span>
                     </div>
                     <p className="text-text-main dark:text-gray-300 text-sm leading-relaxed">
-                      جودة رائعة ولكن السعر مرتفع قليلاً. الحقيبة عملية جداً
-                      وواسعة.
+                      {t("product.reviews.items.1.text")}
                     </p>
                   </div>
                 </div>
@@ -294,31 +291,31 @@ export default function ProductDetailsTabs() {
         ) : activeTab === "specs" ? (
           <div className="max-w-4xl">
             <h3 className="text-2xl font-bold text-text-main dark:text-white mb-6">
-              المواصفات
+              {t("product.specs.title")}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">الخامة</p>
+                <p className="text-sm text-text-sub">{t("product.specs.material.label")}</p>
                 <p className="font-bold text-text-main dark:text-white">
-                  قطن 100%
+                  {t("product.specs.material.value")}
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">الملحقات</p>
+                <p className="text-sm text-text-sub">{t("product.specs.accessories.label")}</p>
                 <p className="font-bold text-text-main dark:text-white">
-                  حقيبة + أدوات عناية
+                  {t("product.specs.accessories.value")}
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">مناسب لـ</p>
+                <p className="text-sm text-text-sub">{t("product.specs.suitableFor.label")}</p>
                 <p className="font-bold text-text-main dark:text-white">
-                  الحج والعمرة
+                  {t("product.specs.suitableFor.value")}
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">الضمان</p>
+                <p className="text-sm text-text-sub">{t("product.specs.warranty.label")}</p>
                 <p className="font-bold text-text-main dark:text-white">
-                  استبدال عند العيب
+                  {t("product.specs.warranty.value")}
                 </p>
               </div>
             </div>
@@ -326,10 +323,10 @@ export default function ProductDetailsTabs() {
         ) : (
           <div className="max-w-4xl">
             <h3 className="text-2xl font-bold text-text-main dark:text-white mb-6">
-              التقييمات
+              {t("product.reviews.title")}
             </h3>
             <p className="text-text-sub dark:text-gray-400">
-              يمكنك عرض كل التقييمات هنا أو ربطها ببيانات حقيقية لاحقاً.
+              {t("product.reviews.placeholder")}
             </p>
           </div>
         )}

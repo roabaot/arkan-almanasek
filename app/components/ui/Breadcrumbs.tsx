@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import * as React from "react";
 import type { UrlObject } from "url";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
@@ -52,7 +52,7 @@ export function Breadcrumbs({
   separatorClassName,
   separatorIcon,
   separatorIconName = "chevron_right",
-  ariaLabel = "Breadcrumb",
+  ariaLabel,
 }: BreadcrumbsProps) {
   const baseNavClass = "flex items-center text-sm text-text-sub";
   const baseLinkClass = "hover:text-primary transition-colors";

@@ -1,7 +1,7 @@
 export {
-  step3PaymentSchema,
+  createStep3PaymentSchema,
   type PaymentMethod,
-  type Step3PaymentValues,
+  type Step3PaymentSchema,
 } from "./step3PaymentSchema";
 
 export {
@@ -9,4 +9,4 @@ export {
   type Step2CustomerInfoValues,
 } from "./step2CustomerInfoSchema";
 
-export { contactUsSchema, type ContactUsValues } from "./contactUsSchema";
+export { createContactUsSchema, type ContactUsValues } from "./contactUsSchema";

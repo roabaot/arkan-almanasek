@@ -3,7 +3,7 @@
 import { useLocale } from "next-intl";
 import React from "react";
 
-const LogoHorizontal = () => {
+const LogoVertical = () => {
   const locale = useLocale();
   const isRTL = locale === "ar";
   return (
@@ -130,4 +130,4 @@ const LogoHorizontal = () => {
   );
 };
 
-export default LogoHorizontal;
+export default LogoVertical;

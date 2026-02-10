@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   RiBankCardLine,
   RiBankLine,
@@ -8,7 +9,7 @@ import {
   RiUploadCloud2Line,
 } from "react-icons/ri";
 
-import { step3PaymentSchema, type PaymentMethod } from "@/lib/validation";
+import { createStep3PaymentSchema, type PaymentMethod } from "@/lib/validation";
 
 import { formatCardNumber, formatExpiry, formatFileSize } from "@/lib/utils";
 
@@ -53,6 +54,7 @@ export default function Step3Payment({
   onBack: () => void;
   onConfirm: () => void;
 }) {
+  const t = useTranslations("cart.step3");
   const groupName = useId();
   const bankReceiptInputId = useId();
   const [method, setMethod] = useState<PaymentMethod>("card");
@@ -76,15 +78,15 @@ export default function Step3Payment({
     () => [
       {
         key: "cardholder",
-        label: "اسم حامل البطاقة",
-        placeholder: "الاسم كما يظهر على البطاقة",
+        label: t("card.fields.cardholder.label"),
+        placeholder: t("card.fields.cardholder.placeholder"),
         type: "text" as const,
         dir: "rtl" as const,
       },
       {
         key: "cardNumber",
-        label: "رقم البطاقة",
-        placeholder: "1234 5678 9012 3456",
+        label: t("card.fields.cardNumber.label"),
+        placeholder: t("card.fields.cardNumber.placeholder"),
         type: "text" as const,
         dir: "ltr" as const,
         inputMode: "numeric" as const,
@@ -92,8 +94,8 @@ export default function Step3Payment({
       },
       {
         key: "expiry",
-        label: "تاريخ الانتهاء",
-        placeholder: "MM/YY",
+        label: t("card.fields.expiry.label"),
+        placeholder: t("card.fields.expiry.placeholder"),
         type: "text" as const,
         dir: "ltr" as const,
         inputMode: "numeric" as const,
@@ -101,15 +103,15 @@ export default function Step3Payment({
       },
       {
         key: "cvc",
-        label: "رمز الأمان",
-        placeholder: "CVC",
+        label: t("card.fields.cvc.label"),
+        placeholder: t("card.fields.cvc.placeholder"),
         type: "password" as const,
         dir: "ltr" as const,
         inputMode: "numeric" as const,
         autoComplete: "cc-csc" as const,
       },
     ],
-    [],
+    [t],
   );
 
   const [cardData, setCardData] = useState<CardData>({
@@ -133,7 +135,8 @@ export default function Step3Payment({
             receipt: bankReceipt,
           };
 
-    const result = step3PaymentSchema.safeParse(values);
+    const schema = createStep3PaymentSchema((key) => t(key));
+    const result = schema.safeParse(values);
     if (result.success) {
       setErrors({});
       onConfirm();
@@ -155,7 +158,7 @@ export default function Step3Payment({
           3
         </div>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-          طريقة الدفع
+          {t("title")}
         </h3>
       </div>
 
@@ -181,10 +184,10 @@ export default function Step3Payment({
           />
           <div className="mr-4 flex-1">
             <span className="block font-bold text-gray-900 dark:text-white">
-              بطاقة ائتمان / مدى
+              {t("methods.card.title")}
             </span>
             <span className="block text-sm text-gray-500 dark:text-gray-400">
-              ادفع بأمان عبر بطاقتك البنكية
+              {t("methods.card.description")}
             </span>
           </div>
           <div className="flex gap-2 text-gray-400">
@@ -216,10 +219,10 @@ export default function Step3Payment({
           />
           <div className="mr-4 flex-1">
             <span className="block font-bold text-gray-900 dark:text-white">
-              تحويل بنكي
+              {t("methods.bank.title")}
             </span>
             <span className="block text-sm text-gray-500 dark:text-gray-400">
-              إرفاق إيصال التحويل
+              {t("methods.bank.description")}
             </span>
           </div>
           <div className="flex gap-2 text-gray-400">
@@ -232,11 +235,11 @@ export default function Step3Payment({
         <div className="mt-6 rounded-2xl border border-gray-100 dark:border-[#332e25] bg-background-light/60 dark:bg-background-dark/40 p-5">
           <div className="flex items-center justify-between gap-3 mb-4">
             <h4 className="text-lg font-extrabold text-gray-900 dark:text-white">
-              بيانات البطاقة
+              {t("card.title")}
             </h4>
             <div className="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-2">
               <RiLock2Line className="text-base" aria-hidden />
-              <span>مشفرة وآمنة</span>
+              <span>{t("card.secureHint")}</span>
             </div>
           </div>
 
@@ -300,7 +303,7 @@ export default function Step3Payment({
           </div>
 
           <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-            سيتم استخدام هذه البيانات لأغراض الدفع فقط.
+            {t("card.note")}
           </p>
         </div>
       ) : null}
@@ -309,40 +312,40 @@ export default function Step3Payment({
         <div className="mt-6 space-y-4">
           <div className="rounded-2xl border border-gray-100 dark:border-[#332e25] bg-background-light/60 dark:bg-background-dark/40 p-5">
             <h4 className="text-lg font-extrabold text-gray-900 dark:text-white mb-2">
-              بيانات التحويل البنكي
+              {t("bank.title")}
             </h4>
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-              قم بالتحويل على الحساب التالي ثم ارفع إيصال التحويل لإتمام الطلب.
+              {t("bank.description")}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               <div className="rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark px-4 py-3">
                 <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  اسم البنك
+                  {t("bank.details.bankNameLabel")}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
-                  بنك تجريبي (عدّل لاحقًا)
+                  {t("bank.details.bankNameValue")}
                 </div>
               </div>
 
               <div className="rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark px-4 py-3">
                 <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  اسم المستفيد
+                  {t("bank.details.beneficiaryNameLabel")}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
-                  شركة تجريبية
+                  {t("bank.details.beneficiaryNameValue")}
                 </div>
               </div>
 
               <div className="rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark px-4 py-3 sm:col-span-2">
                 <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  رقم الحساب / الآيبان
+                  {t("bank.details.ibanLabel")}
                 </div>
                 <div
                   className="font-bold text-gray-900 dark:text-white"
                   dir="ltr"
                 >
-                  SA00 0000 0000 0000 0000 0000
+                  {t("bank.details.ibanValue")}
                 </div>
               </div>
             </div>
@@ -351,10 +354,10 @@ export default function Step3Payment({
           <div className="rounded-2xl border border-gray-100 dark:border-[#332e25] bg-background-light/60 dark:bg-background-dark/40 p-5">
             <div className="flex items-center justify-between gap-3 mb-3">
               <h4 className="text-lg font-extrabold text-gray-900 dark:text-white">
-                إرفاق إيصال التحويل
+                {t("bank.receipt.title")}
               </h4>
               <span className="text-xs text-gray-500 dark:text-gray-400">
-                PDF أو صورة (JPG/PNG)
+                {t("bank.receipt.formats")}
               </span>
             </div>
 
@@ -386,12 +389,14 @@ export default function Step3Payment({
                 />
                 <div className="flex-1">
                   <div className="font-bold text-gray-900 dark:text-white">
-                    {bankReceipt ? "تم اختيار ملف" : "اضغط لرفع الإيصال"}
+                    {bankReceipt
+                      ? t("bank.receipt.chosen")
+                      : t("bank.receipt.upload")}
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                     {bankReceipt
                       ? `${bankReceipt.name}${formatFileSize(bankReceipt.size) ? ` • ${formatFileSize(bankReceipt.size)}` : ""}`
-                      : "اختر ملفًا من جهازك"}
+                      : t("bank.receipt.chooseFromDevice")}
                   </div>
                 </div>
               </div>
@@ -406,7 +411,7 @@ export default function Step3Payment({
             {bankReceipt ? (
               <div className="mt-3 flex items-center justify-between gap-3">
                 <div className="text-xs text-gray-500 dark:text-gray-400">
-                  إذا رفعت ملفًا خاطئًا يمكنك إزالته ورفع ملف آخر.
+                  {t("bank.receipt.wrongFileHint")}
                 </div>
                 <button
                   type="button"
@@ -416,7 +421,7 @@ export default function Step3Payment({
                   }}
                   className="px-3 py-2 rounded-lg border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark text-gray-700 dark:text-gray-200 text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors"
                 >
-                  إزالة الملف
+                  {t("bank.receipt.removeFile")}
                 </button>
               </div>
             ) : null}
@@ -430,14 +435,14 @@ export default function Step3Payment({
           onClick={onBack}
           className="px-5 py-3 rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-background-dark text-gray-700 dark:text-gray-200 font-bold hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors"
         >
-          رجوع
+          {t("actions.back")}
         </button>
         <button
           type="button"
           onClick={validateAndConfirm}
           className="px-5 py-3 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold shadow-lg shadow-primary/30 transition-all"
         >
-          تأكيد الدفع
+          {t("actions.confirm")}
         </button>
       </div>
     </section>

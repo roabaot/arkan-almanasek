@@ -2,7 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { contactUsSchema, type ContactUsValues } from "@/lib/validation";
+import { createContactUsSchema, type ContactUsValues } from "@/lib/validation";
+import { useTranslations } from "next-intl";
 
 import {
   RiArrowDownSLine,
@@ -18,12 +19,14 @@ import {
 } from "react-icons/ri";
 
 export default function ContactUsPage() {
+  const t = useTranslations("contact");
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ContactUsValues>({
-    resolver: zodResolver(contactUsSchema),
+    resolver: zodResolver(createContactUsSchema(t)),
     defaultValues: {
       fullName: "",
       email: "",
@@ -40,11 +43,10 @@ export default function ContactUsPage() {
     <main className="flex-grow flex flex-col items-center w-full text-[#111811] antialiased">
       <section className="w-full max-w-[1280px] px-4 md:px-10 py-12 md:py-20 text-center fade-in-up">
         <h1 className="text-4xl md:text-5xl font-black text-[#171512] dark:text-white mb-6 tracking-tight">
-          تواصل معنا
+          {t("hero.title")}
         </h1>
         <p className="text-lg md:text-xl text-[#857966] dark:text-[#a39a8c] max-w-2xl mx-auto leading-relaxed">
-          نحن هنا لخدمتكم والإجابة على استفساراتكم لضمان رحلة إيمانية ميسرة
-          وآمنة في رحاب البيت العتيق.
+          {t("hero.description")}
         </p>
       </section>
 
@@ -52,7 +54,7 @@ export default function ContactUsPage() {
         <div className="lg:col-span-7 fade-in-up delay-100">
           <div className="bg-white dark:bg-[#2a241a] rounded-2xl shadow-lg border border-[#f0ebe5] dark:border-[#3a3225] p-6 md:p-10">
             <h3 className="text-2xl font-bold mb-8 text-secondary dark:text-primary">
-              أرسل لنا رسالة
+              {t("form.title")}
             </h3>
             <form
               className="flex flex-col gap-6"
@@ -62,11 +64,11 @@ export default function ContactUsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <label className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-[#171512] dark:text-gray-200">
-                    الاسم الكامل
+                    {t("form.fullName.label")}
                   </span>
                   <input
                     className="h-12 px-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-gray-400"
-                    placeholder="أدخل اسمك الكريم"
+                    placeholder={t("form.fullName.placeholder")}
                     type="text"
                     aria-invalid={!!errors.fullName}
                     {...register("fullName")}
@@ -82,11 +84,11 @@ export default function ContactUsPage() {
                 </label>
                 <label className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-[#171512] dark:text-gray-200">
-                    البريد الإلكتروني
+                    {t("form.email.label")}
                   </span>
                   <input
                     className="h-12 px-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-gray-400"
-                    placeholder="example@email.com"
+                    placeholder={t("form.email.placeholder")}
                     type="email"
                     aria-invalid={!!errors.email}
                     {...register("email")}
@@ -105,13 +107,13 @@ export default function ContactUsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <label className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-[#171512] dark:text-gray-200">
-                    رقم الهاتف
+                    {t("form.phone.label")}
                   </span>
                   <div className="relative">
                     <input
                       className="w-full h-12 px-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-gray-400 text-left"
                       dir="ltr"
-                      placeholder="+9xxxxxxxxx"
+                      placeholder={t("form.phone.placeholder")}
                       type="tel"
                       aria-invalid={!!errors.phone}
                       {...register("phone")}
@@ -133,7 +135,7 @@ export default function ContactUsPage() {
 
                 <label className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-[#171512] dark:text-gray-200">
-                    الموضوع
+                    {t("form.subject.label")}
                   </span>
                   <div className="relative">
                     <select
@@ -143,12 +145,12 @@ export default function ContactUsPage() {
                       {...register("subject")}
                     >
                       <option disabled value="">
-                        اختر موضوع الاستفسار
+                        {t("form.subject.placeholder")}
                       </option>
-                      <option value="haj">خدمات الحج</option>
-                      <option value="umrah">خدمات العمرة</option>
-                      <option value="support">الدعم الفني</option>
-                      <option value="other">أخرى</option>
+                      <option value="haj">{t("form.subject.options.haj")}</option>
+                      <option value="umrah">{t("form.subject.options.umrah")}</option>
+                      <option value="support">{t("form.subject.options.support")}</option>
+                      <option value="other">{t("form.subject.options.other")}</option>
                     </select>
                     <RiArrowDownSLine
                       className="absolute left-4 top-3.5 text-gray-500 pointer-events-none"
@@ -168,11 +170,11 @@ export default function ContactUsPage() {
 
               <label className="flex flex-col gap-2">
                 <span className="text-sm font-medium text-[#171512] dark:text-gray-200">
-                  الرسالة
+                  {t("form.message.label")}
                 </span>
                 <textarea
                   className="w-full p-4 rounded-lg bg-[#f9fafb] dark:bg-[#1a160e] border border-[#e4e1dc] dark:border-[#3a3225] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none placeholder:text-gray-400"
-                  placeholder="اكتب رسالتك هنا..."
+                  placeholder={t("form.message.placeholder")}
                   rows={5}
                   aria-invalid={!!errors.message}
                   {...register("message")}
@@ -192,7 +194,7 @@ export default function ContactUsPage() {
                 type="submit"
                 disabled={isSubmitting}
               >
-                <span>إرسال الرسالة</span>
+                <span>{t("form.submit")}</span>
                 <RiSendPlane2Line
                   className="group-hover:-translate-x-1 transition-transform rtl:rotate-180"
                   aria-hidden
@@ -208,12 +210,12 @@ export default function ContactUsPage() {
               <RiPhoneLine aria-hidden className="text-xl" />
             </div>
             <div>
-              <h4 className="font-bold text-lg mb-1">رقم الهاتف</h4>
+              <h4 className="font-bold text-lg mb-1">{t("info.phone.title")}</h4>
               <p className="text-[#857966] dark:text-[#a39a8c] text-sm mb-1">
-                تواصل معنا مباشرة عبر الهاتف
+                {t("info.phone.description")}
               </p>
               <p className="font-bold text-[#171512] dark:text-white" dir="ltr">
-                +966 50 000 0000
+                {t("info.phone.value")}
               </p>
             </div>
           </div>
@@ -223,12 +225,12 @@ export default function ContactUsPage() {
               <RiMailLine aria-hidden className="text-xl" />
             </div>
             <div>
-              <h4 className="font-bold text-lg mb-1">البريد الإلكتروني</h4>
+              <h4 className="font-bold text-lg mb-1">{t("info.email.title")}</h4>
               <p className="text-[#857966] dark:text-[#a39a8c] text-sm mb-1">
-                للاستفسارات الرسمية والشكاوي
+                {t("info.email.description")}
               </p>
               <p className="font-bold text-[#171512] dark:text-white">
-                info@manasik.sa
+                {t("info.email.value")}
               </p>
             </div>
           </div>
@@ -238,12 +240,12 @@ export default function ContactUsPage() {
               <RiTimeLine aria-hidden className="text-xl" />
             </div>
             <div>
-              <h4 className="font-bold text-lg mb-1">ساعات العمل</h4>
+              <h4 className="font-bold text-lg mb-1">{t("info.hours.title")}</h4>
               <p className="text-[#857966] dark:text-[#a39a8c] text-sm mb-1">
-                نحن متاحون لخدمتكم
+                {t("info.hours.description")}
               </p>
               <p className="font-bold text-[#171512] dark:text-white">
-                السبت - الخميس: 9ص - 5م
+                {t("info.hours.value")}
               </p>
             </div>
           </div>
@@ -253,12 +255,12 @@ export default function ContactUsPage() {
               <RiMapPinLine aria-hidden className="text-xl" />
             </div>
             <div>
-              <h4 className="font-bold text-lg mb-1">الموقع</h4>
+              <h4 className="font-bold text-lg mb-1">{t("info.location.title")}</h4>
               <p className="text-[#857966] dark:text-[#a39a8c] text-sm mb-1">
-                تفضل بزيارة مقرنا الرئيسي
+                {t("info.location.description")}
               </p>
               <p className="font-bold text-[#171512] dark:text-white">
-                مكة المكرمة، حي العزيزية، المملكة العربية السعودية
+                {t("info.location.value")}
               </p>
             </div>
           </div>
@@ -267,12 +269,14 @@ export default function ContactUsPage() {
             <a
               className="w-10 h-10 rounded-full bg-white dark:bg-[#2a241a] border border-[#e4e1dc] dark:border-[#3a3225] flex items-center justify-center text-secondary hover:text-white hover:bg-secondary transition-all hover:-translate-y-1"
               href="#"
+              aria-label={t("social.xAria")}
             >
-              <span className="text-xl font-bold">𝕏</span>
+              <span className="text-xl font-bold">{t("social.xSymbol")}</span>
             </a>
             <a
               className="w-10 h-10 rounded-full bg-white dark:bg-[#2a241a] border border-[#e4e1dc] dark:border-[#3a3225] flex items-center justify-center text-secondary hover:text-white hover:bg-green-600 transition-all hover:-translate-y-1"
               href="#"
+              aria-label={t("social.whatsAppAria")}
             >
               <svg
                 className="w-5 h-5 fill-current"
@@ -285,6 +289,7 @@ export default function ContactUsPage() {
             <a
               className="w-10 h-10 rounded-full bg-white dark:bg-[#2a241a] border border-[#e4e1dc] dark:border-[#3a3225] flex items-center justify-center text-secondary hover:text-white hover:bg-pink-600 transition-all hover:-translate-y-1"
               href="#"
+              aria-label={t("social.instagramAria")}
             >
               <svg
                 className="w-5 h-5 fill-current"
@@ -302,10 +307,10 @@ export default function ContactUsPage() {
         <div className="max-w-[1280px] px-4 md:px-10 mx-auto">
           <div className="text-center mb-12 fade-in-up delay-100">
             <h2 className="text-3xl font-bold mb-3 text-[#171512] dark:text-white">
-              مركز المساعدة
+              {t("helpCenter.title")}
             </h2>
             <p className="text-[#857966] dark:text-[#a39a8c]">
-              إجابات سريعة وخدمات مباشرة لتسهيل رحلتكم
+              {t("helpCenter.subtitle")}
             </p>
           </div>
 
@@ -314,12 +319,14 @@ export default function ContactUsPage() {
               <div className="w-16 h-16 rounded-full bg-[#fdf6e9] dark:bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
                 <RiQuestionLine className="text-3xl" aria-hidden />
               </div>
-              <h3 className="text-xl font-bold mb-2">الأسئلة الشائعة</h3>
+              <h3 className="text-xl font-bold mb-2">
+                {t("helpCenter.cards.faq.title")}
+              </h3>
               <p className="text-[#857966] dark:text-[#a39a8c] text-sm mb-4">
-                ابحث في قاعدة البيانات عن إجابات لاستفساراتك
+                {t("helpCenter.cards.faq.description")}
               </p>
               <span className="text-secondary dark:text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-                تصفح الأسئلة
+                {t("helpCenter.cards.faq.action")}
                 <RiArrowRightLine
                   className="text-sm rtl:rotate-180"
                   aria-hidden
@@ -331,12 +338,14 @@ export default function ContactUsPage() {
               <div className="w-16 h-16 rounded-full bg-[#fdf6e9] dark:bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
                 <RiCustomerService2Line className="text-3xl" aria-hidden />
               </div>
-              <h3 className="text-xl font-bold mb-2">استشارات الحج</h3>
+              <h3 className="text-xl font-bold mb-2">
+                {t("helpCenter.cards.consultations.title")}
+              </h3>
               <p className="text-[#857966] dark:text-[#a39a8c] text-sm mb-4">
-                احجز موعد لاستشارة خاصة مع أحد خبرائنا
+                {t("helpCenter.cards.consultations.description")}
               </p>
               <span className="text-secondary dark:text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-                احجز استشارة
+                {t("helpCenter.cards.consultations.action")}
                 <RiArrowRightLine
                   className="text-sm rtl:rotate-180"
                   aria-hidden
@@ -348,12 +357,14 @@ export default function ContactUsPage() {
               <div className="w-16 h-16 rounded-full bg-[#fdf6e9] dark:bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
                 <RiBookOpenLine className="text-3xl" aria-hidden />
               </div>
-              <h3 className="text-xl font-bold mb-2">دليل الخدمات</h3>
+              <h3 className="text-xl font-bold mb-2">
+                {t("helpCenter.cards.services.title")}
+              </h3>
               <p className="text-[#857966] dark:text-[#a39a8c] text-sm mb-4">
-                تعرف على كافة الخدمات والباقات المتاحة
+                {t("helpCenter.cards.services.description")}
               </p>
               <span className="text-secondary dark:text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-                عرض الخدمات
+                {t("helpCenter.cards.services.action")}
                 <RiArrowRightLine
                   className="text-sm rtl:rotate-180"
                   aria-hidden
@@ -389,11 +400,10 @@ export default function ContactUsPage() {
                 </svg>
               </div>
               <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight drop-shadow-sm">
-                جاهز لتبدأ رحلتك الإيمانية؟
+                {t("finalCta.title")}
               </h2>
               <p className="text-[#fcecdb] text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto">
-                نحن هنا لمرافقتك في كل خطوة، من التخطيط وحتى أداء المناسك، لنضمن
-                لك تجربة روحانية لا تُنسى.
+                {t("finalCta.description")}
               </p>
             </div>
 
@@ -402,13 +412,13 @@ export default function ContactUsPage() {
                 className="shimmer-btn relative bg-[#daa342] hover:bg-[#c9953d] text-[#171512] font-bold py-4 px-10 rounded-lg shadow-[0_10px_20px_-5px_rgba(218,163,66,0.4)] hover:shadow-xl transition-all transform hover:-translate-y-1 backdrop-blur-sm border border-[#f0c97d]/30 text-lg"
                 type="button"
               >
-                اطلب استشارة مجانية
+                {t("finalCta.primaryCta")}
               </button>
               <button
                 className="bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-10 rounded-lg backdrop-blur-md border border-white/20 hover:border-white/40 shadow-lg transition-all transform hover:-translate-y-1 text-lg"
                 type="button"
               >
-                تواصل معنا عبر واتساب
+                {t("finalCta.secondaryCta")}
               </button>
             </div>
           </div>

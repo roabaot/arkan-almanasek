@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import {
   RiArrowLeftLine,
   RiCompass3Line,
@@ -10,12 +11,14 @@ import {
 const HERO_BG_URL =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAQKLm9apTS9DcFVLvPHmdojmXXCAFEHZKZwlmobgvMffGzM6M2xkL6oA2tjuzOSnJtAFv3wRnNbRK38YdyByoaY5_ci3mi19rdHA6l0N0VTFX6W6C9dZzXPOTLoDCk14M0DHDHdjiU6P9zqR-y077qBCyfxITeJc7NqQC0YoXU2YEbmEztGTypUZxVOIivZbnZlXUuT9-3tT3HOGAbH_X5zWcoC7CUeli2i9_ararMA0i3HUi5ReidjtN1asZTLGJr87qvOG2z7PSM";
 
-export default function HomeHero() {
+export default async function HomeHero() {
+  const t = await getTranslations("home.hero");
+
   return (
     <section className="relative flex h-[calc(100vh+144px)] w-full items-center overflow-hidden">
       <div
         className="absolute inset-0 h-full w-full scale-105 bg-cover bg-no-repeat transition-transform duration-[20s] ease-linear hover:scale-110 saturate-125 brightness-90 [background-position:50%_35%]"
-        data-alt="Cinematic view of Kaaba"
+        data-alt={t("backgroundAlt")}
         style={{ backgroundImage: `url('${HERO_BG_URL}')` }}
       />
 
@@ -33,7 +36,7 @@ export default function HomeHero() {
             >
               <span className="size-2 animate-pulse rounded-full bg-primary" />
               <span className="text-sm font-medium tracking-wide text-primary">
-                موسم الحج ١٤٤٥هـ
+                {t("seasonBadge")}
               </span>
             </div>
 
@@ -41,9 +44,9 @@ export default function HomeHero() {
               className="animate-fade-up font-primary font-bold leading-[1.1] text-white drop-shadow-lg md:text-7xl lg:text-8xl"
               style={{ animationDelay: "0.3s" }}
             >
-              رحلة العمر <br />
+              {t("titleTop")} <br />
               <span className="text-shadow-gold bg-gradient-to-l from-primary via-[#fceabb] to-primary bg-clip-text text-transparent">
-                تبدأ بلمسة إتقان
+                {t("titleHighlight")}
               </span>
             </h1>
 
@@ -51,8 +54,7 @@ export default function HomeHero() {
               className="animate-fade-up max-w-2xl text-xl font-light leading-relaxed text-gray-200 md:text-2xl"
               style={{ animationDelay: "0.5s" }}
             >
-              نرافقكم في كل خطوة من خطوات رحلتكم الإيمانية، لنضمن لكم السكينة
-              واليسر في أداء مناسككم بأعلى معايير الخدمة.
+              {t("description")}
             </p>
 
             <div
@@ -65,7 +67,7 @@ export default function HomeHero() {
               >
                 <div className="absolute inset-0 h-full w-full -translate-x-full bg-white/20 group-hover:animate-shimmer" />
                 <div className="relative flex items-center gap-3">
-                  <span>ابدأ رحلتك</span>
+                  <span>{t("primaryCta")}</span>
                   <RiArrowLeftLine className="size-6 transition-transform group-hover:-translate-x-1" />
                 </div>
               </button>
@@ -74,7 +76,7 @@ export default function HomeHero() {
                 href="/contact-us"
                 className="group flex items-center gap-3 rounded-xl border border-white/30 bg-white/5 px-8 py-4 text-lg font-bold text-white backdrop-blur-md transition-all hover:border-primary/50 hover:bg-white/10"
               >
-                <span>اتصل بنا</span>
+                <span>{t("secondaryCta")}</span>
                 <RiPhoneFill className="size-6 text-primary opacity-70 transition-opacity group-hover:opacity-100" />
               </Link>
             </div>
@@ -88,8 +90,8 @@ export default function HomeHero() {
                     <RiGroupLine className="size-6" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white">٥٠ ألف+</h3>
-                    <p className="text-sm text-gray-300">حاج تمت خدمتهم</p>
+                    <h3 className="text-2xl font-bold text-white">{t("stats.pilgrimsValue")}</h3>
+                    <p className="text-sm text-gray-300">{t("stats.pilgrimsLabel")}</p>
                   </div>
                 </div>
                 <div className="mt-2 h-1.5 w-full rounded-full bg-white/10">
@@ -108,15 +110,11 @@ export default function HomeHero() {
                     <RiCustomerService2Line className="size-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">دعم متواصل</h3>
-                    <p className="text-sm font-bold text-secondary">
-                      ٢٤/٧ طوال الرحلة
-                    </p>
+                    <h3 className="text-lg font-bold text-white">{t("support.title")}</h3>
+                    <p className="text-sm font-bold text-secondary">{t("support.subtitle")}</p>
                   </div>
                 </div>
-                <p className="mt-2 text-xs leading-relaxed text-gray-300">
-                  فريق متخصص لخدمتكم والإجابة على استفساراتكم في أي وقت.
-                </p>
+                <p className="mt-2 text-xs leading-relaxed text-gray-300">{t("support.body")}</p>
               </div>
             </div>
 

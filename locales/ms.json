@@ -1,23 +1,386 @@
 {
   "common": {
-    "home": "Home",
-    "about": "About Us",
+    "home": "Utama",
+    "about": "Tentang Kami",
+    "contact": "Hubungi Kami",
+    "privacy_policy": "Dasar Privasi",
+    "terms_conditions": "Terma & Syarat",
+    "language": "Bahasa",
+    "empty": "Tiada data",
+    "next_step": "Langkah seterusnya",
+    "previous_step": "Langkah sebelumnya",
+    "submit": "Hantar",
+    "error": "Ralat telah berlaku",
     "services": "Services",
     "projects": "Projects",
     "blog": "Blog",
-    "contact": "Contact Us",
-    "consultation": "Free Consultation",
-    "privacy_policy": "Privacy Policy",
-    "terms_conditions": "Terms & Conditions",
-    "language": "Language",
-    "empty": "No data available",
-    "next_step": "Next Step",
-    "previous_step": "Previous Step",
-    "submit": "Submit",
-    "error": "An error occurred"
+    "consultation": "Free Consultation"
+  },
+  "header": {
+    "nav": {
+      "home": "Utama",
+      "services": "Perkhidmatan",
+      "products": "Produk",
+      "about": "Tentang Kami"
+    },
+    "services": {
+      "menuAria": "Menu perkhidmatan",
+      "items": {
+        "appName": "Arkan Al-Manasik",
+        "hadiAndUdhiyah": "Hadi & Udhiyah",
+        "badal": "Badal",
+        "consultations": "Konsultasi",
+        "manasik": "Manasik",
+        "permits": "Permit"
+      }
+    },
+    "actions": {
+      "account": "Akaun",
+      "cart": "Troli"
+    },
+    "soon": "Akan datang",
+    "mobile": {
+      "navigation": "Navigasi",
+      "menu": "Menu",
+      "closeMenu": "Tutup menu",
+      "close": "Tutup"
+    }
+  },
+  "footer": {
+    "description": "Platform utama anda untuk perkhidmatan Haji dan Umrah. Kami berusaha menyediakan pengalaman rohani yang lengkap dan mudah untuk jemaah dari seluruh dunia.",
+    "social": {
+      "x": "X",
+      "linkedin": "LinkedIn",
+      "facebook": "Facebook"
+    },
+    "quickLinks": {
+      "title": "Pautan pantas",
+      "about": "Tentang syarikat",
+      "products": "Produk",
+      "blog": "Blog Islam",
+      "privacyPolicy": "Dasar privasi"
+    },
+    "support": {
+      "title": "Sokongan & bantuan",
+      "helpCenter": "Pusat bantuan",
+      "faq": "Soalan lazim",
+      "trackOrder": "Jejak pesanan",
+      "contact": "Hubungi kami"
+    },
+    "newsletter": {
+      "title": "Langgan",
+      "description": "Dapatkan tawaran dan tip terkini untuk perjalanan anda.",
+      "emailPlaceholder": "E-mel anda",
+      "submitAria": "Hantar"
+    },
+    "copyright": "© MACS {year} | All Rights Reserved",
+    "contact_title": "Contact",
+    "address_label": "Address",
+    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia",
+    "phone_label": "Phone Number",
+    "phone_value": "+966556332242",
+    "unified_number_label": "Unified Number",
+    "email_label": "Email",
+    "email_value": "Info@macs.com.sa",
+    "work_label": "Working Hours",
+    "work_hours": "Sunday - Thursday: 9:00 AM - 5:00 PM",
+    "response_time": "Average response time: within 24 business hours",
+    "newsletter_title": "Newsletter",
+    "newsletter_description": "Technology is constantly evolving, shaping the way we live and work",
+    "newsletter_placeholder": "Your email...",
+    "newsletter_hint": "It only takes 2 minutes to complete.",
+    "newsletter_success": "You have successfully subscribed to the newsletter.",
+    "newsletter_error": "Unable to send your subscription, please try again."
+  },
+  "store": {
+    "brand": {
+      "title": "Arkan Al-Manasik",
+      "subtitle": "Produk terbaik untuk perjalanan rohani anda pada harga yang kompetitif"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Jejak navigasi",
+      "store": "Kedai"
+    },
+    "search": {
+      "mobilePlaceholder": "Cari produk...",
+      "desktopPlaceholder": "Cari ihram, mushaf..."
+    },
+    "filters": {
+      "categories": "Kategori",
+      "price": "Harga",
+      "inStockOnly": "Hanya yang ada stok"
+    },
+    "categories": {
+      "all": "Semua",
+      "ihram": "Pakaian ihram",
+      "mushaf": "Mushaf Al-Quran",
+      "books": "Buku Islam",
+      "beads": "Tasbih",
+      "prayerRugs": "Sejadah",
+      "perfumes": "Minyak wangi"
+    },
+    "price": {
+      "sar": "{value} SAR"
+    },
+    "priceRange": {
+      "min": "{value} SAR",
+      "max": "{value} SAR"
+    },
+    "sort": {
+      "label": "Susun ikut:",
+      "options": {
+        "bestSelling": "Paling laris",
+        "priceLowToHigh": "Harga: rendah ke tinggi",
+        "priceHighToLow": "Harga: tinggi ke rendah",
+        "newest": "Terbaharu"
+      }
+    },
+    "actions": {
+      "addToFavorites": "Tambah ke kegemaran",
+      "addToCartShort": "Tambah ke troli"
+    },
+    "pagination": {
+      "previous": "Halaman sebelumnya",
+      "next": "Halaman seterusnya"
+    },
+    "products": {
+      "items": {
+        "ihram-set": {
+          "title": "Premium cotton Ihram set",
+          "description": "Made from high-quality cotton; soft and comfortable for your rituals.",
+          "imageAlt": "White fabric folded neatly",
+          "details": {
+            "title": "Premium cotton Ihram set",
+            "shortDescription": "A high-quality cotton Ihram designed for comfort and breathability during long rituals."
+          }
+        },
+        "madina-quran": {
+          "title": "Madinah Quran (medium size)",
+          "description": "Premium print and paper quality with a sturdy cover.",
+          "badge": "15% off",
+          "imageAlt": "Quran book on a wooden stand",
+          "details": {
+            "title": "Madinah Quran (medium size)",
+            "shortDescription": "A clear, readable print in a convenient size for travel, with a durable cover."
+          }
+        },
+        "aqeeq-beads": {
+          "title": "Authentic Yemeni Aqeeq beads",
+          "description": "Luxury natural Aqeeq beads, 33-count, handcrafted.",
+          "imageAlt": "Prayer beads on a textured surface",
+          "details": {
+            "title": "Authentic Yemeni Aqeeq beads",
+            "shortDescription": "Elegant natural Aqeeq beads suitable for daily dhikr and gifting."
+          }
+        },
+        "zad-al-maad": {
+          "title": "Zad Al-Ma'ad",
+          "description": "A valuable book by Ibn al-Qayyim, verified edition.",
+          "imageAlt": "Collection of Islamic books stacked",
+          "details": {
+            "title": "Zad Al-Ma'ad",
+            "shortDescription": "A key reference that compiles Prophetic guidance in worship and daily life."
+          }
+        },
+        "medical-rug": {
+          "title": "Padded medical prayer rug",
+          "description": "Designed for extra comfort during prayer, especially for seniors.",
+          "imageAlt": "Islamic prayer rug with intricate patterns",
+          "details": {
+            "title": "Padded medical prayer rug",
+            "shortDescription": "A cushioned rug that provides extra support for knees and feet."
+          }
+        },
+        "oud-oil": {
+          "title": "Premium Cambodian oud oil",
+          "description": "Rich scent with long-lasting performance for daily use and occasions.",
+          "imageAlt": "Small bottle of perfume or musk",
+          "details": {
+            "title": "Premium Cambodian oud oil",
+            "shortDescription": "Concentrated oud oil with a refined scent and long wear."
+          }
+        },
+        "details": {
+          "title": "Tajuk produk",
+          "shortDescription": "Penerangan ringkas produk yang menonjolkan ciri dan manfaat utama.",
+          "fullDescription": "Penerangan penuh dan terperinci produk termasuk bahan, cara penggunaan, manfaat dan maklumat lain untuk membantu keputusan pembelian."
+        }
+      }
+    },
+    "product": {
+      "actions": {
+        "addToFavorites": "Tambah ke kegemaran",
+        "removeFromFavorites": "Buang daripada kegemaran",
+        "addToCart": "Tambah ke troli",
+        "share": "Kongsi produk"
+      },
+      "share": {
+        "text": "Lihat butiran produk"
+      },
+      "gallery": {
+        "thumbnail": "Thumbnail {index}",
+        "alt": {
+          "0": "Main product image",
+          "1": "Product thumbnail",
+          "2": "Accessory item",
+          "3": "Packaging box",
+          "4": "Included travel bag",
+          "5": "Product thumbnail",
+          "6": "Accessory item",
+          "7": "Packaging box",
+          "8": "Included travel bag"
+        },
+        "dataAlt": {
+          "0": "Main view showing the Ihram and accessories"
+        }
+      },
+      "stock": {
+        "inStock": "Ada stok"
+      },
+      "rating": {
+        "aria": "Penilaian",
+        "count": "({count} ulasan)"
+      },
+      "price": {
+        "currency": "Riyal Saudi",
+        "vatIncluded": "Termasuk cukai"
+      },
+      "quantity": {
+        "label": "Kuantiti",
+        "increase": "Tambah kuantiti",
+        "decrease": "Kurangkan kuantiti",
+        "inputAria": "Kuantiti"
+      },
+      "tabs": {
+        "description": "Penerangan",
+        "specs": "Spesifikasi",
+        "reviews": "Ulasan ({count})"
+      },
+      "description": {
+        "title": "Full kit details",
+        "paragraph1": "This premium kit is thoughtfully designed to support modern pilgrims and worshippers with comfort and practicality.",
+        "paragraph2": "It also includes essentials that help you stay organized and prepared throughout your journey."
+      },
+      "features": {
+        "cotton": {
+          "title": "100% natural cotton",
+          "description": "Soft material that helps reduce sweating and irritation."
+        },
+        "fragranceFree": {
+          "title": "Fragrance-free",
+          "description": "Care products aligned with Ihram conditions."
+        },
+        "quality": {
+          "title": "Guaranteed quality",
+          "description": "Replacement guarantee in case of manufacturing defects."
+        },
+        "shipping": {
+          "title": "Fast delivery",
+          "description": "Direct shipping to Makkah and Madinah."
+        }
+      },
+      "reviews": {
+        "title": "Ulasan pelanggan",
+        "basedOn": "Berdasarkan {count} ulasan",
+        "placeholder": "You can list all reviews here or connect real data later.",
+        "items": {
+          "0": {
+            "initial": "A",
+            "name": "Abdullah Al-Mohammad",
+            "timeAgo": "2 days ago",
+            "text": "Excellent product and comfortable material. Packaging was great and it arrived quickly."
+          },
+          "1": {
+            "initial": "S",
+            "name": "Sarah Ahmed",
+            "timeAgo": "1 week ago",
+            "text": "Great quality, but slightly expensive. The bag is very practical and spacious."
+          }
+        }
+      },
+      "specs": {
+        "title": "Spesifikasi",
+        "material": {
+          "label": "Bahan",
+          "value": "100% cotton"
+        },
+        "accessories": {
+          "label": "Aksesori",
+          "value": "Bag + care items"
+        },
+        "suitableFor": {
+          "label": "Sesuai untuk",
+          "value": "Hajj and Umrah"
+        },
+        "warranty": {
+          "label": "Jaminan",
+          "value": "Replacement on defect"
+        }
+      }
+    }
   },
   "cart": {
+    "currency": {
+      "sar": "SAR"
+    },
+    "itemCard": {
+      "removeItemAria": "Buang {item}",
+      "decreaseQtyAria": "Kurangkan kuantiti {item}",
+      "increaseQtyAria": "Tambah kuantiti {item}"
+    },
+    "mockItems": {
+      "hajjPackageEconomy": {
+        "title": "Hajj package (economy)",
+        "description": "Includes flights, accommodation in Al Aziziyah, and transportation.",
+        "imageAlt": "Holy Kaaba in Makkah with pilgrims circumambulating",
+        "badgeLabel": "Departure: Jeddah"
+      },
+      "vipAirportPickup": {
+        "title": "VIP airport pickup",
+        "description": "Airport pickup with a private car to the hotel.",
+        "imageAlt": "Modern hotel room interior in Makkah"
+      }
+    },
+    "step1": {
+      "title": "Kandungan troli"
+    },
+    "checkout": {
+      "title": "Pembayaran",
+      "subtitle": "Lengkapkan langkah tempahan untuk menyempurnakan perjalanan anda",
+      "stepper": {
+        "step1": "Semak troli",
+        "step2": "Maklumat pelanggan",
+        "step3": "Kaedah pembayaran"
+      },
+      "progress": {
+        "stepOf": "Langkah {step} daripada {total}",
+        "completePercent": "{percent}% siap"
+      },
+      "summary": {
+        "title": "Ringkasan pesanan",
+        "subtotal": "Subjumlah",
+        "vat": "Cukai ({rate}%)",
+        "serviceFee": "Yuran perkhidmatan",
+        "total": "Jumlah"
+      },
+      "discount": {
+        "placeholder": "Kod diskaun",
+        "apply": "Guna"
+      },
+      "actions": {
+        "continueToCustomerInfo": "Teruskan ke maklumat pelanggan",
+        "continueToPayment": "Teruskan ke pembayaran",
+        "confirmPayment": "Sahkan pembayaran"
+      },
+      "securityHint": "Pembayaran 100% selamat & disulitkan",
+      "help": {
+        "title": "Perlukan bantuan?",
+        "description": "Pasukan kami tersedia 24/7 untuk membantu anda menyiapkan tempahan",
+        "contact": "Hubungi kami"
+      }
+    },
     "step2": {
+      "title": "Maklumat pelanggan",
       "fields": {
         "fullNameLabel": "Nama penuh",
         "fullNamePlaceholder": "Mohammed Ahmed",
@@ -27,10 +390,10 @@
         "emailPlaceholder": "example@mail.com",
         "countryLabel": "Negara",
         "countryPlaceholder": "Pilih negara",
-        "nationalAddressLabel": "Alamat kebangsaan (pilihan)",
         "birthDateLabel": "Tarikh lahir",
         "birthDatePlaceholder": "dd/mm/yyyy",
-        "performedHajjOrUmrahBeforeLabel": "Pernah menunaikan Haji atau Umrah sebelum ini?"
+        "performedHajjOrUmrahBeforeLabel": "Pernah menunaikan Haji atau Umrah sebelum ini?",
+        "nationalAddressLabel": "Alamat kebangsaan (pilihan)"
       },
       "options": {
         "countries": {
@@ -63,6 +426,81 @@
         "birthDateInvalid": "Format tarikh lahir mestilah dd/mm/yyyy",
         "performedHajjOrUmrahBeforeRequired": "Medan ini diperlukan"
       }
+    },
+    "step3": {
+      "title": "Kaedah pembayaran",
+      "methods": {
+        "card": {
+          "title": "Kad kredit / debit",
+          "description": "Bayar dengan selamat menggunakan kad bank anda"
+        },
+        "bank": {
+          "title": "Pindahan bank",
+          "description": "Muat naik resit pindahan"
+        }
+      },
+      "card": {
+        "title": "Butiran kad",
+        "secureHint": "Disulitkan & selamat",
+        "note": "Maklumat ini hanya digunakan untuk tujuan pembayaran sahaja.",
+        "fields": {
+          "cardholder": {
+            "label": "Nama pemegang kad",
+            "placeholder": "Nama seperti pada kad"
+          },
+          "cardNumber": {
+            "label": "Nombor kad",
+            "placeholder": "1234 5678 9012 3456"
+          },
+          "expiry": {
+            "label": "Tarikh luput",
+            "placeholder": "MM/YY"
+          },
+          "cvc": {
+            "label": "Kod keselamatan",
+            "placeholder": "CVC"
+          }
+        }
+      },
+      "bank": {
+        "title": "Butiran pindahan bank",
+        "description": "Buat pindahan ke akaun di bawah, kemudian muat naik resit untuk melengkapkan pesanan anda.",
+        "details": {
+          "bankNameLabel": "Nama bank",
+          "bankNameValue": "Test bank (edit later)",
+          "beneficiaryNameLabel": "Nama penerima",
+          "beneficiaryNameValue": "Test company",
+          "ibanLabel": "Akaun / IBAN",
+          "ibanValue": "SA00 0000 0000 0000 0000 0000"
+        },
+        "receipt": {
+          "title": "Muat naik resit pindahan",
+          "formats": "PDF atau imej (JPG/PNG)",
+          "upload": "Klik untuk muat naik resit",
+          "chosen": "Fail dipilih",
+          "chooseFromDevice": "Pilih fail daripada peranti anda",
+          "wrongFileHint": "Jika anda tersalah muat naik fail, buang dan muat naik yang lain.",
+          "removeFile": "Buang fail"
+        }
+      },
+      "actions": {
+        "back": "Kembali",
+        "confirm": "Sahkan pembayaran"
+      },
+      "validation": {
+        "methodRequired": "Sila pilih kaedah pembayaran.",
+        "cardholderRequired": "Sila masukkan nama pemegang kad.",
+        "cardNumberRequired": "Sila masukkan nombor kad.",
+        "cardNumberInvalid": "Nombor kad tidak sah.",
+        "cardNumberLuhnInvalid": "Nombor kad tidak sah.",
+        "expiryRequired": "Sila masukkan tarikh luput.",
+        "expiryInvalid": "Tarikh luput tidak sah.",
+        "cvcRequired": "Sila masukkan kod keselamatan.",
+        "cvcInvalid": "Kod keselamatan tidak sah.",
+        "receiptRequired": "Sila muat naik resit pindahan.",
+        "receiptTypeInvalid": "Jenis fail tidak disokong. Muat naik PDF atau imej.",
+        "receiptSizeTooLarge": "Fail terlalu besar. Saiz maksimum 5MB."
+      }
     }
   },
   "languages": {
@@ -73,12 +511,28 @@
     "si": "Slovenščina",
     "ms": "Bahasa Melayu"
   },
-  "hero": {
-    "title": "Welcome to Business Success Leadership Resources Company",
-    "description": "Your partner for professionalism, distinction, and lasting impact"
-  },
   "services": {
     "title": "Our Services",
+    "qurbani": {
+      "title": "خدمة الهدي والأضاحي",
+      "desc": "حجز وذبح الأغنام وفق الضوابط الشرعية"
+    },
+    "manasik": {
+      "title": "إرشادات المناسك",
+      "desc": "دليل شامل لأداء الحج والعمرة"
+    },
+    "permits": {
+      "title": "خدمات التصاريح",
+      "desc": "تسهيل استخراج تصاريح الحج والعمرة"
+    },
+    "consultations": {
+      "title": "خدمات استشارية دينية",
+      "desc": "إجابات موثوقة لأسئلة الحجاج والمعتمرين"
+    },
+    "badal": {
+      "title": "الحج والعمرة بدلًا عن الغير",
+      "desc": "أداء النسك نيابةً عن من لا يستطيع"
+    },
     "description": "We offer a comprehensive range of diverse services.",
     "list": {
       "hr_services": "Human Resources Services",
@@ -162,6 +616,366 @@
       }
     }
   },
+  "qurbani": {
+    "breadcrumbs": {
+      "ariaLabel": "Breadcrumb",
+      "home": "Home",
+      "current": "Hadi and udhiyah"
+    },
+    "hero": {
+      "titlePrefix": "Buy",
+      "titleHighlight": "Ritual",
+      "description": "Slaughtering and distribution services for udhiyah, hadi, and fidya according to sharia, with ease and reliability."
+    },
+    "steps": {
+      "selectType": {
+        "title": "Select ritual type",
+        "desc": "Choose the option that suits you"
+      },
+      "securePayment": {
+        "title": "Secure payment",
+        "desc": "Trusted payment gateways"
+      },
+      "sharia": {
+        "title": "Sharia compliant",
+        "desc": "Slaughter under expert supervision"
+      },
+      "confirmation": {
+        "title": "Completion confirmation",
+        "desc": "Report via SMS"
+      }
+    },
+    "notice": {
+      "title": "Sharia notice",
+      "body": "All slaughtered animals undergo strict veterinary and sharia checks and are distributed to those in need at the prescribed times."
+    },
+    "sections": {
+      "udhiyah": {
+        "label": "Udhiyah",
+        "items": {
+          "european": "European",
+          "sawakni": "Sawakni",
+          "african": "African",
+          "hari": "Hari",
+          "naimi": "Naimi"
+        }
+      },
+      "fidya": {
+        "label": "Fidya",
+        "items": {
+          "barbary": "Barbary",
+          "sawakni": "Sawakni"
+        }
+      },
+      "aqiqah": {
+        "label": "Aqiqah",
+        "items": {
+          "naimi": "Naimi",
+          "sawakni": "Sawakni"
+        }
+      }
+    },
+    "currency": {
+      "sar": "SAR"
+    },
+    "section": {
+      "commit": {
+        "addToOrder": "Add to order",
+        "updateOrder": "Update order",
+        "added": "Added"
+      },
+      "costLabel": "Cost",
+      "clear": "Clear"
+    },
+    "items": {
+      "increaseAria": "Tambah kuantiti {item}",
+      "decreaseAria": "Kurangkan kuantiti {item}"
+    },
+    "cart": {
+      "title": "Butiran pesanan",
+      "empty": "Anda belum menambah sebarang item.",
+      "quantityLabel": "Qty:",
+      "clear": "Kosongkan pesanan",
+      "checkout": "Pembayaran",
+      "outOfSync": "Nilai tidak segerak. Sila kemas kini pesanan di: {sections}."
+    },
+    "summary": {
+      "subtotal": "Subjumlah",
+      "tax": "Cukai ({rate}%)",
+      "total": "Jumlah"
+    },
+    "badges": {
+      "securePayment": "Pembayaran selamat",
+      "support247": "Sokongan 24/7"
+    },
+    "listSeparator": ", "
+  },
+  "home": {
+    "hero": {
+      "backgroundAlt": "Cinematic view of the Kaaba",
+      "seasonBadge": "Hajj season 1445 AH",
+      "titleTop": "Journey of a lifetime",
+      "titleHighlight": "Begins with a touch of excellence",
+      "description": "We accompany you every step of your spiritual journey to ensure peace of mind and ease in performing your rituals with the highest service standards.",
+      "primaryCta": "Start your journey",
+      "secondaryCta": "Contact us",
+      "stats": {
+        "pilgrimsValue": "50k+",
+        "pilgrimsLabel": "Pilgrims served"
+      },
+      "support": {
+        "title": "Always-on support",
+        "subtitle": "24/7 throughout the journey",
+        "body": "A dedicated team to serve you and answer your questions at any time."
+      }
+    },
+    "video": {
+      "eyebrow": "Get to know us",
+      "heading": "Integrated services for pilgrims",
+      "description": "We build a digital experience that reflects the spirit of the journey: clear, reassuring, and respectful of the sacred rituals—from planning to completion.",
+      "iframeTitle": "Intro video",
+      "html5Fallback": "Your browser does not support the video tag."
+    },
+    "products": {
+      "sectionTitle": "Featured products",
+      "viewAll": "View all",
+      "addToCartAria": "Add {title} to cart",
+      "items": {
+        "ihram-set": {
+          "title": "Luxury Ihram set",
+          "subtitle": "100% Egyptian cotton, unstitched",
+          "price": "150 SAR",
+          "imageAlt": "Neatly folded white Ihram set",
+          "badgeLabel": "Best seller"
+        },
+        "portable-prayer-rug": {
+          "title": "Portable prayer rug",
+          "subtitle": "Lightweight and water-resistant",
+          "price": "45 SAR",
+          "imageAlt": "Foldable prayer rug"
+        },
+        "personal-care-kit": {
+          "title": "Personal care kit",
+          "subtitle": "Fragrance-free products for ihram",
+          "price": "80 SAR",
+          "imageAlt": "Small travel care kit"
+        },
+        "electronic-misbah": {
+          "title": "Electronic misbah",
+          "subtitle": "Smart counter with LED screen",
+          "price": "25 SAR",
+          "imageAlt": "Small electronic misbah",
+          "badgeLabel": "Special offer"
+        }
+      }
+    },
+    "services": {
+      "sectionTitle": "Our featured services",
+      "sectionDescription": "A complete suite of sharia-compliant and logistical services to make your Hajj and Umrah journey easier.",
+      "items": {
+        "hadiAndUdhiyah": {
+          "title": "Hadi and udhiyah",
+          "description": "A trusted service for slaughtering and distributing hadi and udhiyah to the poor in the Haram, supervised end-to-end with integrity."
+        },
+        "pilgrimageGuide": {
+          "title": "Rituals guide",
+          "description": "A comprehensive, visual, and interactive guide to perform Hajj/Umrah correctly according to the Sunnah."
+        },
+        "permits": {
+          "title": "Hajj & Umrah permits",
+          "description": "We help you obtain all official permits through approved channels quickly and easily."
+        },
+        "shariaConsultations": {
+          "title": "Sharia consultations",
+          "description": "Direct access to scholars and preachers to answer your jurisprudence questions during the rituals."
+        },
+        "hajjAndUmrahOnBehalf": {
+          "title": "Hajj/Umrah on behalf",
+          "description": "We perform rituals on behalf of the incapacitated or deceased, with full documentation of every stage."
+        }
+      }
+    },
+    "cta": {
+      "limitedBadge": "Limited spots this season",
+      "titleLine1": "Your journey starts with",
+      "titleLine2": "one step of preparation",
+      "description": "Let us accompany you from preparation to performing the rituals with ease and peace of mind. Join thousands of pilgrims who trusted us.",
+      "primaryCta": "Book now",
+      "secondaryCta": "Download the guide",
+      "trustBadge": "+2k",
+      "trustValue": "2,000+",
+      "trustLabel": "Pilgrims who trusted us",
+      "appName": "Arkan Al-Manasik",
+      "appTagline": "Your smart rituals guide",
+      "liveLabel": "Live"
+    }
+  },
+  "about": {
+    "hero": {
+      "titleTop": "We accompany you on the purest",
+      "titleHighlight": "journey of a lifetime",
+      "description": "Your trusted partner for serving pilgrims—combining heritage of service with modern technology to make your rituals easier."
+    },
+    "values": {
+      "title": "Our values and services",
+      "subtitle": "An integrated system designed for your comfort and peace"
+    },
+    "vision": {
+      "title": "Our vision",
+      "body": "To be the world’s leading digital platform in facilitating Hajj and Umrah—delivering innovative solutions that unite spirituality and technology with transparency and integrity."
+    },
+    "mission": {
+      "title": "Our mission",
+      "body": "We empower pilgrims to perform their rituals with ease and reassurance by providing trusted, transparent, sharia-compliant services at the highest quality standards."
+    },
+    "cards": {
+      "badal": {
+        "title": "Badal Hajj",
+        "body": "Performing rituals on behalf of those unable or deceased by trustworthy students of knowledge."
+      },
+      "trust": {
+        "title": "Integrity & credibility",
+        "body": "The foundation of how we serve pilgrims"
+      },
+      "guidance": {
+        "title": "Ritual guidance",
+        "body": "A comprehensive guide and certified guides to support you step by step."
+      },
+      "permits": {
+        "title": "Permits",
+        "body": "Fast, simplified official procedures to ensure compliant pilgrimage."
+      }
+    },
+    "why": {
+      "title": "Why us?",
+      "bullets": {
+        "sharia": "Full commitment to sharia guidelines",
+        "support": "24/7 technical and advisory support",
+        "ease": "Easy-to-use across digital platforms"
+      },
+      "imageAlt": "Pilgrims"
+    },
+    "stats": {
+      "experienceValue": "15+",
+      "experienceLabel": "Years of experience",
+      "pilgrimsValue": "50k+",
+      "pilgrimsLabel": "Pilgrims served",
+      "satisfactionValue": "99%",
+      "satisfactionLabel": "Satisfaction rate"
+    },
+    "cta": {
+      "title": "Ready to start your spiritual journey?",
+      "description": "Join thousands of pilgrims who trusted us for a memorable journey and accepted rituals, God willing.",
+      "primaryCta": "Start now",
+      "secondaryCta": "Talk to an advisor"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact us",
+      "description": "We’re here to serve you and answer your questions to ensure an easier and safer spiritual journey."
+    },
+    "form": {
+      "title": "Send us a message",
+      "fullName": {
+        "label": "Full name",
+        "placeholder": "Enter your name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "example@email.com"
+      },
+      "phone": {
+        "label": "Phone number",
+        "placeholder": "+9xxxxxxxxx"
+      },
+      "subject": {
+        "label": "Subject",
+        "placeholder": "Select a subject",
+        "options": {
+          "haj": "Hajj services",
+          "umrah": "Umrah services",
+          "support": "Technical support",
+          "other": "Other"
+        }
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Write your message here..."
+      },
+      "submit": "Send message"
+    },
+    "info": {
+      "phone": {
+        "title": "Phone",
+        "description": "Contact us directly by phone",
+        "value": "+966 50 000 0000"
+      },
+      "email": {
+        "title": "Email",
+        "description": "For official inquiries and complaints",
+        "value": "info@manasik.sa"
+      },
+      "hours": {
+        "title": "Working hours",
+        "description": "We’re available to support you",
+        "value": "Sat–Thu: 9am–5pm"
+      },
+      "location": {
+        "title": "Location",
+        "description": "Visit our headquarters",
+        "value": "Makkah, Al Aziziyah, Saudi Arabia"
+      }
+    },
+    "social": {
+      "xSymbol": "𝕏",
+      "xAria": "Our X account",
+      "whatsAppAria": "Contact via WhatsApp",
+      "instagramAria": "Our Instagram"
+    },
+    "helpCenter": {
+      "title": "Help center",
+      "subtitle": "Quick answers and direct services to make your journey easier",
+      "cards": {
+        "faq": {
+          "title": "FAQs",
+          "description": "Search our knowledge base for answers",
+          "action": "Browse FAQs"
+        },
+        "consultations": {
+          "title": "Hajj consultations",
+          "description": "Book a private consultation with one of our experts",
+          "action": "Book a consultation"
+        },
+        "services": {
+          "title": "Services guide",
+          "description": "Learn about available services and packages",
+          "action": "View services"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready to start your spiritual journey?",
+      "description": "We’re here to accompany you every step—from planning to performing the rituals—for an unforgettable experience.",
+      "primaryCta": "Request a free consultation",
+      "secondaryCta": "Contact us on WhatsApp"
+    },
+    "validation": {
+      "fullNameRequired": "Full name is required",
+      "fullNameTooLong": "Full name is too long",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Phone number is invalid",
+      "subjectRequired": "Please select a subject",
+      "messageTooShort": "Message is too short",
+      "messageTooLong": "Message is too long"
+    }
+  },
+  "hero": {
+    "title": "Welcome to Business Success Leadership Resources Company",
+    "description": "Your partner for professionalism, distinction, and lasting impact"
+  },
   "faq": {
     "title": "Frequently Asked Questions",
     "description": "Find answers to common questions about our features and services.",
@@ -191,7 +1005,11 @@
         "Direct support services and resolving establishment issues with government platforms"
       ],
       "question_4": "What types of establishments do you serve?",
-      "answer_4_list": ["Companies", "Factories", "Sole proprietorships"],
+      "answer_4_list": [
+        "Companies",
+        "Factories",
+        "Sole proprietorships"
+      ],
       "question_5": "How are services delivered to establishments?",
       "answer_5": "Services are delivered remotely or via on-site visits within the Kingdom, depending on the service and its requirements.",
       "question_6": "How can I request a service from Leadership Resources?",
@@ -241,27 +1059,6 @@
     "read_more": "Read More",
     "contact_us": "Contact Us"
   },
-  "footer": {
-    "description": "We strive to deliver the best advanced solutions and services to our clients.",
-    "contact_title": "Contact",
-    "address_label": "Address",
-    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia",
-    "phone_label": "Phone Number",
-    "phone_value": "+966556332242",
-    "unified_number_label": "Unified Number",
-    "email_label": "Email",
-    "email_value": "Info@macs.com.sa",
-    "work_label": "Working Hours",
-    "work_hours": "Sunday - Thursday: 9:00 AM - 5:00 PM",
-    "response_time": "Average response time: within 24 business hours",
-    "newsletter_title": "Newsletter",
-    "newsletter_description": "Technology is constantly evolving, shaping the way we live and work",
-    "newsletter_placeholder": "Your email...",
-    "newsletter_hint": "It only takes 2 minutes to complete.",
-    "newsletter_success": "You have successfully subscribed to the newsletter.",
-    "newsletter_error": "Unable to send your subscription, please try again.",
-    "copyright": "© MACS {year} | All Rights Reserved"
-  },
   "sidebar": {
     "tagline": "Innovative solutions for business growth and success",
     "contact_title": "Contact Information",
@@ -271,91 +1068,6 @@
     "phone_value": "+966556332242",
     "location_title": "Location Information",
     "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia"
-  },
-  "about": {
-    "breadcrumb_title": "About Us",
-    "breadcrumb_para": "Delivering high-quality, on-demand service with speed and precision. Elevate your brand effortlessly, one moment at a time.",
-    "story": {
-      "tagline": "Driving Growth Through Strategic and Innovative Marketing",
-      "our_story_title": "Our Story",
-      "our_story_paragraph": "Leadership Resources was established in 2017 to be the integrated strategic partner that makes a difference. We don't just provide services; we create impact—shaping an intelligent, integrated work environment aligned with the highest national and international standards. Leadership Resources Company is one of the leading specialized companies in marketing on behalf of others and delivering specialized services and consulting.",
-      "our_vision_title": "Our Vision",
-      "our_vision_paragraph": "To be the first choice in Saudi Arabia as the preferred strategic partner for ambitious companies seeking transformation and growth, delivering integrated services to global standards that achieve true sustainability and tangible impact.",
-      "our_mission_title": "Our Mission",
-      "our_mission_paragraph": "We believe that true partnership creates growth. We strive to be the first choice for ambitious companies by enabling our partners to focus on their vision while we build and execute plans professionally to ensure success. We create impact through integrated solutions that combine intelligence, strategy, and commitment to the highest national and international standards—delivering an experience that makes a difference and inspires progress."
-    },
-    "service": {
-      "subtitle": "SERVICES",
-      "heading": "What we stand for",
-      "parts": {
-        "1": {
-          "title": "24/7 Support",
-          "description": "We are available to assist you whenever you need."
-        },
-        "2": {
-          "title": "Secure Payments",
-          "description": "We ensure a safe and reliable payment method to protect your data."
-        },
-        "3": {
-          "title": "Daily Updates",
-          "description": "We continually update our services to keep them at their best."
-        },
-        "4": {
-          "title": "Market Analysis",
-          "description": "We analyze the market to empower you to make the best decisions."
-        }
-      },
-      "impact": {
-        "heading": "Our Impact in Numbers and Proven Success Through Strategy",
-        "description": "We offer flat-rate pricing so you can plan your design needs without worrying about extra costs.",
-        "clients_label": "Satisfied Clients",
-        "strategies_label": "Strategies Delivered"
-      }
-    },
-    "values": {
-      "subtitle": "Our Values",
-      "heading": "What we stand for",
-      "parts": {
-        "1": {
-          "title": "Professionalism",
-          "description": "Quality is our standard. We don’t accept half solutions—we deliver a fully structured service with precision and professionalism."
-        },
-        "2": {
-          "title": "Credibility & Transparency",
-          "description": "Trust is the foundation of our client relationships. Honesty and transparency in all our procedures and steps are principles we never compromise."
-        },
-        "3": {
-          "title": "Impact",
-          "description": "We strive to be more than a strategic partner—to be a turning point and a lasting impact with our partners."
-        },
-        "4": {
-          "title": "Flexibility",
-          "description": "We believe every client has a unique story. We tailor our services flexibly to partner needs, pursuing the best results."
-        }
-      },
-      "impact": {
-        "heading": "Our Impact in Numbers and Proven Success Through Strategy",
-        "description": "We offer flat-rate pricing so you can plan your design needs without worrying about extra costs.",
-        "clients_label": "Satisfied Clients",
-        "strategies_label": "Strategies Delivered"
-      }
-    },
-    "section": {
-      "title": "We drive your brand to leadership by delivering advanced solutions and services",
-      "description": "In a fast-growing business world, Leadership Resources was established in 2017 to be the strategic partner for diverse companies across multiple sectors. We don’t just offer services—we create impact, shaping a healthy, integrated work environment aligned with Saudi Vision 2030. Leadership Resources Company is one of the leading specialized firms in marketing on behalf of others and administrative and consulting services, having served nearly 1,000 companies across sectors.",
-      "stats": {
-        "clients": "Happy clients",
-        "services": "Services provided"
-      },
-      "list": {
-        "0": "Strategic planning",
-        "1": "Corporate performance indicators",
-        "2": "Premium residency program",
-        "3": "Human resources packages",
-        "4": "Trademark registration"
-      },
-      "help_text": "Need help? Contact us at"
-    }
   },
   "validation": {
     "role": {

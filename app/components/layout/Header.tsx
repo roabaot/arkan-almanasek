@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLocale, useTranslations } from "next-intl";
 import {
   RiArrowDownSLine,
   RiCloseLine,
@@ -12,9 +13,9 @@ import {
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoHorizontal from "../ui/LogoHorizontal";
 import { Link } from "@/i18n/navigation";
-import { useLocale } from "next-intl";
 
 export default function Header() {
+  const t = useTranslations("header");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false);
@@ -79,18 +80,18 @@ export default function Header() {
     () =>
       [
         {
-          label: "الهدي والأضاحي",
+          key: "hadiAndUdhiyah",
           href: "/services/hadi-and-udhiyah",
           disabled: false,
         },
-        { label: "بدل", href: "/services/badal", disabled: true },
+        { key: "badal", href: "/services/badal", disabled: true },
         {
-          label: "الاستشارات",
+          key: "consultations",
           href: "/services/consultations",
           disabled: true,
         },
-        { label: "المناسك", href: "/services/manasik", disabled: true },
-        { label: "التصاريح", href: "/services/permits", disabled: true },
+        { key: "manasik", href: "/services/manasik", disabled: true },
+        { key: "permits", href: "/services/permits", disabled: true },
       ] as const,
     [],
   );
@@ -112,7 +113,7 @@ export default function Header() {
             (isMobileMenuOpen ? "opacity-100" : "opacity-0")
           }
           onClick={() => setIsMobileMenuOpen(false)}
-          aria-label="إغلاق القائمة"
+          aria-label={t("mobile.closeMenu")}
         />
 
         <aside
@@ -123,7 +124,7 @@ export default function Header() {
           }
           role="dialog"
           aria-modal="true"
-          aria-label="قائمة التنقل"
+          aria-label={t("mobile.navigation")}
         >
           <div className="flex h-20 items-center justify-between border-b border-gray-200 px-4 dark:border-gray-800 flex-row">
             <Link href="/">
@@ -133,7 +134,7 @@ export default function Header() {
               type="button"
               className="flex items-center justify-center rounded-full p-2 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-background"
               onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="إغلاق"
+              aria-label={t("mobile.close")}
             >
               <RiCloseLine className="text-xl" />
             </button>
@@ -160,14 +161,14 @@ export default function Header() {
                   <button
                     type="button"
                     className="flex items-center justify-center rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-800 dark:bg-[#0f1f0f] dark:text-gray-200 dark:hover:bg-[#132813]"
-                    aria-label="الحساب"
+                    aria-label={t("actions.account")}
                   >
                     <RiUser3Line className="text-lg" />
                   </button>
                   <Link
                     href="/cart"
                     className="relative flex items-center justify-center rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-800 dark:bg-[#0f1f0f] dark:text-gray-200 dark:hover:bg-[#132813]"
-                    aria-label="السلة"
+                    aria-label={t("actions.cart")}
                   >
                     <RiShoppingBag3Line className="text-lg" />
                     <span className="absolute right-2 top-2 size-2 rounded-full bg-[#d4af37]" />
@@ -186,7 +187,7 @@ export default function Header() {
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                الرئيسية
+                {t("nav.home")}
               </Link>
               <div>
                 <button
@@ -198,7 +199,7 @@ export default function Header() {
                   aria-expanded={isMobileServicesMenuOpen}
                   aria-controls="mobile-services-submenu"
                 >
-                  <span>الخدمات</span>
+                  <span>{t("nav.services")}</span>
                   <RiArrowDownSLine
                     className={
                       "text-lg transition-transform " +
@@ -225,7 +226,8 @@ export default function Header() {
                         }
                         aria-disabled="true"
                       >
-                        {item.label} <span className="text-xs">(قريباً)</span>
+                        {t(`services.items.${item.key}`)}{" "}
+                        <span className="text-xs">({t("soon")})</span>
                       </div>
                     ) : (
                       <Link
@@ -237,7 +239,7 @@ export default function Header() {
                           setIsMobileMenuOpen(false);
                         }}
                       >
-                        {item.label}
+                        {t(`services.items.${item.key}`)}
                       </Link>
                     ),
                   )}
@@ -248,14 +250,14 @@ export default function Header() {
                 href="/store"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                المنتجات
+                {t("nav.products")}
               </Link>
               <Link
                 className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
                 href="/about-us"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                من نحن
+                {t("nav.about")}
               </Link>
             </nav>
           </div>
@@ -281,7 +283,7 @@ export default function Header() {
                   className="text-sm font-bold text-gray-700 transition-colors hover:text-secondary dark:text-gray-200"
                   href="/"
                 >
-                  الرئيسية
+                  {t("nav.home")}
                 </Link>
 
                 <div ref={servicesMenuRef} className="relative">
@@ -295,14 +297,14 @@ export default function Header() {
                     aria-expanded={isServicesMenuOpen}
                     onClick={() => setIsServicesMenuOpen((open) => !open)}
                   >
-                    الخدمات
+                    {t("nav.services")}
                     <RiArrowDownSLine className="text-lg" />
                   </button>
 
                   {isServicesMenuOpen ? (
                     <div
                       role="menu"
-                      aria-label="قائمة الخدمات"
+                      aria-label={t("services.menuAria")}
                       className={
                         "absolute z-50 mt-2 w-64 rounded-xl border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-800 dark:bg-[#0f1f0f] " +
                         (isRtl ? "right-0" : "left-0")
@@ -319,8 +321,8 @@ export default function Header() {
                               (isRtl ? "flex-row-reverse" : "flex-row")
                             }
                           >
-                            <span>{item.label}</span>
-                            <span className="text-xs">قريباً</span>
+                            <span>{t(`services.items.${item.key}`)}</span>
+                            <span className="text-xs">{t("soon")}</span>
                           </div>
                         ) : (
                           <Link
@@ -330,7 +332,7 @@ export default function Header() {
                             href={item.href}
                             onClick={() => setIsServicesMenuOpen(false)}
                           >
-                            {item.label}
+                            {t(`services.items.${item.key}`)}
                           </Link>
                         ),
                       )}
@@ -342,13 +344,13 @@ export default function Header() {
                   className="text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300"
                   href="/store"
                 >
-                  المنتجات
+                  {t("nav.products")}
                 </Link>
                 <Link
                   className="text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300"
                   href="/about-us"
                 >
-                  من نحن
+                  {t("nav.about")}
                 </Link>
               </nav>
 
@@ -357,7 +359,7 @@ export default function Header() {
                 <button
                   type="button"
                   className="flex items-center justify-center rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-background"
-                  aria-label="الحساب"
+                  aria-label={t("actions.account")}
                 >
                   <RiUser3Line />
                 </button>
@@ -365,7 +367,7 @@ export default function Header() {
                 <Link
                   href="/cart"
                   className="relative flex items-center justify-center rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-background"
-                  aria-label="السلة"
+                  aria-label={t("actions.cart")}
                 >
                   <RiShoppingBag3Line />
                   <span className="absolute right-1 top-1 size-2 rounded-full bg-[#d4af37]" />
@@ -374,7 +376,7 @@ export default function Header() {
                 <button
                   type="button"
                   className="flex items-center justify-center rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-background md:hidden"
-                  aria-label="القائمة"
+                  aria-label={t("mobile.menu")}
                   aria-controls="mobile-nav"
                   aria-expanded={isMobileMenuOpen}
                   onClick={() => setIsMobileMenuOpen((open) => !open)}

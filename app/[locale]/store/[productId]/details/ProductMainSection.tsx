@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   RiAddLine,
   RiHeartFill,
@@ -21,6 +22,8 @@ export default function ProductMainSection({
   params: PageParams;
   gallery: readonly GalleryImage[];
 }) {
+  const t = useTranslations("store");
+
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -44,7 +47,11 @@ export default function ProductMainSection({
             <button
               type="button"
               className="size-10 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
-              aria-label={isFavorite ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
+              aria-label={
+                isFavorite
+                  ? t("product.actions.removeFromFavorites")
+                  : t("product.actions.addToFavorites")
+              }
               onClick={() => setIsFavorite((v) => !v)}
             >
               {isFavorite ? (
@@ -70,7 +77,7 @@ export default function ProductMainSection({
                     ? "border-primary"
                     : "border-transparent hover:border-secondary/50")
                 }
-                aria-label={`صورة مصغرة ${idx + 1}`}
+                aria-label={t("product.gallery.thumbnail", { index: idx + 1 })}
                 onClick={() => setActiveImageIndex(idx)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -92,21 +99,26 @@ export default function ProductMainSection({
         <div className="mb-4">
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-green-600 ml-1.5" />
-            متوفر في المخزون
+            {t("product.stock.inStock")}
           </span>
 
           <h1 className="text-3xl sm:text-4xl font-black text-text-main dark:text-white leading-tight mb-2">
-            مجموعة مستلزمات الحج الفاخرة
+            {t(`products.items.details.title`)}
           </h1>
           <div className="flex items-center gap-2">
-            <div className="flex text-primary" aria-label="التقييم">
+            <div
+              className="flex text-primary"
+              aria-label={t("product.rating.aria")}
+            >
               <RiStarFill className="text-lg" aria-hidden="true" />
               <RiStarFill className="text-lg" aria-hidden="true" />
               <RiStarFill className="text-lg" aria-hidden="true" />
               <RiStarFill className="text-lg" aria-hidden="true" />
               <RiStarHalfFill className="text-lg" aria-hidden="true" />
             </div>
-            <span className="text-sm text-text-sub">(125 تقييم)</span>
+            <span className="text-sm text-text-sub">
+              {t("product.rating.count", { count: 125 })}
+            </span>
           </div>
         </div>
 
@@ -115,20 +127,17 @@ export default function ProductMainSection({
           <div className="flex items-baseline gap-2">
             <p className="text-4xl font-bold text-primary">450.00</p>
             <p className="text-lg text-text-main dark:text-gray-300 font-medium">
-              ريال سعودي
+              {t("product.price.currency")}
             </p>
           </div>
           <p className="text-sm text-text-sub mt-1">
-            شامل ضريبة القيمة المضافة
+            {t("product.price.vatIncluded")}
           </p>
         </div>
 
         {/* Short Description */}
         <p className="text-text-sub text-base leading-relaxed mb-8 dark:text-gray-400">
-          مجموعة متكاملة تضم كل ما يحتاجه الحاج لأداء المناسك بيسر وسهولة. تتكون
-          من إحرام قطني فاخر عالي الجودة، حقيبة خصر آمنة، أدوات عناية شخصية
-          خالية من العطور، وسجادة صلاة خفيفة الوزن. مصممة بعناية لتوفير أقصى
-          درجات الراحة.
+          {t(`products.items.details.shortDescription`)}
         </p>
 
         {/* Selectors */}
@@ -136,13 +145,13 @@ export default function ProductMainSection({
           {/* Quantity */}
           <div className="flex items-center justify-between">
             <span className="text-base font-bold text-text-main dark:text-white">
-              الكمية المطلوبة
+              {t("product.quantity.label")}
             </span>
             <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-[#2a241a]">
               <button
                 type="button"
                 className="size-10 flex items-center justify-center text-text-main dark:text-white hover:bg-gray-100 dark:hover:bg-[#362f22] rounded-r-lg transition-colors"
-                aria-label="زيادة الكمية"
+                aria-label={t("product.quantity.increase")}
                 onClick={() => setQuantity((q) => Math.min(99, q + 1))}
               >
                 <RiAddLine className="text-xl" aria-hidden="true" />
@@ -152,12 +161,12 @@ export default function ProductMainSection({
                 readOnly
                 type="number"
                 value={quantity}
-                aria-label="الكمية"
+                aria-label={t("product.quantity.inputAria")}
               />
               <button
                 type="button"
                 className="size-10 flex items-center justify-center text-text-main dark:text-white hover:bg-gray-100 dark:hover:bg-[#362f22] rounded-l-lg transition-colors"
-                aria-label="تقليل الكمية"
+                aria-label={t("product.quantity.decrease")}
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               >
                 <RiSubtractLine className="text-xl" aria-hidden="true" />
@@ -171,7 +180,7 @@ export default function ProductMainSection({
           <button
             type="button"
             className="flex-1 min-h-14 bg-primary text-[#171512] text-lg font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-[#c9953a] hover:shadow-xl transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-3"
-            aria-label="إضافة إلى السلة"
+            aria-label={t("product.actions.addToCart")}
             onClick={() => {
               // Placeholder: wire this to your cart store/action
               console.log("add-to-cart", {
@@ -182,13 +191,13 @@ export default function ProductMainSection({
             }}
           >
             <RiShoppingBagLine className="text-xl" aria-hidden="true" />
-            إضافة إلى السلة
+            {t("product.actions.addToCart")}
           </button>
 
           <button
             type="button"
             className="flex-none w-14 h-14 border-2 border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center text-text-main dark:text-white hover:border-primary hover:text-primary transition-colors"
-            aria-label="مشاركة المنتج"
+            aria-label={t("product.actions.share")}
             onClick={async () => {
               try {
                 const share = (
@@ -199,8 +208,8 @@ export default function ProductMainSection({
 
                 if (typeof share === "function") {
                   await share({
-                    title: "مجموعة مستلزمات الحج الفاخرة",
-                    text: "شاهد تفاصيل المنتج",
+                    title: t(`products.items.details.title`),
+                    text: t("product.share.text"),
                     url: window.location.href,
                   });
                 }

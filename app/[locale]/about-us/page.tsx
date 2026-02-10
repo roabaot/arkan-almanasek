@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import {
   RiArrowLeftLine,
   RiArrowRightUpLine,
@@ -10,7 +11,9 @@ import {
 } from "react-icons/ri";
 import { FaHandHoldingHeart, FaMosque } from "react-icons/fa6";
 
-export default function AboutUsPage() {
+export default async function AboutUsPage() {
+  const t = await getTranslations("about");
+
   return (
     <main className="flex-grow w-full overflow-x-hidden bg-[#f6f8f6] text-[#111811] antialiased">
       <section className="relative min-h-[70vh] flex flex-col items-center justify-center text-center overflow-hidden py-20">
@@ -20,16 +23,15 @@ export default function AboutUsPage() {
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 space-y-8">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-text-main dark:text-white leading-normal tracking-tight fade-in-up delay-100">
-            نرافقكم في أطهر
+            {t("hero.titleTop")}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary relative leading-[1.6]">
-              رحلة في العمر
+              {t("hero.titleHighlight")}
             </span>
           </h1>
 
           <p className="text-xl md:text-2xl text-text-muted dark:text-gray-300 font-light max-w-2xl mx-auto leading-relaxed fade-in-up delay-200">
-            شريككم الموثوق لخدمة ضيوف الرحمن، نجمع بين عراقة الخدمة وحداثة
-            التقنية لتيسير مناسككم.
+            {t("hero.description")}
           </p>
         </div>
       </section>
@@ -38,10 +40,10 @@ export default function AboutUsPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 fade-in-up">
             <h2 className="text-3xl md:text-4xl font-bold text-text-main dark:text-white mb-4">
-              قيمنا وخدماتنا
+              {t("values.title")}
             </h2>
             <p className="text-lg text-text-muted dark:text-gray-400 max-w-2xl mx-auto font-light">
-              منظومة متكاملة صُممت لراحتكم وسكينتكم
+              {t("values.subtitle")}
             </p>
           </div>
 
@@ -53,12 +55,10 @@ export default function AboutUsPage() {
                     <RiSunLine className="text-4xl" aria-hidden />
                   </div>
                   <h3 className="text-3xl font-bold text-text-main dark:text-white mb-2">
-                    رؤيتنا
+                    {t("vision.title")}
                   </h3>
                   <p className="text-text-muted dark:text-gray-300 leading-loose text-lg font-light">
-                    أن نكون المنصة الرقمية الأولى عالمياً في تسهيل رحلة الحج
-                    والعمرة، مقدمين حلولاً مبتكرة تجمع بين الروحانية
-                    والتكنولوجيا لخدمة ضيوف الرحمن بشفافية مطلقة وأمانة.
+                    {t("vision.body")}
                   </p>
                 </div>
               </div>
@@ -68,12 +68,10 @@ export default function AboutUsPage() {
                     <FaHandHoldingHeart className="text-4xl" aria-hidden />
                   </div>
                   <h3 className="text-3xl font-bold text-text-main dark:text-white mb-2">
-                    رسالتنا
+                    {t("mission.title")}
                   </h3>
                   <p className="text-text-muted dark:text-gray-300 leading-loose text-lg font-light">
-                    نسعى لتمكين الحجاج والمعتمرين من أداء مناسكهم بيسر وطمأنينة
-                    من خلال تقديم خدمات موثوقة، شفافة، ومتوافقة مع الشريعة
-                    الإسلامية بأعلى معايير الجودة.
+                    {t("mission.body")}
                   </p>
                 </div>
               </div>
@@ -90,10 +88,10 @@ export default function AboutUsPage() {
                 />
               </div>
               <h4 className="text-xl font-bold text-text-main dark:text-white mb-2">
-                حج البدل
+                {t("cards.badal.title")}
               </h4>
               <p className="text-sm text-text-muted dark:text-gray-400 leading-relaxed">
-                تنفيذ المناسك عن العاجزين والمتوفين بواسطة طلاب علم ثقات.
+                {t("cards.badal.body")}
               </p>
             </div>
 
@@ -104,10 +102,8 @@ export default function AboutUsPage() {
                   <RiShieldCheckLine className="text-2xl" aria-hidden />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold mb-1">الأمانة والمصداقية</h4>
-                  <p className="text-sm text-white/80 font-light">
-                    أساس تعاملنا مع ضيوف الرحمن
-                  </p>
+                  <h4 className="text-xl font-bold mb-1">{t("cards.trust.title")}</h4>
+                  <p className="text-sm text-white/80 font-light">{t("cards.trust.body")}</p>
                 </div>
               </div>
             </div>
@@ -123,10 +119,10 @@ export default function AboutUsPage() {
                 />
               </div>
               <h4 className="text-xl font-bold text-text-main dark:text-white mb-2">
-                إرشاد المناسك
+                {t("cards.guidance.title")}
               </h4>
               <p className="text-sm text-text-muted dark:text-gray-400 leading-relaxed">
-                دليل شامل ومرشدين معتمدين لمرافقتكم خطوة بخطوة.
+                {t("cards.guidance.body")}
               </p>
             </div>
 
@@ -141,10 +137,10 @@ export default function AboutUsPage() {
                 />
               </div>
               <h4 className="text-xl font-bold text-text-main dark:text-white mb-2">
-                التصاريح
+                {t("cards.permits.title")}
               </h4>
               <p className="text-sm text-text-muted dark:text-gray-400 leading-relaxed">
-                إجراءات رسمية ميسرة وسريعة لضمان نظامية الحج.
+                {t("cards.permits.body")}
               </p>
             </div>
 
@@ -153,7 +149,7 @@ export default function AboutUsPage() {
               <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-text-main dark:text-white mb-3">
-                    لماذا نحن؟
+                    {t("why.title")}
                   </h3>
                   <ul className="space-y-3">
                     <li className="flex items-center gap-3">
@@ -161,7 +157,7 @@ export default function AboutUsPage() {
                         ✓
                       </span>
                       <span className="text-text-muted dark:text-gray-300 text-sm">
-                        التزام تام بالضوابط الشرعية
+                        {t("why.bullets.sharia")}
                       </span>
                     </li>
                     <li className="flex items-center gap-3">
@@ -169,7 +165,7 @@ export default function AboutUsPage() {
                         ✓
                       </span>
                       <span className="text-text-muted dark:text-gray-300 text-sm">
-                        دعم فني واستشاري على مدار الساعة
+                        {t("why.bullets.support")}
                       </span>
                     </li>
                     <li className="flex items-center gap-3">
@@ -177,7 +173,7 @@ export default function AboutUsPage() {
                         ✓
                       </span>
                       <span className="text-text-muted dark:text-gray-300 text-sm">
-                        سهولة الاستخدام عبر المنصات الرقمية
+                        {t("why.bullets.ease")}
                       </span>
                     </li>
                   </ul>
@@ -185,7 +181,7 @@ export default function AboutUsPage() {
 
                 <div className="relative w-full md:w-40 h-32 rounded-2xl overflow-hidden shadow-lg transform rotate-3 group-hover:rotate-0 transition-transform duration-500">
                   <Image
-                    alt="Pilgrims"
+                    alt={t("why.imageAlt")}
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOyLblmJl2e2cpZ__7nhjzmR8cx2Iky9NR7tlQqv-hHYJJIq0OpGzOk3bSyMZtqbpBvMCxYKDmAnpCNRjw_Z1TxBt9I30yGQIvuX9TWB7Xl5PeZSVK2tB80IGmZLfBPEgEinxwW5YjsOnvOZVClTTn0PUSEKLsnD869NBVnKlzk0k9qxCylueHL63uCEnDx7H_-krVWDoaVqSmrjxUPxCzlYqgZKfr0T08zXc4FHizezEVwf9RueHe92HjupUMO-EiqRNpq9h2CmRq"
                     fill
                     sizes="(min-width: 768px) 160px, 100vw"
@@ -210,44 +206,43 @@ export default function AboutUsPage() {
           <div className="inline-flex flex-wrap justify-center gap-8 md:gap-16 mb-12 p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-2xl transform hover:scale-105 transition-transform duration-300">
             <div className="text-center px-4">
               <span className="block text-3xl md:text-4xl font-bold text-primary counter">
-                15+
+                {t("stats.experienceValue")}
               </span>
               <span className="text-xs text-gray-400 uppercase tracking-wider mt-1 block">
-                سنة من الخبرة
+                {t("stats.experienceLabel")}
               </span>
             </div>
             <div className="w-px h-12 bg-white/10 hidden md:block" />
             <div className="text-center px-4">
               <span className="block text-3xl md:text-4xl font-bold text-primary counter">
-                50k+
+                {t("stats.pilgrimsValue")}
               </span>
               <span className="text-xs text-gray-400 uppercase tracking-wider mt-1 block">
-                حاج تم خدمتهم
+                {t("stats.pilgrimsLabel")}
               </span>
             </div>
             <div className="w-px h-12 bg-white/10 hidden md:block" />
             <div className="text-center px-4">
               <span className="block text-3xl md:text-4xl font-bold text-primary counter">
-                99%
+                {t("stats.satisfactionValue")}
               </span>
               <span className="text-xs text-gray-400 uppercase tracking-wider mt-1 block">
-                نسبة الرضا
+                {t("stats.satisfactionLabel")}
               </span>
             </div>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight drop-shadow-xl">
-            جاهز لتبدأ رحلتك الإيمانية؟
+            {t("cta.title")}
           </h2>
           <p className="text-white/80 text-xl md:text-2xl font-light mb-12 max-w-3xl mx-auto leading-relaxed">
-            انضم إلى آلاف الحجاج الذين وثقوا بنا لتكون رحلتهم ذكرى لا تُنسى
-            ومناسك مقبولة بإذن الله.
+            {t("cta.description")}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <button className="gold-shimmer relative overflow-hidden group bg-primary hover:bg-[#c9953b] text-[#171512] text-lg font-bold py-5 px-12 rounded-xl transition-all shadow-[0_0_40px_-10px_rgba(218,163,66,0.5)] hover:shadow-[0_0_60px_-10px_rgba(218,163,66,0.7)] transform hover:-translate-y-1">
               <span className="relative z-10 flex items-center gap-3">
-                ابدأ الآن
+                {t("cta.primaryCta")}
                 <RiArrowLeftLine
                   className="transition-transform group-hover:-translate-x-1"
                   aria-hidden
@@ -257,7 +252,7 @@ export default function AboutUsPage() {
             <button className="relative group bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-lg font-bold py-5 px-12 rounded-xl transition-all hover:shadow-glass transform hover:-translate-y-1">
               <span className="flex items-center gap-3">
                 <RiCustomerService2Line className="text-primary" aria-hidden />
-                تحدث مع مستشار
+                {t("cta.secondaryCta")}
               </span>
             </button>
           </div>

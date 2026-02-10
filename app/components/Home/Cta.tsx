@@ -14,6 +14,7 @@ import {
   RiUserAddLine,
 } from "react-icons/ri";
 import { useLocale } from "use-intl";
+import { useTranslations } from "next-intl";
 
 const AVATARS = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBaKAYZJkjrGWisLEZewKzxdELAyheWwarb9M7cPaZhWAj4tvhjEpf4O0NJTzuuEzsmWizHIJsIzj9uzhpCyL-vLG1kkaLuL2rEiXpFE5oDYDra8HHzFYjj6BvkbbOMJiNTvx0eF5m5-CfACkBujc7S4fdYhK8Gr5ixend7r6j4bz3r5jFs3Ghm2SADxKxp33EZdkynLA0uIViHvGX8IhkJxOuJtfqZ88zQv-JI4hOj0XHIx6w2S1I9ZTkkLbrV5XikZUo-jSSQSZzB",
@@ -22,6 +23,7 @@ const AVATARS = [
 ];
 
 export default function HomeCta() {
+  const t = useTranslations("home.cta");
   const locale = useLocale();
   const isRTL = locale === "ar";
   return (
@@ -36,19 +38,18 @@ export default function HomeCta() {
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-red-500/50 bg-red-500/10 px-4 py-2 backdrop-blur-sm animate-pulse">
                 <RiHourglassLine className="text-sm text-red-500" />
                 <span className="text-sm font-bold text-red-100">
-                  الأماكن محدودة لموسم هذا العام
+                  {t("limitedBadge")}
                 </span>
               </div>
 
               <h2 className="mb-6 text-4xl font-black leading-tight text-white md:text-5xl lg:text-6xl">
-                رحلتك تبدأ بخطوة
+                {t("titleLine1")}
                 <br />
-                <span className="text-white">واحدة من الاستعداد</span>
+                <span className="text-white">{t("titleLine2")}</span>
               </h2>
 
               <p className="mx-auto max-w-xl text-lg leading-relaxed text-gray-100 opacity-90 md:text-xl lg:mx-0">
-                دعنا نرافقك في كل خطوة، من التحضير والتجهيز، وحتى أداء المناسك
-                بكل يسر وطمأنينة. انضم الآن لآلاف الحجاج الذين وثقوا بنا.
+                {t("description")}
               </p>
             </div>
 
@@ -60,7 +61,7 @@ export default function HomeCta() {
                 <div className="absolute inset-0 translate-y-full bg-white/20 transition-transform duration-300 ease-out group-hover:translate-y-0" />
                 <div className="relative flex items-center justify-center gap-3 text-white">
                   <RiUserAddLine className="text-xl text-white" />
-                  <span>احجز الآن</span>
+                  <span>{t("primaryCta")}</span>
                 </div>
               </button>
 
@@ -70,7 +71,7 @@ export default function HomeCta() {
               >
                 <div className="relative flex items-center justify-center gap-3">
                   <RiDownloadLine className="text-xl transition-transform group-hover:translate-y-1" />
-                  <span>تحميل الدليل</span>
+                  <span>{t("secondaryCta")}</span>
                 </div>
               </button>
             </div>
@@ -89,15 +90,15 @@ export default function HomeCta() {
                   />
                 ))}
                 <div className="flex size-10 items-center justify-center rounded-full border-2 border-secondary bg-gray-800 text-xs font-bold text-white">
-                  +2k
+                  {t("trustBadge")}
                 </div>
               </div>
 
               <div className="text-sm text-gray-100">
                 <span className="font-bold text-white font-semibold">
-                  ٢٠٠٠+
+                  {t("trustValue")}
                 </span>{" "}
-                حاج وثقوا بنا
+                {t("trustLabel")}
               </div>
             </div>
           </div>
@@ -110,9 +111,6 @@ export default function HomeCta() {
 
               <div className="relative flex h-[580px] flex-col overflow-hidden bg-gradient-to-b from-background to-white">
                 <div className="relative z-10 rounded-b-[2.5rem] bg-primary p-6 pb-8 pt-12 text-center text-white shadow-lg">
-                  {/* <FaMosque className="mb-2 inline-block text-4xl text-[#d4af37]" />
-                  <h3 className="text-lg font-bold text-white">رفيق الحج</h3> */}
-
                   <svg
                     id="Layer_1"
                     xmlns="http://www.w3.org/2000/svg"
@@ -237,7 +235,7 @@ export default function HomeCta() {
                       />
                     </g>
                   </svg>
-                  <p className="text-xs text-white">دليلك الذكي للمناسك</p>
+                  <p className="text-xs text-white">{t("appTagline")}</p>
                 </div>
 
                 <div className="relative flex flex-1 flex-col gap-4 p-6">
@@ -268,7 +266,7 @@ export default function HomeCta() {
 
                     <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-white px-2 py-1 text-[10px] font-bold text-primary shadow">
                       <span className="size-2 animate-pulse rounded-full bg-accent" />
-                      مباشر
+                      {t("liveLabel")}
                     </div>
                   </div>
                 </div>

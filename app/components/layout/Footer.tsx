@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { FaFacebookF, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { RiSendPlane2Line } from "react-icons/ri";
 import LogoHorizontal from "../ui/LogoHorizontal";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("footer");
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="border-t border-gray-200 bg-white pb-8 pt-16 dark:border-gray-800 dark:bg-[#1a2e1a]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -14,29 +20,28 @@ export default function Footer() {
             </div>
 
             <p className="mb-6 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
-              منصتكم الأولى لخدمات الحج والعمرة. نسعى لتقديم تجربة روحانية
-              متكاملة وميسرة لضيوف الرحمن من جميع أنحاء العالم.
+              {t("description")}
             </p>
 
             <div className="flex gap-4">
               <a
                 className="text-gray-400 transition-colors hover:text-secondary"
                 href="#"
-                aria-label="X"
+                aria-label={t("social.x")}
               >
                 <FaXTwitter className="text-xl" />
               </a>
               <a
                 className="text-gray-400 transition-colors hover:text-secondary"
                 href="#"
-                aria-label="LinkedIn"
+                aria-label={t("social.linkedin")}
               >
                 <FaLinkedinIn className="text-xl" />
               </a>
               <a
                 className="text-gray-400 transition-colors hover:text-secondary"
                 href="#"
-                aria-label="Facebook"
+                aria-label={t("social.facebook")}
               >
                 <FaFacebookF className="text-xl" />
               </a>
@@ -45,7 +50,7 @@ export default function Footer() {
 
           <div>
             <h4 className="mb-6 text-lg font-bold text-[#111811] dark:text-white">
-              روابط سريعة
+              {t("quickLinks.title")}
             </h4>
             <ul className="space-y-4">
               <li>
@@ -53,7 +58,7 @@ export default function Footer() {
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="/about-us"
                 >
-                  عن الشركة
+                  {t("quickLinks.about")}
                 </Link>
               </li>
               <li>
@@ -61,7 +66,7 @@ export default function Footer() {
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="/store"
                 >
-                  المنتجات
+                  {t("quickLinks.products")}
                 </Link>
               </li>
               <li>
@@ -69,7 +74,7 @@ export default function Footer() {
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
-                  المدونة الإسلامية
+                  {t("quickLinks.blog")}
                 </Link>
               </li>
               <li>
@@ -77,7 +82,7 @@ export default function Footer() {
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
-                  سياسة الخصوصية
+                  {t("quickLinks.privacyPolicy")}
                 </Link>
               </li>
             </ul>
@@ -85,7 +90,7 @@ export default function Footer() {
 
           <div>
             <h4 className="mb-6 text-lg font-bold text-[#111811] dark:text-white">
-              الدعم والمساعدة
+              {t("support.title")}
             </h4>
             <ul className="space-y-4">
               <li>
@@ -93,7 +98,15 @@ export default function Footer() {
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
-                  مركز المساعدة
+                  {t("support.helpCenter")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
+                  href="/FAQ"
+                >
+                  {t("support.faq")}
                 </Link>
               </li>
               <li>
@@ -101,15 +114,7 @@ export default function Footer() {
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
-                  الأسئلة الشائعة
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
-                  href="#"
-                >
-                  تتبع الطلب
+                  {t("support.trackOrder")}
                 </Link>
               </li>
               <li>
@@ -117,7 +122,7 @@ export default function Footer() {
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="/contact-us"
                 >
-                  اتصل بنا
+                  {t("support.contact")}
                 </Link>
               </li>
             </ul>
@@ -125,10 +130,10 @@ export default function Footer() {
 
           <div>
             <h4 className="mb-6 text-lg font-bold text-[#111811] dark:text-white">
-              اشترك في النشرة
+              {t("newsletter.title")}
             </h4>
             <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
-              احصل على آخر العروض والنصائح لرحلتك.
+              {t("newsletter.description")}
             </p>
 
             <form
@@ -137,7 +142,7 @@ export default function Footer() {
             >
               <input
                 className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:border-secondary focus:outline-none dark:border-gray-700 dark:bg-[#233523]"
-                placeholder="بريدك الإلكتروني"
+                placeholder={t("newsletter.emailPlaceholder")}
                 type="email"
                 inputMode="email"
                 autoComplete="email"
@@ -145,7 +150,7 @@ export default function Footer() {
               <button
                 type="submit"
                 className="rounded-lg bg-secondary px-4 py-2 text-white cursor-pointer transition-colors hover:bg-secondary/90"
-                aria-label="إرسال"
+                aria-label={t("newsletter.submitAria")}
               >
                 <RiSendPlane2Line className="text-lg" />
               </button>
@@ -155,7 +160,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-100 pt-8 text-center dark:border-gray-800">
           <p className="text-sm text-gray-400">
-            © 2026 أركان المناسك. جميع الحقوق محفوظة.
+            {t("copyright", { year: currentYear })}
           </p>
         </div>
       </div>

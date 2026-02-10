@@ -222,7 +222,7 @@ export default function Step2CustomerInfo({
           2
         </div>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-          بيانات العميل
+          {t("title")}
         </h3>
       </div>
 

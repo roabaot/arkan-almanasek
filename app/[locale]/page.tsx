@@ -13,7 +13,6 @@ export default function HomePage() {
           kind: "iframe",
           // YouTube embed (privacy-enhanced) with muted autoplay + controls.
           src: "https://www.youtube-nocookie.com/embed/2DYa4aHfdWk?autoplay=1&mute=0&controls=1&playsinline=1&rel=0",
-          title: "فيديو تعريفي",
         }}
       />
       <HomeProducts />

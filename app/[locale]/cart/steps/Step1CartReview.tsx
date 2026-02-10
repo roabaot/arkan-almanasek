@@ -1,11 +1,16 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import CartItemCard, { type CartItem } from "../CartItemCard";
 
 export default function Step1CartReview({ items }: { items: CartItem[] }) {
+  const t = useTranslations("cart.step1");
+
   return (
     <section className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft p-6 border border-gray-100 dark:border-[#332e25]">
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-[#332e25]">
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-          1. محتويات السلة
+          1. {t("title")}
         </h3>
       </div>
 
