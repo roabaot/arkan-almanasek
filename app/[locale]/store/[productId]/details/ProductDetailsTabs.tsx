@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import DOMPurify from "dompurify";
 import { FaShirt, FaSoap } from "react-icons/fa6";
 import {
   RiShieldCheckLine,
@@ -12,13 +14,87 @@ import {
 } from "react-icons/ri";
 
 import type { TabKey } from "./types";
+import { ProductT } from "@/app/api/products";
 
-export default function ProductDetailsTabs() {
+type ProductFeatureItem = {
+  logo: string;
+  name: string;
+  description: string;
+};
+
+function decodeSvgDataUri(input: string): string | null {
+  const trimmed = input.trim();
+  if (!trimmed) return null;
+
+  if (trimmed.startsWith("<svg")) return trimmed;
+
+  if (!trimmed.startsWith("data:image/svg+xml")) return null;
+
+  const commaIndex = trimmed.indexOf(",");
+  if (commaIndex === -1) return null;
+
+  const meta = trimmed.slice(0, commaIndex).toLowerCase();
+  const data = trimmed.slice(commaIndex + 1);
+
+  try {
+    if (meta.includes(";base64")) {
+      return atob(data);
+    }
+    return decodeURIComponent(data);
+  } catch {
+    return null;
+  }
+}
+
+function renderFeatureIcon(icon: string): ReactNode {
+  const svgMarkup = decodeSvgDataUri(icon);
+
+  if (svgMarkup) {
+    const sanitized = DOMPurify.sanitize(svgMarkup, {
+      USE_PROFILES: { svg: true, svgFilters: true },
+    });
+
+    return (
+      <span
+        aria-hidden="true"
+        className="inline-flex text-secondary [&>svg]:h-6 [&>svg]:w-6 [&>svg]:fill-current"
+        // DOMPurify sanitizes the SVG before injecting.
+        dangerouslySetInnerHTML={{ __html: sanitized }}
+      />
+    );
+  }
+
+  switch (icon.trim().toLowerCase()) {
+    case "shirt":
+    case "fa-shirt":
+      return <FaShirt className="text-xl" aria-hidden="true" />;
+    case "soap":
+    case "fa-soap":
+      return <FaSoap className="text-xl" aria-hidden="true" />;
+    case "quality":
+    case "shield":
+    case "ri-shield-check-line":
+      return <RiShieldCheckLine className="text-xl" aria-hidden="true" />;
+    case "shipping":
+    case "truck":
+    case "ri-truck-line":
+      return <RiTruckLine className="text-xl" aria-hidden="true" />;
+    default:
+      return <RiStarLine className="text-xl" aria-hidden="true" />;
+  }
+}
+
+export default function ProductDetailsTabs({ product }: { product: ProductT }) {
   const t = useTranslations("store");
   const [activeTab, setActiveTab] = useState<TabKey>("description");
 
   const tabButtonBase =
     "px-8 py-5 text-sm font-bold transition-colors border-b-2";
+
+  const features: ProductFeatureItem[] =
+    Array.isArray(product.specifications) && product.specifications.length > 0
+      ? product.specifications
+      : [];
 
   return (
     <div className="mt-16 bg-white dark:bg-[#1a160e] rounded-2xl shadow-sm border border-gray-100 dark:border-[#332d22] overflow-hidden">
@@ -48,7 +124,7 @@ export default function ProductDetailsTabs() {
         >
           {t("product.tabs.specs")}
         </button>
-        <button
+        {/* <button
           type="button"
           className={
             tabButtonBase +
@@ -59,7 +135,7 @@ export default function ProductDetailsTabs() {
           onClick={() => setActiveTab("reviews")}
         >
           {t("product.tabs.reviews", { count: 125 })}
-        </button>
+        </button> */}
       </div>
 
       {/* Tab Content */}
@@ -77,72 +153,32 @@ export default function ProductDetailsTabs() {
             </p>
 
             {/* Features Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-              <div className="flex gap-4">
-                <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <FaShirt className="text-xl" aria-hidden="true" />
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+              {features.map((feature, idx) => (
+                <div className="flex gap-4" key={`${feature.logo}-${idx}`}>
+                  <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
+                    {renderFeatureIcon(feature.logo)}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-text-main dark:text-white mb-1">
+                      {feature.name}
+                    </h4>
+                    <p className="text-sm text-text-sub">
+                      {feature.description}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    {t("product.features.cotton.title")}
-                  </h4>
-                  <p className="text-sm text-text-sub">
-                    {t("product.features.cotton.description")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <FaSoap className="text-xl" aria-hidden="true" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    {t("product.features.fragranceFree.title")}
-                  </h4>
-                  <p className="text-sm text-text-sub">
-                    {t("product.features.fragranceFree.description")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <RiShieldCheckLine className="text-xl" aria-hidden="true" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    {t("product.features.quality.title")}
-                  </h4>
-                  <p className="text-sm text-text-sub">
-                    {t("product.features.quality.description")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="size-12 rounded-full bg-background-light dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
-                  <RiTruckLine className="text-xl" aria-hidden="true" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-text-main dark:text-white mb-1">
-                    {t("product.features.shipping.title")}
-                  </h4>
-                  <p className="text-sm text-text-sub">
-                    {t("product.features.shipping.description")}
-                  </p>
-                </div>
-              </div>
-            </div>
+              ))}
+            </div> */}
 
             {/* Rating Section */}
-            <div className="mt-16 pt-10 border-t border-gray-100 dark:border-[#332d22]">
+            {/* <div className="mt-16 pt-10 border-t border-gray-100 dark:border-[#332d22]">
               <h3 className="text-2xl font-bold text-text-main dark:text-white mb-8">
                 {t("product.reviews.title")}
               </h3>
-              <div className="flex flex-col lg:flex-row gap-12">
-                {/* Rating Summary */}
-                <div className="w-full lg:w-1/3 bg-background-light dark:bg-[#2a241a] p-6 rounded-xl">
+              <div className="flex flex-col lg:flex-row gap-12"> */}
+            {/* Rating Summary */}
+            {/* <div className="w-full lg:w-1/3 bg-background-light dark:bg-[#2a241a] p-6 rounded-xl">
                   <div className="flex flex-col gap-2 mb-6">
                     <p className="text-text-main dark:text-white text-5xl font-black leading-tight tracking-[-0.033em]">
                       4.8
@@ -225,10 +261,10 @@ export default function ProductDetailsTabs() {
                       2%
                     </p>
                   </div>
-                </div>
+                </div> */}
 
-                {/* Individual Reviews */}
-                <div className="flex-1 space-y-6">
+            {/* Individual Reviews */}
+            {/* <div className="flex-1 space-y-6">
                   <div className="border-b border-gray-100 dark:border-[#332d22] pb-6">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
@@ -240,11 +276,26 @@ export default function ProductDetailsTabs() {
                             {t("product.reviews.items.0.name")}
                           </h5>
                           <div className="flex text-primary text-xs">
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarFill className="text-sm" aria-hidden="true" />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
                           </div>
                         </div>
                       </div>
@@ -268,11 +319,26 @@ export default function ProductDetailsTabs() {
                             {t("product.reviews.items.1.name")}
                           </h5>
                           <div className="flex text-primary text-xs">
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarFill className="text-sm" aria-hidden="true" />
-                            <RiStarLine className="text-sm" aria-hidden="true" />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarFill
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
+                            <RiStarLine
+                              className="text-sm"
+                              aria-hidden="true"
+                            />
                           </div>
                         </div>
                       </div>
@@ -284,40 +350,65 @@ export default function ProductDetailsTabs() {
                       {t("product.reviews.items.1.text")}
                     </p>
                   </div>
-                </div>
-              </div>
-            </div>
+                </div> */}
+            {/* </div>
+            </div>} */}
           </div>
         ) : activeTab === "specs" ? (
           <div className="max-w-4xl">
             <h3 className="text-2xl font-bold text-text-main dark:text-white mb-6">
               {t("product.specs.title")}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">{t("product.specs.material.label")}</p>
+                <p className="text-sm text-text-sub">
+                  {t("product.specs.material.label")}
+                </p>
                 <p className="font-bold text-text-main dark:text-white">
                   {t("product.specs.material.value")}
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">{t("product.specs.accessories.label")}</p>
+                <p className="text-sm text-text-sub">
+                  {t("product.specs.accessories.label")}
+                </p>
                 <p className="font-bold text-text-main dark:text-white">
                   {t("product.specs.accessories.value")}
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">{t("product.specs.suitableFor.label")}</p>
+                <p className="text-sm text-text-sub">
+                  {t("product.specs.suitableFor.label")}
+                </p>
                 <p className="font-bold text-text-main dark:text-white">
                   {t("product.specs.suitableFor.value")}
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-background-light dark:bg-[#2a241a]">
-                <p className="text-sm text-text-sub">{t("product.specs.warranty.label")}</p>
+                <p className="text-sm text-text-sub">
+                  {t("product.specs.warranty.label")}
+                </p>
                 <p className="font-bold text-text-main dark:text-white">
                   {t("product.specs.warranty.value")}
                 </p>
               </div>
+            </div> */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+              {features.map((feature, idx) => (
+                <div className="flex gap-4" key={`${feature.logo}-${idx}`}>
+                  <div className="size-12 rounded-full bg-background/85 dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
+                    {renderFeatureIcon(feature.logo)}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-text-main dark:text-white mb-1">
+                      {feature.name}
+                    </h4>
+                    <p className="text-sm text-text-sub">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         ) : (

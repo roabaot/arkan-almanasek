@@ -102,8 +102,12 @@ export default async function AboutUsPage() {
                   <RiShieldCheckLine className="text-2xl" aria-hidden />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold mb-1">{t("cards.trust.title")}</h4>
-                  <p className="text-sm text-white/80 font-light">{t("cards.trust.body")}</p>
+                  <h4 className="text-xl font-bold mb-1">
+                    {t("cards.trust.title")}
+                  </h4>
+                  <p className="text-sm text-white/80 font-light">
+                    {t("cards.trust.body")}
+                  </p>
                 </div>
               </div>
             </div>

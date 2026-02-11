@@ -86,7 +86,10 @@
     },
     "filters": {
       "categories": "التصنيفات",
+      "tags": "الوسوم",
       "price": "السعر",
+      "minPrice": "الحد الأدنى",
+      "maxPrice": "الحد الأعلى",
       "inStockOnly": "متوفر فقط"
     },
     "categories": {
@@ -214,7 +217,8 @@
         }
       },
       "stock": {
-        "inStock": "متوفر في المخزون"
+        "inStock": "متوفر في المخزون",
+        "outOfStock": "غير متوفر في المخزون"
       },
       "rating": {
         "aria": "التقييم",

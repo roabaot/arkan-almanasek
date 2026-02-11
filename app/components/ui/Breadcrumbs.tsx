@@ -57,7 +57,8 @@ export function Breadcrumbs({
   const baseNavClass = "flex items-center text-sm text-text-sub";
   const baseLinkClass = "hover:text-primary transition-colors";
   const baseCurrentClass = "text-primary font-medium";
-  const baseSeparatorClass = "self-center mx-2 inline-flex text-sm rtl:rotate-180";
+  const baseSeparatorClass =
+    "self-center mx-2 inline-flex text-sm rtl:rotate-180";
   const SeparatorIcon = getSeparatorIconByName(separatorIconName);
 
   return (

@@ -108,6 +108,8 @@
     "filters": {
       "categories": "Kategori",
       "price": "Harga",
+      "minPrice": "Harga minimum",
+      "maxPrice": "Harga maksimum",
       "inStockOnly": "Hanya stok tersedia"
     },
     "categories": {
@@ -235,7 +237,8 @@
         }
       },
       "stock": {
-        "inStock": "Tersedia"
+        "inStock": "Tersedia",
+        "outOfStock": "Stok habis"
       },
       "rating": {
         "aria": "Penilaian",
@@ -1005,11 +1008,7 @@
         "Direct support services and resolving establishment issues with government platforms"
       ],
       "question_4": "What types of establishments do you serve?",
-      "answer_4_list": [
-        "Companies",
-        "Factories",
-        "Sole proprietorships"
-      ],
+      "answer_4_list": ["Companies", "Factories", "Sole proprietorships"],
       "question_5": "How are services delivered to establishments?",
       "answer_5": "Services are delivered remotely or via on-site visits within the Kingdom, depending on the service and its requirements.",
       "question_6": "How can I request a service from Leadership Resources?",

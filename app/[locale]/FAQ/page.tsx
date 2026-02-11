@@ -1,3 +1,15 @@
+import {
+  RiArrowDownSLine,
+  RiBookOpenLine,
+  RiCustomerService2Line,
+  RiHeartLine,
+  RiPhoneLine,
+  RiQuestionLine,
+  RiSearchLine,
+  RiShieldCheckLine,
+  RiStarLine,
+} from "react-icons/ri";
+
 export default function FAQPage() {
   return (
     <main className="flex-1 bg-background">
@@ -9,9 +21,10 @@ export default function FAQPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col items-center text-center gap-6 max-w-4xl mx-auto">
             <div className="mb-2">
-              <span className="material-symbols-outlined text-4xl text-primary opacity-80">
-                star
-              </span>
+              <RiStarLine
+                className="text-4xl text-primary opacity-80"
+                aria-hidden
+              />
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight text-secondary dark:text-primary drop-shadow-sm bg-clip-text">
@@ -27,9 +40,7 @@ export default function FAQPage() {
             <div className="w-full max-w-xl mt-8">
               <div className="relative group">
                 <div className="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none text-secondary">
-                  <span className="material-symbols-outlined text-2xl">
-                    search
-                  </span>
+                  <RiSearchLine className="text-2xl" aria-hidden />
                 </div>
                 <input
                   className="block w-full rounded-2xl border-none bg-white dark:bg-[#1f1f1f] py-5 pr-14 pl-4 text-text-main shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-primary transition-all text-lg placeholder:text-gray-400"
@@ -61,34 +72,28 @@ export default function FAQPage() {
             className="flex h-10 items-center justify-center gap-2 rounded-full bg-surface-light dark:bg-[#1f1f1f] px-6 text-sm font-medium text-text-main dark:text-gray-300 border border-[#e6dccf] dark:border-gray-700 hover:border-primary hover:text-primary transition-all"
             type="button"
           >
-            <span className="material-symbols-outlined text-[18px]">
-              menu_book
-            </span>
+            <RiBookOpenLine className="text-[18px]" aria-hidden />
             إرشادات المناسك
           </button>
           <button
             className="flex h-10 items-center justify-center gap-2 rounded-full bg-surface-light dark:bg-[#1f1f1f] px-6 text-sm font-medium text-text-main dark:text-gray-300 border border-[#e6dccf] dark:border-gray-700 hover:border-primary hover:text-primary transition-all"
             type="button"
           >
-            <span className="material-symbols-outlined text-[18px]">pets</span>
+            <RiHeartLine className="text-[18px]" aria-hidden />
             الهدي والأضاحي
           </button>
           <button
             className="flex h-10 items-center justify-center gap-2 rounded-full bg-surface-light dark:bg-[#1f1f1f] px-6 text-sm font-medium text-text-main dark:text-gray-300 border border-[#e6dccf] dark:border-gray-700 hover:border-primary hover:text-primary transition-all"
             type="button"
           >
-            <span className="material-symbols-outlined text-[18px]">
-              local_hospital
-            </span>
+            <RiShieldCheckLine className="text-[18px]" aria-hidden />
             الصحة والسلامة
           </button>
           <button
             className="flex h-10 items-center justify-center gap-2 rounded-full bg-surface-light dark:bg-[#1f1f1f] px-6 text-sm font-medium text-text-main dark:text-gray-300 border border-[#e6dccf] dark:border-gray-700 hover:border-primary hover:text-primary transition-all"
             type="button"
           >
-            <span className="material-symbols-outlined text-[18px]">
-              support_agent
-            </span>
+            <RiCustomerService2Line className="text-[18px]" aria-hidden />
             الخدمات العامة
           </button>
         </div>
@@ -105,7 +110,7 @@ export default function FAQPage() {
                 ما هي أركان الحج الأربعة؟
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff2eb] dark:bg-white/5 text-secondary transition-transform duration-300 group-open:rotate-180">
-                <span className="material-symbols-outlined">expand_more</span>
+                <RiArrowDownSLine className="text-2xl" aria-hidden />
               </div>
             </summary>
             <div className="px-6 pb-6 animate-in slide-in-from-top-2 duration-300">
@@ -138,7 +143,7 @@ export default function FAQPage() {
                 كيف يمكنني حجز نسك الهدي والأضاحي إلكترونياً؟
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff2eb] dark:bg-white/5 text-secondary transition-transform duration-300 group-open:rotate-180">
-                <span className="material-symbols-outlined">expand_more</span>
+                <RiArrowDownSLine className="text-2xl" aria-hidden />
               </div>
             </summary>
             <div className="px-6 pb-6">
@@ -158,7 +163,7 @@ export default function FAQPage() {
                 ما هي الخدمات الطبية المتوفرة للحجاج في المشاعر المقدسة؟
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff2eb] dark:bg-white/5 text-secondary transition-transform duration-300 group-open:rotate-180">
-                <span className="material-symbols-outlined">expand_more</span>
+                <RiArrowDownSLine className="text-2xl" aria-hidden />
               </div>
             </summary>
             <div className="px-6 pb-6">
@@ -178,7 +183,7 @@ export default function FAQPage() {
                 متى يبدأ وقت رمي الجمرات في أيام التشريق؟
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff2eb] dark:bg-white/5 text-secondary transition-transform duration-300 group-open:rotate-180">
-                <span className="material-symbols-outlined">expand_more</span>
+                <RiArrowDownSLine className="text-2xl" aria-hidden />
               </div>
             </summary>
             <div className="px-6 pb-6">
@@ -199,9 +204,7 @@ export default function FAQPage() {
           <div className="absolute bottom-0 left-0 -ml-20 -mb-20 h-64 w-64 rounded-full bg-black/10 blur-3xl" />
 
           <div className="relative z-10 flex flex-col items-center gap-6 max-w-2xl mx-auto">
-            <span className="material-symbols-outlined text-5xl">
-              contact_support
-            </span>
+            <RiCustomerService2Line className="text-5xl" aria-hidden />
             <h2 className="text-3xl md:text-4xl font-black">لم تجد إجابتك؟</h2>
             <p className="text-lg text-white/90 leading-relaxed">
               فريق الدعم الفني والإرشادي متاح على مدار الساعة للإجابة على جميع
@@ -213,14 +216,14 @@ export default function FAQPage() {
                 className="flex min-w-[160px] items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-lg font-bold text-secondary transition-transform hover:scale-105 active:scale-95 shadow-lg"
                 type="button"
               >
-                <span className="material-symbols-outlined">chat_bubble</span>
+                <RiQuestionLine className="text-xl" aria-hidden />
                 تواصل معنا
               </button>
               <button
                 className="flex min-w-[160px] items-center justify-center gap-2 rounded-xl border-2 border-white px-8 py-4 text-lg font-bold text-white transition-colors hover:bg-white/10"
                 type="button"
               >
-                <span className="material-symbols-outlined">call</span>
+                <RiPhoneLine className="text-xl" aria-hidden />
                 اتصل بنا
               </button>
             </div>

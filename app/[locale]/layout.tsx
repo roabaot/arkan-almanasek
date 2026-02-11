@@ -10,6 +10,7 @@ import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import AppShell from "../components/layout/AppShell";
 import ThemeProvider from "../components/providers/ThemeProvider";
+import ReactQueryProvider from "../components/providers/ReactQueryProvider";
 
 const APP_NAME = "Arkan Almnasek";
 const APP_DEFAULT_TITLE = "My Awesome Arkan Almnasek";
@@ -82,9 +83,11 @@ export default async function RootLayout({
     >
       <body>
         <NextIntlClientProvider messages={messages}>
-          <ThemeProvider defaultTheme="light">
-            <AppShell>{children}</AppShell>
-          </ThemeProvider>
+          <ReactQueryProvider>
+            <ThemeProvider defaultTheme="light">
+              <AppShell>{children}</AppShell>
+            </ThemeProvider>
+          </ReactQueryProvider>
         </NextIntlClientProvider>
       </body>
     </html>

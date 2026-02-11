@@ -8,19 +8,18 @@ import {
   RiHeartLine,
   RiShareLine,
   RiShoppingBagLine,
-  RiStarFill,
-  RiStarHalfFill,
   RiSubtractLine,
 } from "react-icons/ri";
 
-import type { GalleryImage, PageParams } from "./types";
+import type { PageParams } from "./types";
+import { ProductT } from "@/app/api/products";
 
 export default function ProductMainSection({
   params,
-  gallery,
+  product,
 }: {
   params: PageParams;
-  gallery: readonly GalleryImage[];
+  product: ProductT;
 }) {
   const t = useTranslations("store");
 
@@ -28,7 +27,8 @@ export default function ProductMainSection({
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const mainImage = gallery[Math.min(activeImageIndex, gallery.length - 1)];
+  const mainImage =
+    product?.images[Math.min(activeImageIndex, product.images.length - 1)];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
@@ -38,12 +38,12 @@ export default function ProductMainSection({
         <div className="relative w-full aspect-square bg-white dark:bg-[#1a160e] rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-[#332d22] group">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt={mainImage.alt}
+            alt={product.name}
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-            data-alt={mainImage.dataAlt ?? mainImage.alt}
-            src={mainImage.src}
+            // data-alt={product.name}
+            src={mainImage}
           />
-          <div className="absolute top-4 left-4">
+          {/* <div className="absolute top-4 left-4">
             <button
               type="button"
               className="size-10 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
@@ -60,16 +60,16 @@ export default function ProductMainSection({
                 <RiHeartLine className="text-xl" aria-hidden="true" />
               )}
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Thumbnails */}
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-          {gallery.map((img, idx) => {
+          {product?.images.map((img, idx) => {
             const selected = idx === activeImageIndex;
             return (
               <button
-                key={img.src}
+                key={img}
                 type="button"
                 className={
                   "relative size-20 sm:size-24 flex-shrink-0 rounded-xl overflow-hidden border-2 shadow-sm transition-all bg-white " +
@@ -77,15 +77,14 @@ export default function ProductMainSection({
                     ? "border-primary"
                     : "border-transparent hover:border-secondary/50")
                 }
-                aria-label={t("product.gallery.thumbnail", { index: idx + 1 })}
+                aria-label={`${product.name} - ${idx + 1}`}
                 onClick={() => setActiveImageIndex(idx)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt={img.alt}
+                  alt={img.split("/").pop()?.split(".")[0] ?? product.name}
                   className="w-full h-full object-cover"
-                  data-alt={img.dataAlt ?? img.alt}
-                  src={img.src}
+                  src={img}
                 />
               </button>
             );
@@ -97,15 +96,22 @@ export default function ProductMainSection({
       <div className="flex flex-col justify-start pt-2">
         {/* Title & Tags */}
         <div className="mb-4">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-600 ml-1.5" />
-            {t("product.stock.inStock")}
-          </span>
+          {product.available ? (
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-600 ml-1.5" />
+              {t("product.stock.inStock")}
+            </span>
+          ) : (
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-600 ml-1.5" />
+              {t("product.stock.outOfStock")}
+            </span>
+          )}
 
           <h1 className="text-3xl sm:text-4xl font-black text-text-main dark:text-white leading-tight mb-2">
-            {t(`products.items.details.title`)}
+            {product.name}
           </h1>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <div
               className="flex text-primary"
               aria-label={t("product.rating.aria")}
@@ -119,17 +125,33 @@ export default function ProductMainSection({
             <span className="text-sm text-text-sub">
               {t("product.rating.count", { count: 125 })}
             </span>
-          </div>
+          </div> */}
         </div>
 
         {/* Price */}
         <div className="mb-8 p-4 bg-white dark:bg-[#1a160e] rounded-xl border border-dashed border-[#dcdcdc] dark:border-[#332d22] inline-block w-full">
-          <div className="flex items-baseline gap-2">
-            <p className="text-4xl font-bold text-primary">450.00</p>
-            <p className="text-lg text-text-main dark:text-gray-300 font-medium">
-              {t("product.price.currency")}
-            </p>
-          </div>
+          {product.discount_price ? (
+            <div className="flex items-baseline gap-3 flex-wrap">
+              <div className="flex items-baseline gap-2">
+                <p className="text-4xl font-bold text-primary">
+                  {product.price}
+                </p>
+                <p className="text-lg text-text-main dark:text-gray-300 font-medium">
+                  {t("product.price.currency")}
+                </p>
+              </div>
+              <p className="text-lg text-text-sub line-through font-bold">
+                {product.discount_price}
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-baseline gap-2">
+              <p className="text-4xl font-bold text-primary">{product.price}</p>
+              <p className="text-lg text-text-main dark:text-gray-300 font-medium">
+                {t("product.price.currency")}
+              </p>
+            </div>
+          )}
           <p className="text-sm text-text-sub mt-1">
             {t("product.price.vatIncluded")}
           </p>
@@ -137,7 +159,7 @@ export default function ProductMainSection({
 
         {/* Short Description */}
         <p className="text-text-sub text-base leading-relaxed mb-8 dark:text-gray-400">
-          {t(`products.items.details.shortDescription`)}
+          {product.description}
         </p>
 
         {/* Selectors */}
