@@ -13,8 +13,8 @@ import {
 import Step1CartReview from "./steps/Step1CartReview";
 import Step2CustomerInfo from "./steps/Step2CustomerInfo";
 import Step3Payment from "./steps/Step3Payment";
-import { type CartItem } from "./CartItemCard";
 import { Link } from "@/i18n/navigation";
+import { useCart } from "@/hooks/useCart";
 
 type Step = 1 | 2 | 3;
 
@@ -122,52 +122,13 @@ function ProgressBar({ step }: { step: Step }) {
 export default function CheckoutWizard() {
   const t = useTranslations("cart.checkout");
   const tCart = useTranslations("cart");
-  const tItems = useTranslations("cart.mockItems");
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { total: cartSubtotal } = useCart();
 
-  const cartItems = useMemo<CartItem[]>(
-    () => [
-      {
-        id: "hajj-package-economy",
-        title: tItems("hajjPackageEconomy.title"),
-        description: tItems("hajjPackageEconomy.description"),
-        image: {
-          src: "https://lh3.googleusercontent.com/aida-public/AB6AXuByysn7fb9JQ3GYSUi5V4XVzCWi1taeveZESDlx57YiafAEkK2OnHJCNluclQyhgVrS3fCU5-bYF1OaC6s7fGv6QeVi96QKUTjj7uo14-AFVApqt7CTihfCIq0e0GyLEJUcZarJA5FolaR49VQ6kt5jE_8Ys5NokPAV7jLSosaO8CPT3mSqMMuMlrC6fGU0gp1b6Z07Od_3VgNcAjbWvqltpmH0PuxTTyuaJaQluej_7MXZifbLH0KpMC5b1WkmNb_1-h3Qg9pGt58O",
-          alt: tItems("hajjPackageEconomy.imageAlt"),
-        },
-        quantity: 1,
-        unitPriceSar: 12500,
-        badge: {
-          icon: "flight",
-          label: tItems("hajjPackageEconomy.badgeLabel"),
-        },
-      },
-      {
-        id: "vip-airport-pickup",
-        title: tItems("vipAirportPickup.title"),
-        description: tItems("vipAirportPickup.description"),
-        image: {
-          src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAC9-2NAT9QKWfPXiX-qcTVD7sGA5kxh55dHhNoLZx_SiV20H726aNH4qLGL1tv8sVXVuExC14I14SGoybJL1euGyWgADZGV0omTCWBD1iR-1m1VJDuQQBGZFt6wz2DnV3wRhr4nL38smfANrhlCVFcHjzEqsN-CoyDam8nWPF-MJRQK3QHb-EbQ6aWkdP6kOLT3NO3Iok9tXXomQLB7l_OfNLRmQLIcLA4qWdTpzBjr8ZSoB_EjcKPVLuazPLBlVIF--qUuLBRnC0J",
-          alt: tItems("vipAirportPickup.imageAlt"),
-        },
-        quantity: 1,
-        unitPriceSar: 500,
-      },
-    ],
-    [tItems],
-  );
-
-  const subtotalSar = useMemo(
-    () =>
-      cartItems.reduce(
-        (acc, item) => acc + item.unitPriceSar * item.quantity,
-        0,
-      ),
-    [cartItems],
-  );
+  const subtotalSar = cartSubtotal;
   const vatSar = useMemo(() => subtotalSar * 0.15, [subtotalSar]);
   const serviceFeeSar = 0;
   const totalSar = subtotalSar + vatSar + serviceFeeSar;
@@ -232,7 +193,7 @@ export default function CheckoutWizard() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1 space-y-8">
-            {step === 1 ? <Step1CartReview items={cartItems} /> : null}
+            {step === 1 ? <Step1CartReview /> : null}
 
             {step === 2 ? (
               <Step2CustomerInfo

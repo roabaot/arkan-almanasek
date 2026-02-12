@@ -1,11 +1,15 @@
 /* ================== Types ================== */
 
+type CartItemTypeT = "product" | "service";
+
 export type CartItem = {
   id: number;
   name?: string;
+  description?: string;
   price?: number;
   image?: string;
   quantity: number;
+  type: CartItemTypeT;
 };
 
 const CART_KEY = "manasik_cart";
@@ -30,15 +34,33 @@ export function getCart(): CartItem[] {
   return cart ? JSON.parse(cart) : [];
 }
 
-export function addToCart(item: CartItem) {
+export function addToCart(
+  item: CartItem,
+  mode: "increment" | "replace" = "increment",
+) {
   const cart = getCart();
 
   const existingIndex = cart.findIndex((p) => p.id === item.id);
 
-  if (existingIndex > -1) {
-    cart[existingIndex].quantity += item.quantity;
-  } else {
+  // المنتج غير موجود
+  if (existingIndex === -1) {
     cart.push(item);
+    saveCart(cart);
+    return cart;
+  }
+
+  const existingItem = cart[existingIndex];
+
+  // نفس الكمية بالضبط → لا نغير شيء
+  if (existingItem.quantity === item.quantity && mode === "replace") {
+    return cart;
+  }
+
+  // تحديث حسب الوضع
+  if (mode === "increment") {
+    existingItem.quantity += item.quantity;
+  } else {
+    existingItem.quantity = item.quantity;
   }
 
   saveCart(cart);

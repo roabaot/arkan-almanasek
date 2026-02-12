@@ -1,6 +1,7 @@
 "use client";
 
 import { CategoryT, getProducts, ProductsResT, TagT } from "@/app/api/products";
+import { useCart } from "@/hooks/useCart";
 import { Link } from "@/i18n/navigation";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
@@ -26,6 +27,7 @@ export default function StorePage({
   categories,
   tags,
 }: StoreClientProps) {
+  const { addProduct } = useCart();
   const t = useTranslations("store");
   const tCommon = useTranslations("common");
   const [categoryId, setCategoryId] = useState<string>("all");
@@ -402,6 +404,17 @@ export default function StorePage({
                           <button
                             type="button"
                             className="bg-primary/10 hover:bg-primary text-primary hover:text-white px-4 py-2 rounded-lg font-bold text-sm transition-all duration-300 flex items-center gap-2 group/btn"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              addProduct(
+                                {
+                                  ...product,
+                                  quantity: 1,
+                                  type: "product",
+                                },
+                                "increment",
+                              );
+                            }}
                           >
                             <RiShoppingBagLine
                               className="text-[18px]"

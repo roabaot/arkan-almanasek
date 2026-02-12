@@ -1,42 +1,76 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import {
   getCart,
   addToCart,
   removeFromCart,
   updateQuantity,
   clearCart,
-  getCartTotal,
-  getCartCount,
   CartItem,
 } from "../lib/utils/cart";
 
+let cartCache: CartItem[] | null = null;
+const subscribers = new Set<() => void>();
+
+function getSnapshot(): CartItem[] {
+  if (cartCache === null) {
+    cartCache = getCart();
+  }
+  return cartCache;
+}
+
+function getServerSnapshot(): CartItem[] {
+  return [];
+}
+
+function subscribe(listener: () => void) {
+  subscribers.add(listener);
+  return () => {
+    subscribers.delete(listener);
+  };
+}
+
+function emitChange(nextCart: CartItem[]) {
+  cartCache = nextCart;
+  for (const listener of subscribers) listener();
+}
+
+function computeTotal(cart: CartItem[]) {
+  return cart.reduce(
+    (total, item) => total + (item.price ?? 0) * item.quantity,
+    0,
+  );
+}
+
+function computeCount(cart: CartItem[]) {
+  return cart.reduce((count, item) => count + item.quantity, 0);
+}
+
 export function useCart() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const cart = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  useEffect(() => {
-    setCart(getCart());
-  }, []);
-
-  const handleAdd = (item: CartItem) => {
-    const updated = addToCart(item);
-    setCart(updated);
+  const handleAdd = (
+    item: CartItem,
+    mode: "increment" | "replace" = "increment",
+  ) => {
+    const updated = addToCart(item, mode);
+    emitChange(updated);
   };
 
   const handleRemove = (id: number) => {
     const updated = removeFromCart(id);
-    setCart(updated);
+    emitChange(updated);
   };
 
   const handleUpdate = (id: number, quantity: number) => {
     const updated = updateQuantity(id, quantity);
-    setCart(updated);
+    emitChange(updated);
   };
 
   const handleClear = () => {
     clearCart();
-    setCart([]);
+    emitChange([]);
   };
 
   return {
@@ -45,7 +79,7 @@ export function useCart() {
     removeProduct: handleRemove,
     updateProduct: handleUpdate,
     clearCart: handleClear,
-    total: getCartTotal(),
-    count: getCartCount(),
+    total: computeTotal(cart),
+    count: computeCount(cart),
   };
 }

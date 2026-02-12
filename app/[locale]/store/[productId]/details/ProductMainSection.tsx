@@ -13,6 +13,7 @@ import {
 
 import type { PageParams } from "./types";
 import { ProductT } from "@/app/api/products";
+import { useCart } from "@/hooks/useCart";
 
 export default function ProductMainSection({
   params,
@@ -22,10 +23,10 @@ export default function ProductMainSection({
   product: ProductT;
 }) {
   const t = useTranslations("store");
+  const { addProduct } = useCart();
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
 
   const mainImage =
     product?.images[Math.min(activeImageIndex, product.images.length - 1)];
@@ -205,6 +206,7 @@ export default function ProductMainSection({
             aria-label={t("product.actions.addToCart")}
             onClick={() => {
               // Placeholder: wire this to your cart store/action
+              addProduct({ ...product, quantity, type: "product" }, "replace");
               console.log("add-to-cart", {
                 locale: params.locale,
                 productId: params.productId,

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import type { CartItem as StoredCartItem } from "@/lib/utils/cart";
 import {
   RiAddLine,
   RiDeleteBin6Line,
@@ -8,17 +9,9 @@ import {
   RiPriceTag3Line,
   RiSubtractLine,
 } from "react-icons/ri";
+import { useCart } from "@/hooks/useCart";
 
-export type CartItem = {
-  id: string;
-  title: string;
-  description: string;
-  image: {
-    src: string;
-    alt: string;
-  };
-  quantity: number;
-  unitPriceSar: number;
+export type CartItemCardItem = StoredCartItem & {
   badge?: {
     icon: string;
     label: string;
@@ -38,16 +31,22 @@ export default function CartItemCard({
   item,
   variant,
 }: {
-  item: CartItem;
+  item: CartItemCardItem;
   variant: "first" | "stacked";
 }) {
   const t = useTranslations("cart");
   const tItemCard = useTranslations("cart.itemCard");
   const locale = useLocale();
+  const { removeProduct } = useCart();
+
+  const displayName = item.name ?? String(item.id);
+  const description = item.description ?? "";
+  const imageSrc = item.image;
+  const unitPrice = item.price ?? 0;
 
   const priceLabel = `${new Intl.NumberFormat(locale, {
     maximumFractionDigits: 2,
-  }).format(item.unitPriceSar * item.quantity)} ${t("currency.sar")}`;
+  }).format(unitPrice * item.quantity)} ${t("currency.sar")}`;
 
   const containerClassName =
     variant === "first"
@@ -57,33 +56,36 @@ export default function CartItemCard({
   return (
     <div className={containerClassName}>
       <div className="relative w-full sm:w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100">
-        <Image
-          alt={item.image.alt}
-          src={item.image.src}
-          fill
-          sizes="(max-width: 640px) 100vw, 128px"
-          className="object-cover"
-          unoptimized
-        />
+        {imageSrc ? (
+          <Image
+            alt={displayName}
+            src={imageSrc}
+            fill
+            sizes="(max-width: 640px) 100vw, 128px"
+            className="object-cover"
+            unoptimized
+          />
+        ) : null}
       </div>
 
       <div className="flex-1 flex flex-col justify-between">
         <div>
           <div className="flex justify-between items-start">
             <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
-              {item.title}
+              {displayName}
             </h4>
             <button
               type="button"
               className="text-red-400 hover:text-red-600 transition-colors"
-              aria-label={tItemCard("removeItemAria", { item: item.title })}
+              aria-label={tItemCard("removeItemAria", { item: displayName })}
+              onClick={() => removeProduct(item.id)}
             >
               <RiDeleteBin6Line className="text-xl" aria-hidden />
             </button>
           </div>
 
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-            {item.description}
+            {description}
           </p>
 
           {item.badge ? (
@@ -99,7 +101,7 @@ export default function CartItemCard({
             <button
               type="button"
               className="flex p-2 text-gray-500 hover:text-primary transition-colors"
-              aria-label={tItemCard("decreaseQtyAria", { item: item.title })}
+              aria-label={tItemCard("decreaseQtyAria", { item: displayName })}
             >
               <RiSubtractLine className="text-sm" aria-hidden />
             </button>
@@ -109,7 +111,7 @@ export default function CartItemCard({
             <button
               type="button"
               className="flex p-2 text-gray-500 hover:text-primary transition-colors"
-              aria-label={tItemCard("increaseQtyAria", { item: item.title })}
+              aria-label={tItemCard("increaseQtyAria", { item: displayName })}
             >
               <RiAddLine className="text-sm" aria-hidden />
             </button>
