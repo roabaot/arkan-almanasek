@@ -39,12 +39,13 @@ function buildApiUrl(endpoint: string): string {
   return `${base}${path}`;
 }
 
-export async function apiFetch<T>(
-  endpoint: string,
-  options?: RequestInit,
-): Promise<T> {
-  const url = buildApiUrl(endpoint);
+function buildProxyUrl(endpoint: string): string {
+  if (/^https?:\/\//i.test(endpoint)) return endpoint;
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  return `/api/proxy${path}`;
+}
 
+async function doFetch<T>(url: string, options?: RequestInit): Promise<T> {
   const defaultLocale =
     typeof document !== "undefined"
       ? document.documentElement.lang || "ar"
@@ -80,4 +81,21 @@ export async function apiFetch<T>(
 
   if (res.status === 204) return undefined as T;
   return res.json();
+}
+
+export async function apiFetch<T>(
+  endpoint: string,
+  options?: RequestInit,
+): Promise<T> {
+  const url = buildApiUrl(endpoint);
+  return doFetch<T>(url, options);
+}
+
+// Opt-in: use same-origin proxy (e.g. when relying on HttpOnly cookies)
+export async function apiFetchViaProxy<T>(
+  endpoint: string,
+  options?: RequestInit,
+): Promise<T> {
+  const url = buildProxyUrl(endpoint);
+  return doFetch<T>(url, options);
 }

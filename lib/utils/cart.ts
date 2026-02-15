@@ -25,6 +25,13 @@ function saveCart(cart: CartItem[]) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
+export function setCart(cart: CartItem[]) {
+  if (!isBrowser()) return [];
+  const normalized = Array.isArray(cart) ? cart : [];
+  saveCart(normalized);
+  return normalized;
+}
+
 /* ================== Core Functions ================== */
 
 export function getCart(): CartItem[] {

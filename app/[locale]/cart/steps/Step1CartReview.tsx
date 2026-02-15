@@ -2,11 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import CartItemCard from "../CartItemCard";
-import { useCart } from "@/hooks/useCart";
+import { CartItem } from "@/lib/utils/cart";
 
-export default function Step1CartReview() {
+export default function Step1CartReview({ items }: { items: CartItem[] }) {
   const t = useTranslations("cart.step1");
-  const { cart } = useCart();
 
   return (
     <section className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft p-6 border border-gray-100 dark:border-[#332e25]">
@@ -16,7 +15,7 @@ export default function Step1CartReview() {
         </h3>
       </div>
 
-      {cart.map((item, index) => (
+      {items.map((item, index) => (
         <CartItemCard
           key={item.id}
           item={item}

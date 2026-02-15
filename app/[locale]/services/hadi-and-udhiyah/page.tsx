@@ -4,6 +4,20 @@ import Breadcrumbs, { BreadcrumbItem } from "@/app/components/ui/Breadcrumbs";
 import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { GiSheep } from "react-icons/gi";
+import type { IconType } from "react-icons";
+import {
+  MdAccountBalanceWallet,
+  MdChildCare,
+  MdDescription,
+  MdInfo,
+  MdPets,
+  MdSearch,
+  MdShield,
+  MdShoppingBasket,
+  MdSupportAgent,
+  MdVerified,
+  MdVolunteerActivism,
+} from "react-icons/md";
 
 type SectionId = "udhiyah" | "fidya" | "aqiqah";
 
@@ -16,7 +30,7 @@ type Item = {
 type Section = {
   id: SectionId;
   label: string;
-  icon: string;
+  Icon: IconType;
   items: Item[];
 };
 
@@ -33,7 +47,7 @@ export default function QurbaniPage() {
       {
         id: "udhiyah",
         label: t("sections.udhiyah.label"),
-        icon: "pets",
+        Icon: MdPets,
         items: [
           {
             id: "european",
@@ -65,7 +79,7 @@ export default function QurbaniPage() {
       {
         id: "fidya",
         label: t("sections.fidya.label"),
-        icon: "volunteer_activism",
+        Icon: MdVolunteerActivism,
         items: [
           {
             id: "barbary",
@@ -82,7 +96,7 @@ export default function QurbaniPage() {
       {
         id: "aqiqah",
         label: t("sections.aqiqah.label"),
-        icon: "child_care",
+        Icon: MdChildCare,
         items: [
           {
             id: "naimi-2",
@@ -111,22 +125,22 @@ export default function QurbaniPage() {
   const steps = useMemo(
     () => [
       {
-        icon: "search_check",
+        Icon: MdSearch,
         title: t("steps.selectType.title"),
         desc: t("steps.selectType.desc"),
       },
       {
-        icon: "account_balance_wallet",
+        Icon: MdAccountBalanceWallet,
         title: t("steps.securePayment.title"),
         desc: t("steps.securePayment.desc"),
       },
       {
-        icon: "verified",
+        Icon: MdVerified,
         title: t("steps.sharia.title"),
         desc: t("steps.sharia.desc"),
       },
       {
-        icon: "description",
+        Icon: MdDescription,
         title: t("steps.confirmation.title"),
         desc: t("steps.confirmation.desc"),
       },
@@ -332,13 +346,11 @@ export default function QurbaniPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {steps.map((step) => (
             <div
-              key={step.icon}
+              key={step.title}
               className="group text-center flex flex-col items-center"
             >
               <div className="w-14 h-14 rounded-2xl border border-[var(--color-accent)] flex items-center justify-center transition-colors group-hover:bg-gray-50 duration-300 ease-in-out">
-                <span className="material-symbols-outlined text-2xl text-[var(--color-primary)]">
-                  {step.icon}
-                </span>
+                <step.Icon className="text-2xl text-[var(--color-primary)]" />
               </div>
               <h4 className="text-sm font-bold mt-3 mb-1">{step.title}</h4>
               <p className="text-xs text-black/60 font-light">{step.desc}</p>
@@ -352,22 +364,21 @@ export default function QurbaniPage() {
           <div className="lg:col-span-8 space-y-12">
             <div className="border border-[var(--color-accent)] rounded-2xl p-6 flex items-start gap-5">
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-[var(--color-accent)] shrink-0">
-                <span className="material-symbols-outlined text-[var(--color-primary)]">
-                  info
-                </span>
+                <MdInfo className="text-[var(--color-primary)] text-xl" />
               </div>
               <div>
                 <h3 className="font-bold text-sm mb-1 uppercase tracking-wider">
-                    {t("notice.title")}
+                  {t("notice.title")}
                 </h3>
                 <p className="text-sm text-black/60 font-light leading-relaxed">
-                    {t("notice.body")}
+                  {t("notice.body")}
                 </p>
               </div>
             </div>
 
             {sections.map((section) => {
               const sectionTotal = selectionTotals[section.id];
+              const SectionIcon = section.Icon;
               const current = selection[section.id] ?? {};
               const committed = committedSelection[section.id] ?? {};
 
@@ -403,9 +414,7 @@ export default function QurbaniPage() {
                 >
                   <div className="flex justify-between items-center mb-8 border-b border-[var(--color-accent)] pb-4">
                     <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-3xl text-[var(--color-primary)]">
-                        {section.icon}
-                      </span>
+                      <SectionIcon className="text-3xl text-[var(--color-primary)]" />
                       <h2 className="text-xl font-bold">{section.label}</h2>
                     </div>
                   </div>
@@ -530,9 +539,7 @@ export default function QurbaniPage() {
               <div className="rounded-2xl border border-[var(--color-accent)] bg-white/80 backdrop-blur shadow-[var(--shadow-soft)] p-8">
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-[var(--color-accent)]">
                   <h3 className="font-bold text-lg">{t("cart.title")}</h3>
-                  <span className="material-symbols-outlined text-[var(--color-primary)]">
-                    shopping_basket
-                  </span>
+                  <MdShoppingBasket className="text-[var(--color-primary)] text-xl" />
                 </div>
 
                 {cartLines.length === 0 ? (
@@ -618,17 +625,13 @@ export default function QurbaniPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[var(--color-accent)] bg-white/80 backdrop-blur shadow-[var(--shadow-soft)]">
-                  <span className="material-symbols-outlined text-lg text-green-600">
-                    shield
-                  </span>
+                  <MdShield className="text-lg text-green-600" />
                   <span className="text-[10px] font-bold text-black/50 uppercase tracking-tighter">
                     {t("badges.securePayment")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[var(--color-accent)] bg-white/80 backdrop-blur shadow-[var(--shadow-soft)]">
-                  <span className="material-symbols-outlined text-lg text-blue-600">
-                    support_agent
-                  </span>
+                  <MdSupportAgent className="text-lg text-blue-600" />
                   <span className="text-[10px] font-bold text-black/50 uppercase tracking-tighter">
                     {t("badges.support247")}
                   </span>

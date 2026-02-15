@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { useMutation } from "@tanstack/react-query";
 import {
   RiArrowLeftLine,
   RiArrowLeftSLine,
@@ -15,6 +16,10 @@ import Step2CustomerInfo from "./steps/Step2CustomerInfo";
 import Step3Payment from "./steps/Step3Payment";
 import { Link } from "@/i18n/navigation";
 import { useCart } from "@/hooks/useCart";
+import { addRequest, getRequestCart, type CheckoutPayload } from "@/app/api";
+import { isoDateFromDDMMYYYY } from "@/lib/utils";
+import type { Step2CustomerInfoValues } from "@/lib/validation";
+import type { CartItem as StoredCartItem } from "@/lib/utils/cart";
 
 type Step = 1 | 2 | 3;
 
@@ -126,7 +131,107 @@ export default function CheckoutWizard() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { total: cartSubtotal } = useCart();
+  const { total: cartSubtotal, cart, replaceCart } = useCart();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const toNumber = (v: unknown) => {
+      const n =
+        typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN;
+      return Number.isFinite(n) ? n : null;
+    };
+
+    const mapItem = (
+      raw: unknown,
+      type: "product" | "service",
+    ): StoredCartItem | null => {
+      if (!raw || typeof raw !== "object") return null;
+      const obj = raw as Record<string, unknown>;
+
+      const nested =
+        (obj[type] as Record<string, unknown> | undefined) ??
+        (type === "product"
+          ? (obj.product as Record<string, unknown> | undefined)
+          : (obj.service as Record<string, unknown> | undefined)) ??
+        obj;
+
+      const id =
+        toNumber(obj.id) ?? toNumber(obj[`${type}_id`]) ?? toNumber(nested?.id);
+
+      const quantity =
+        toNumber(obj.quantity) ?? toNumber(obj.qty) ?? toNumber(obj.count) ?? 1;
+
+      if (!id || !quantity || quantity <= 0) return null;
+
+      const name = typeof nested?.name === "string" ? nested.name : undefined;
+      const description =
+        typeof nested?.description === "string"
+          ? nested.description
+          : undefined;
+      const image =
+        typeof nested?.image === "string"
+          ? nested.image
+          : typeof nested?.image_url === "string"
+            ? (nested.image_url as string)
+            : undefined;
+      const price =
+        toNumber(nested?.price) ??
+        toNumber(nested?.discount_price) ??
+        undefined;
+
+      return {
+        id,
+        quantity,
+        type,
+        name,
+        description,
+        image,
+        price: price ?? undefined,
+      };
+    };
+
+    const hydrateFromServerCart = async () => {
+      try {
+        const res = await getRequestCart();
+        if (cancelled) return;
+
+        const products = Array.isArray(res?.cart?.products)
+          ? res.cart.products
+          : [];
+        const services = Array.isArray(res?.cart?.services)
+          ? res.cart.services
+          : [];
+
+        const mapped: StoredCartItem[] = [];
+        for (const p of products) {
+          const item = mapItem(p, "product");
+          if (item) mapped.push(item);
+        }
+        for (const s of services) {
+          const item = mapItem(s, "service");
+          if (item) mapped.push(item);
+        }
+
+        // If token exists but cart is empty, we still sync to empty.
+        replaceCart(mapped);
+      } catch {
+        // No valid cookie / backend rejected / network issue → keep local cart.
+      }
+    };
+
+    void hydrateFromServerCart();
+    return () => {
+      cancelled = true;
+    };
+  }, [replaceCart]);
+
+  const customerInfoFormId = "customer-info-form";
+  // const [requestOrderId, setRequestOrderId] = useState<number | null>(null);
+
+  const addRequestMutation = useMutation({
+    mutationFn: (payload: CheckoutPayload) => addRequest(payload),
+  });
 
   const subtotalSar = cartSubtotal;
   const vatSar = useMemo(() => subtotalSar * 0.15, [subtotalSar]);
@@ -175,6 +280,81 @@ export default function CheckoutWizard() {
     });
   };
 
+  const onPrimaryActionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (step === 1) {
+      setStepAndSyncUrl(2);
+      return;
+    }
+
+    if (step === 2) {
+      const form = document.getElementById(
+        customerInfoFormId,
+      ) as HTMLFormElement | null;
+      form?.requestSubmit();
+      return;
+    }
+
+    // step === 3: payment confirmation is handled inside Step3Payment for now.
+  };
+
+  const submitCustomerInfoAndCreateRequest = async (
+    values: Step2CustomerInfoValues,
+  ) => {
+    const dialByCountry: Record<string, string> = {
+      sa: "+966",
+      id: "+62",
+      ms: "+60",
+      tr: "+90",
+      lk: "+94",
+    };
+
+    const dial = dialByCountry[values.phoneCountry] ?? "";
+    const phone = `${dial}${values.phone}`;
+
+    const items = cart.map(({ id, quantity }) => ({
+      id,
+      quantity,
+    }));
+
+    const payload: CheckoutPayload = {
+      customer: {
+        name: values.fullName,
+        phone,
+        email: values.email,
+        country: values.country,
+        dob: isoDateFromDDMMYYYY(values.birthDate),
+        performed_hajj_or_umrah_before: values.performedHajjOrUmrahBefore,
+        phone_country: values.phoneCountry,
+      },
+      items,
+    };
+
+    addRequestMutation.reset();
+    try {
+      const res = await addRequestMutation.mutateAsync(payload);
+      console.log("addRequest response:", res);
+
+      // Persist token securely (HttpOnly cookie) for returning users.
+      try {
+        await fetch("/api/session/request-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: res.token }),
+        });
+      } catch (e) {
+        console.warn("Failed to persist request token:", e);
+      }
+
+      // setRequestOrderId(res.order_id);
+      setStepAndSyncUrl(3);
+    } catch (error) {
+      console.error("addRequest failed:", error);
+      // error is surfaced via addRequestMutation.error
+    }
+  };
+
   return (
     <div className="bg-surface-light dark:bg-background-dark border-b border-gray-100 dark:border-[#332e25]">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -193,12 +373,21 @@ export default function CheckoutWizard() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1 space-y-8">
-            {step === 1 ? <Step1CartReview /> : null}
+            {step === 1 ? <Step1CartReview items={cart} /> : null}
 
             {step === 2 ? (
               <Step2CustomerInfo
                 onBack={() => setStepAndSyncUrl(1)}
-                onNext={() => setStepAndSyncUrl(3)}
+                onNext={submitCustomerInfoAndCreateRequest}
+                formId={customerInfoFormId}
+                isSaving={addRequestMutation.isPending}
+                submitError={
+                  addRequestMutation.isError
+                    ? addRequestMutation.error instanceof Error
+                      ? addRequestMutation.error.message
+                      : "حدث خطأ غير متوقع"
+                    : null
+                }
               />
             ) : null}
 
@@ -206,6 +395,7 @@ export default function CheckoutWizard() {
               <Step3Payment
                 onBack={() => setStepAndSyncUrl(2)}
                 onConfirm={() => {
+                  // if (!requestOrderId) return;
                   // placeholder for submitting payment
                 }}
               />
@@ -261,9 +451,8 @@ export default function CheckoutWizard() {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setStepAndSyncUrl(step === 1 ? 2 : step === 2 ? 3 : 3)
-                  }
+                  onClick={onPrimaryActionClick}
+                  disabled={step === 2 ? addRequestMutation.isPending : false}
                   className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all duration-300 flex items-center justify-center gap-2 group"
                 >
                   <span>

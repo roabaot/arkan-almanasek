@@ -117,11 +117,19 @@ function PhoneCountrySelect({
 export default function Step2CustomerInfo({
   onBack,
   onNext,
+  formId,
+  submitError,
+  isSaving,
 }: {
   onBack: () => void;
-  onNext: () => void;
+  onNext: (values: Step2CustomerInfoValues) => void | Promise<void>;
+  formId?: string;
+  submitError?: string | null;
+  isSaving?: boolean;
 }) {
   const t = useTranslations("cart.step2");
+
+  const resolvedFormId = formId ?? "customer-info-form";
 
   const countryOptions = useMemo<CountryOption[]>(
     () => [
@@ -202,8 +210,8 @@ export default function Step2CustomerInfo({
     mode: "onSubmit",
   });
 
-  const onSubmit = () => {
-    onNext();
+  const onSubmit = async (values: Step2CustomerInfoValues) => {
+    await onNext(values);
   };
 
   const birthDateValue = watch("birthDate");
@@ -226,7 +234,7 @@ export default function Step2CustomerInfo({
         </h3>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form id={resolvedFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -251,7 +259,7 @@ export default function Step2CustomerInfo({
             <div dir="ltr">
               <div
                 className={
-                  "w-full rounded-xl border bg-background-light dark:bg-background-dark flex items-stretch focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary " +
+                  "w-full rounded-xl overflow-hidden border bg-background-light dark:bg-background-dark flex items-stretch focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary " +
                   (errors.phone || errors.phoneCountry
                     ? "border-red-400 dark:border-red-500"
                     : "border-gray-200 dark:border-[#332e25]")
@@ -444,9 +452,16 @@ export default function Step2CustomerInfo({
           >
             {t("actions.back")}
           </button>
+
+          {submitError ? (
+            <p className="sm:order-3 sm:ml-auto sm:self-center text-sm text-red-500">
+              {submitError}
+            </p>
+          ) : null}
+
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || Boolean(isSaving)}
             className="px-5 py-3 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold shadow-lg shadow-primary/30 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {t("actions.next")}

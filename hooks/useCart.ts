@@ -1,12 +1,13 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import {
   getCart,
   addToCart,
   removeFromCart,
   updateQuantity,
   clearCart,
+  setCart,
   CartItem,
 } from "../lib/utils/cart";
 
@@ -50,28 +51,33 @@ function computeCount(cart: CartItem[]) {
 export function useCart() {
   const cart = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const handleAdd = (
-    item: CartItem,
-    mode: "increment" | "replace" = "increment",
-  ) => {
-    const updated = addToCart(item, mode);
-    emitChange(updated);
-  };
+  const handleAdd = useCallback(
+    (item: CartItem, mode: "increment" | "replace" = "increment") => {
+      const updated = addToCart(item, mode);
+      emitChange(updated);
+    },
+    [],
+  );
 
-  const handleRemove = (id: number) => {
+  const handleRemove = useCallback((id: number) => {
     const updated = removeFromCart(id);
     emitChange(updated);
-  };
+  }, []);
 
-  const handleUpdate = (id: number, quantity: number) => {
+  const handleUpdate = useCallback((id: number, quantity: number) => {
     const updated = updateQuantity(id, quantity);
     emitChange(updated);
-  };
+  }, []);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     clearCart();
     emitChange([]);
-  };
+  }, []);
+
+  const handleReplace = useCallback((nextCart: CartItem[]) => {
+    const updated = setCart(nextCart);
+    emitChange(updated);
+  }, []);
 
   return {
     cart,
@@ -79,6 +85,7 @@ export function useCart() {
     removeProduct: handleRemove,
     updateProduct: handleUpdate,
     clearCart: handleClear,
+    replaceCart: handleReplace,
     total: computeTotal(cart),
     count: computeCount(cart),
   };
