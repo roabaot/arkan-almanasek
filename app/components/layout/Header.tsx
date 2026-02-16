@@ -85,13 +85,13 @@ export default function Header() {
           disabled: false,
         },
         { key: "badal", href: "/services/badal", disabled: false },
+        { key: "permits", href: "/services/permits", disabled: false },
         {
           key: "consultations",
           href: "/services/consultations",
           disabled: true,
         },
         { key: "manasik", href: "/services/manasik", disabled: true },
-        { key: "permits", href: "/services/permits", disabled: true },
       ] as const,
     [],
   );
