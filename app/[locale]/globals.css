@@ -14,6 +14,10 @@
       "Helvetica Neue",
       Arial,
       "Noto Sans",
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji",
       "Liberation Sans",
       sans-serif;
   }
@@ -46,6 +50,10 @@
       Arial,
       "Noto Sans Arabic",
       "Noto Sans",
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji",
       sans-serif;
     font-feature-settings:
       "kern" 1,
@@ -65,29 +73,12 @@
       Arial,
       "Noto Sans Arabic",
       "Noto Sans",
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji",
       sans-serif;
   }
-}
-
-.material-symbols-outlined {
-  font-family: "Material Symbols Outlined";
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: "liga";
-  -webkit-font-smoothing: antialiased;
-  font-variation-settings:
-    "FILL" 0,
-    "wght" 400,
-    "GRAD" 0,
-    "opsz" 24;
 }
 
 /* Tailwind v4: make `dark:` respond to the `.dark` class (user-selected theme). */
@@ -104,6 +95,7 @@
   --color-surface-dark: #2a241a;
   --color-grey: #252524; /* نص داكن */
   --color-accent: #f2bc77; /* لون مميز ذهبي فاتح */
+  --color-background-light: #f8f7f6; /* خلفية خفيفة للبطاقات */
 
   --color-text-main: #111811;
   --color-text-muted: #5c665c;
@@ -151,6 +143,12 @@
 }
 
 @layer utilities {
+  .font-emoji {
+    font-family:
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+  }
+
   .text-shadow-gold {
     text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
   }

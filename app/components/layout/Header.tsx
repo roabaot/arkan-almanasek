@@ -84,7 +84,7 @@ export default function Header() {
           href: "/services/hadi-and-udhiyah",
           disabled: false,
         },
-        { key: "badal", href: "/services/badal", disabled: true },
+        { key: "badal", href: "/services/badal", disabled: false },
         {
           key: "consultations",
           href: "/services/consultations",
