@@ -10,7 +10,6 @@ import {
 } from "react-icons/ri";
 
 import { createStep3PaymentSchema, type PaymentMethod } from "@/lib/validation";
-
 import { formatCardNumber, formatExpiry, formatFileSize } from "@/lib/utils";
 
 type CardData = {
@@ -64,18 +63,17 @@ export default function Step3Payment({
   const groupName = useId();
   const bankReceiptInputId = useId();
   const [method, setMethod] = useState<PaymentMethod>("card");
-  const [errors, setErrors] = useState<Partial<Record<FieldErrorKey, string>>>(
-    {},
-  );
+  const [errors, setErrors] = useState<Partial<Record<FieldErrorKey, string>>>({});
 
   const optionBase =
     "relative flex items-center p-4 rounded-xl cursor-pointer transition-all";
-  const optionSelected = "border-2 border-primary bg-primary/5 shadow-sm";
+  const optionSelected =
+    "border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/5 shadow-sm";
   const optionUnselected =
-    "border border-gray-200 dark:border-[#332e25] hover:bg-gray-50 dark:hover:bg-[#221d14]";
+    "border border-[var(--color-accent)] hover:bg-white/70";
 
   const inputBase =
-    "w-full rounded-lg border border-gray-200 dark:border-[#332e25] bg-background-light dark:bg-background-dark px-4 py-3 text-sm focus:border-primary focus:ring-primary";
+    "w-full rounded-lg border border-[var(--color-accent)] bg-white px-4 py-3 text-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]";
 
   const inputErrorClass =
     "border-red-500 focus:border-red-500 focus:ring-red-500";
@@ -86,35 +84,35 @@ export default function Step3Payment({
         key: "cardholder",
         label: t("card.fields.cardholder.label"),
         placeholder: t("card.fields.cardholder.placeholder"),
-        type: "text" as const,
-        dir: "rtl" as const,
+        type: "text",
+        dir: "rtl",
       },
       {
         key: "cardNumber",
         label: t("card.fields.cardNumber.label"),
         placeholder: t("card.fields.cardNumber.placeholder"),
-        type: "text" as const,
-        dir: "ltr" as const,
-        inputMode: "numeric" as const,
-        autoComplete: "cc-number" as const,
+        type: "text",
+        dir: "ltr",
+        inputMode: "numeric",
+        autoComplete: "cc-number",
       },
       {
         key: "expiry",
         label: t("card.fields.expiry.label"),
         placeholder: t("card.fields.expiry.placeholder"),
-        type: "text" as const,
-        dir: "ltr" as const,
-        inputMode: "numeric" as const,
-        autoComplete: "cc-exp" as const,
+        type: "text",
+        dir: "ltr",
+        inputMode: "numeric",
+        autoComplete: "cc-exp",
       },
       {
         key: "cvc",
         label: t("card.fields.cvc.label"),
         placeholder: t("card.fields.cvc.placeholder"),
-        type: "password" as const,
-        dir: "ltr" as const,
-        inputMode: "numeric" as const,
-        autoComplete: "cc-csc" as const,
+        type: "password",
+        dir: "ltr",
+        inputMode: "numeric",
+        autoComplete: "cc-csc",
       },
     ],
     [t],
@@ -132,20 +130,13 @@ export default function Step3Payment({
   const validateAndConfirm = () => {
     const values =
       method === "card"
-        ? {
-            method,
-            ...cardData,
-          }
-        : {
-            method,
-            receipt: bankReceipt,
-          };
+        ? { method, ...cardData }
+        : { method, receipt: bankReceipt };
 
     const schema = createStep3PaymentSchema((key) => t(key));
     const result = schema.safeParse(values);
     if (result.success) {
       setErrors({});
-
       if (method === "card") {
         const digits = cardData.cardNumber.replace(/\D/g, "");
         onConfirm({
@@ -154,7 +145,6 @@ export default function Step3Payment({
         });
         return;
       }
-
       onConfirm({ method, receiptName: bankReceipt?.name });
       return;
     }
@@ -168,14 +158,12 @@ export default function Step3Payment({
   };
 
   return (
-    <section className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft p-6 border border-gray-100 dark:border-[#332e25]">
-      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-[#332e25]">
-        <div className="size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+    <section className="rounded-3xl bg-white/60 backdrop-blur border border-[var(--color-accent)] p-6">
+      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[var(--color-accent)]">
+        <div className="size-8 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-sm">
           3
         </div>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-          {t("title")}
-        </h3>
+        <h3 className="text-xl font-bold text-[#111811]">{t("title")}</h3>
       </div>
 
       <div className="space-y-4">
@@ -188,25 +176,21 @@ export default function Step3Payment({
             checked={method === "card"}
             onChange={() => {
               setMethod("card");
-              setErrors((s) => ({
-                ...s,
-                method: undefined,
-                receipt: undefined,
-              }));
+              setErrors((s) => ({ ...s, method: undefined, receipt: undefined }));
             }}
-            className="size-5 text-primary focus:ring-primary border-gray-300"
+            className="size-5 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-gray-300"
             name={groupName}
             type="radio"
           />
           <div className="mr-4 flex-1">
-            <span className="block font-bold text-gray-900 dark:text-white">
+            <span className="block font-bold text-[#111811]">
               {t("methods.card.title")}
             </span>
-            <span className="block text-sm text-gray-500 dark:text-gray-400">
+            <span className="block text-sm text-black/60">
               {t("methods.card.description")}
             </span>
           </div>
-          <div className="flex gap-2 text-gray-400">
+          <div className="flex gap-2 text-black/40">
             <RiBankCardLine aria-hidden />
           </div>
         </label>
@@ -229,31 +213,31 @@ export default function Step3Payment({
                 cvc: undefined,
               }));
             }}
-            className="size-5 text-primary focus:ring-primary border-gray-300"
+            className="size-5 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-gray-300"
             name={groupName}
             type="radio"
           />
           <div className="mr-4 flex-1">
-            <span className="block font-bold text-gray-900 dark:text-white">
+            <span className="block font-bold text-[#111811]">
               {t("methods.bank.title")}
             </span>
-            <span className="block text-sm text-gray-500 dark:text-gray-400">
+            <span className="block text-sm text-black/60">
               {t("methods.bank.description")}
             </span>
           </div>
-          <div className="flex gap-2 text-gray-400">
+          <div className="flex gap-2 text-black/40">
             <RiBankLine aria-hidden />
           </div>
         </label>
       </div>
 
       {method === "card" ? (
-        <div className="mt-6 rounded-2xl border border-gray-100 dark:border-[#332e25] bg-background-light/60 dark:bg-background-dark/40 p-5">
+        <div className="mt-6 rounded-2xl border border-[var(--color-accent)] bg-white/60 p-5">
           <div className="flex items-center justify-between gap-3 mb-4">
-            <h4 className="text-lg font-extrabold text-gray-900 dark:text-white">
+            <h4 className="text-lg font-extrabold text-[#111811]">
               {t("card.title")}
             </h4>
-            <div className="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-2">
+            <div className="text-xs text-black/50 inline-flex items-center gap-2">
               <RiLock2Line className="text-base" aria-hidden />
               <span>{t("card.secureHint")}</span>
             </div>
@@ -267,7 +251,7 @@ export default function Step3Payment({
                   key={f.key}
                   className={isFull ? "sm:col-span-2" : "sm:col-span-1"}
                 >
-                  <span className="block mb-2 text-sm font-bold text-gray-900 dark:text-white">
+                  <span className="block mb-2 text-sm font-bold text-[#111811]">
                     {f.label}
                   </span>
                   <input
@@ -318,63 +302,54 @@ export default function Step3Payment({
             })}
           </div>
 
-          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-            {t("card.note")}
-          </p>
+          <p className="mt-3 text-xs text-black/50">{t("card.note")}</p>
         </div>
       ) : null}
 
       {method === "bank" ? (
         <div className="mt-6 space-y-4">
-          <div className="rounded-2xl border border-gray-100 dark:border-[#332e25] bg-background-light/60 dark:bg-background-dark/40 p-5">
-            <h4 className="text-lg font-extrabold text-gray-900 dark:text-white mb-2">
+          <div className="rounded-2xl border border-[var(--color-accent)] bg-white/60 p-5">
+            <h4 className="text-lg font-extrabold text-[#111811] mb-2">
               {t("bank.title")}
             </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-              {t("bank.description")}
-            </p>
+            <p className="text-sm text-black/60 mb-4">{t("bank.description")}</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-              <div className="rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark px-4 py-3">
-                <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+              <div className="rounded-xl border border-[var(--color-accent)] bg-white px-4 py-3">
+                <div className="text-xs text-black/50 mb-1">
                   {t("bank.details.bankNameLabel")}
                 </div>
-                <div className="font-bold text-gray-900 dark:text-white">
+                <div className="font-bold text-[#111811]">
                   {t("bank.details.bankNameValue")}
                 </div>
               </div>
 
-              <div className="rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark px-4 py-3">
-                <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+              <div className="rounded-xl border border-[var(--color-accent)] bg-white px-4 py-3">
+                <div className="text-xs text-black/50 mb-1">
                   {t("bank.details.beneficiaryNameLabel")}
                 </div>
-                <div className="font-bold text-gray-900 dark:text-white">
+                <div className="font-bold text-[#111811]">
                   {t("bank.details.beneficiaryNameValue")}
                 </div>
               </div>
 
-              <div className="rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark px-4 py-3 sm:col-span-2">
-                <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+              <div className="rounded-xl border border-[var(--color-accent)] bg-white px-4 py-3 sm:col-span-2">
+                <div className="text-xs text-black/50 mb-1">
                   {t("bank.details.ibanLabel")}
                 </div>
-                <div
-                  className="font-bold text-gray-900 dark:text-white"
-                  dir="ltr"
-                >
+                <div className="font-bold text-[#111811]" dir="ltr">
                   {t("bank.details.ibanValue")}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 dark:border-[#332e25] bg-background-light/60 dark:bg-background-dark/40 p-5">
+          <div className="rounded-2xl border border-[var(--color-accent)] bg-white/60 p-5">
             <div className="flex items-center justify-between gap-3 mb-3">
-              <h4 className="text-lg font-extrabold text-gray-900 dark:text-white">
+              <h4 className="text-lg font-extrabold text-[#111811]">
                 {t("bank.receipt.title")}
               </h4>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                {t("bank.receipt.formats")}
-              </span>
+              <span className="text-xs text-black/50">{t("bank.receipt.formats")}</span>
             </div>
 
             <input
@@ -392,24 +367,19 @@ export default function Step3Payment({
             <label
               htmlFor={bankReceiptInputId}
               className={
-                "block rounded-2xl border-2 border-dashed bg-surface-light dark:bg-surface-dark px-4 py-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors " +
-                (errors.receipt
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-[#332e25]")
+                "block rounded-2xl border-2 border-dashed bg-white px-4 py-5 cursor-pointer hover:bg-white/70 transition-colors " +
+                (errors.receipt ? "border-red-500" : "border-[var(--color-accent)]")
               }
             >
               <div className="flex items-start gap-3">
-                <RiUploadCloud2Line
-                  className="text-gray-500 dark:text-gray-400"
-                  aria-hidden
-                />
+                <RiUploadCloud2Line className="text-black/50" aria-hidden />
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-[#111811]">
                     {bankReceipt
                       ? t("bank.receipt.chosen")
                       : t("bank.receipt.upload")}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1 break-all">
+                  <div className="text-sm text-black/50 mt-1 break-all">
                     {bankReceipt
                       ? `${bankReceipt.name}${formatFileSize(bankReceipt.size) ? ` • ${formatFileSize(bankReceipt.size)}` : ""}`
                       : t("bank.receipt.chooseFromDevice")}
@@ -426,7 +396,7 @@ export default function Step3Payment({
 
             {bankReceipt ? (
               <div className="mt-3 flex items-center justify-between gap-3">
-                <div className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="text-xs text-black/50">
                   {t("bank.receipt.wrongFileHint")}
                 </div>
                 <button
@@ -435,7 +405,7 @@ export default function Step3Payment({
                     setBankReceipt(null);
                     setErrors((s) => ({ ...s, receipt: undefined }));
                   }}
-                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark text-gray-700 dark:text-gray-200 text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors"
+                  className="px-3 py-2 rounded-lg border border-[var(--color-accent)] bg-white text-black/60 text-sm font-bold hover:text-[#111811] hover:bg-white/80 transition-colors"
                 >
                   {t("bank.receipt.removeFile")}
                 </button>
@@ -449,14 +419,14 @@ export default function Step3Payment({
         <button
           type="button"
           onClick={onBack}
-          className="px-5 py-3 rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-background-dark text-gray-700 dark:text-gray-200 font-bold hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors"
+          className="px-5 py-3 rounded-xl border border-[var(--color-accent)] bg-white text-black/60 font-bold hover:text-[#111811] hover:bg-white/80 transition-colors"
         >
           {t("actions.back")}
         </button>
         <button
           type="button"
           onClick={validateAndConfirm}
-          className="px-5 py-3 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold shadow-lg shadow-primary/30 transition-all"
+          className="px-5 py-3 rounded-xl bg-[var(--color-primary)] text-white font-bold shadow-sm hover:bg-[var(--color-primary-dark)] transition-colors"
         >
           {t("actions.confirm")}
         </button>

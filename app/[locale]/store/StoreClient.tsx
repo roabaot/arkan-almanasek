@@ -10,7 +10,6 @@ import {
   RiApps2Line,
   RiArrowLeftSLine,
   RiArrowRightSLine,
-  RiHeartLine,
   RiPriceTag3Line,
   RiSearchLine,
   RiShoppingBagLine,

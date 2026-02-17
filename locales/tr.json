@@ -699,8 +699,12 @@
       "empty": "Henüz ürün eklemediniz.",
       "quantityLabel": "Adet:",
       "clear": "Siparişi temizle",
+      "continue": "Devam et",
       "checkout": "Ödeme",
       "outOfSync": "Değerler senkron değil. Lütfen şu bölümlerde güncelleyin: {sections}."
+    },
+    "checkout": {
+      "reviewTitle": "Bilgileri gözden geçir ve ödemeyi tamamla"
     },
     "summary": {
       "subtotal": "Ara toplam",

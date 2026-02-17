@@ -699,8 +699,12 @@
       "empty": "You haven't added any items yet.",
       "quantityLabel": "Qty:",
       "clear": "Clear order",
+      "continue": "Nadaljuj",
       "checkout": "Checkout",
       "outOfSync": "Values are out of sync. Please update the order in: {sections}."
+    },
+    "checkout": {
+      "reviewTitle": "Preglej podatke in zaključi plačilo"
     },
     "summary": {
       "subtotal": "Subtotal",

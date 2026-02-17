@@ -227,6 +227,8 @@ export default function CheckoutWizard() {
   }, [replaceCart]);
 
   const customerInfoFormId = "customer-info-form";
+  const [customerInfoValues, setCustomerInfoValues] =
+    useState<Step2CustomerInfoValues | null>(null);
   // const [requestOrderId, setRequestOrderId] = useState<number | null>(null);
 
   const addRequestMutation = useMutation({
@@ -302,6 +304,8 @@ export default function CheckoutWizard() {
   const submitCustomerInfoAndCreateRequest = async (
     values: Step2CustomerInfoValues,
   ) => {
+    setCustomerInfoValues(values);
+
     const dialByCountry: Record<string, string> = {
       sa: "+966",
       id: "+62",
@@ -380,6 +384,7 @@ export default function CheckoutWizard() {
                 onBack={() => setStepAndSyncUrl(1)}
                 onNext={submitCustomerInfoAndCreateRequest}
                 formId={customerInfoFormId}
+                initialValues={customerInfoValues ?? undefined}
                 isSaving={addRequestMutation.isPending}
                 submitError={
                   addRequestMutation.isError

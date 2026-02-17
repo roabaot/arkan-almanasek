@@ -65,8 +65,6 @@ export function getProducts(
   void _locale;
   const query = new URLSearchParams();
 
-  console.log("params: ", params);
-
   if (params?.category_id)
     query.set("filter_by[category_id]", params.category_id);
   if (params?.tag_id) query.set("filter_by[tag_id]", params.tag_id);
@@ -83,7 +81,7 @@ export function getProducts(
   if (params?.perPage !== undefined)
     query.set("per_page", String(params.perPage));
 
-  console.log("query: ", query.toString());
+  // console.log("query: ", query.toString());
 
   // query.set(
   //   "locale",

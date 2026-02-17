@@ -701,8 +701,12 @@
       "empty": "You haven't added any items yet.",
       "quantityLabel": "Qty:",
       "clear": "Clear order",
+      "continue": "Continue",
       "checkout": "Checkout",
       "outOfSync": "Values are out of sync. Please update the order in: {sections}."
+    },
+    "checkout": {
+      "reviewTitle": "Review details and complete payment"
     },
     "summary": {
       "subtotal": "Subtotal",

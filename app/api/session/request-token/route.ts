@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-const COOKIE_NAME = "mh_request_token";
+const COOKIE_NAME = "token";
+
+export async function GET(req: NextRequest) {
+  const token = req.cookies.get(COOKIE_NAME)?.value;
+  return NextResponse.json({
+    hasToken: typeof token === "string" && token.length > 0,
+  });
+}
 
 export async function POST(req: NextRequest) {
   let token: unknown;

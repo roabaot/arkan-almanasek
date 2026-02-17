@@ -699,8 +699,12 @@
       "empty": "Anda belum menambah sebarang item.",
       "quantityLabel": "Qty:",
       "clear": "Kosongkan pesanan",
+      "continue": "Teruskan",
       "checkout": "Pembayaran",
       "outOfSync": "Nilai tidak segerak. Sila kemas kini pesanan di: {sections}."
+    },
+    "checkout": {
+      "reviewTitle": "Semak maklumat dan selesaikan pembayaran"
     },
     "summary": {
       "subtotal": "Subjumlah",

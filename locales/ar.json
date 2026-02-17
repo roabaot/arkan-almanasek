@@ -584,8 +584,12 @@
       "empty": "لم تقم بإضافة أي عناصر بعد.",
       "quantityLabel": "الكمية:",
       "clear": "مسح الطلب",
+      "continue": "متابعة",
       "checkout": "إتمام الدفع",
       "outOfSync": "القيمة غير متوافقة. يرجى تحديث الطلب في: {sections}."
+    },
+    "checkout": {
+      "reviewTitle": "مراجعة البيانات وإتمام الدفع"
     },
     "summary": {
       "subtotal": "المجموع الفرعي",

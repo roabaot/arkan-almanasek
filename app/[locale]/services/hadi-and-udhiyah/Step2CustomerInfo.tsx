@@ -64,7 +64,7 @@ function CountrySelect({
   }, []);
 
   const triggerBase =
-    "w-full rounded-xl border bg-background-light dark:bg-background-dark px-4 py-3 inline-flex items-center justify-between gap-3 focus:ring-2 focus:ring-primary/30 focus:border-primary";
+    "w-full rounded-xl border bg-white px-4 py-3 inline-flex items-center justify-between gap-3 focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]";
 
   return (
     <div ref={containerRef} className="relative">
@@ -74,23 +74,17 @@ function CountrySelect({
         className={
           triggerBase +
           " " +
-          (hasError
-            ? "border-red-400 dark:border-red-500"
-            : "border-gray-200 dark:border-[#332e25]")
+          (hasError ? "border-red-400" : "border-[var(--color-accent)]")
         }
         aria-haspopup="listbox"
         aria-expanded={open}
       >
         <span className="inline-flex items-center gap-3 min-w-0">
-          {selected ? (
-            <span className={`fi fi-${selected.flag}`} aria-hidden />
-          ) : null}
+          {selected ? <span className={`fi fi-${selected.flag}`} aria-hidden /> : null}
           <span
             className={
               "text-sm font-medium min-w-0 truncate " +
-              (selected
-                ? "text-gray-900 dark:text-white"
-                : "text-gray-500 dark:text-gray-400")
+              (selected ? "text-[#111811]" : "text-black/50")
             }
           >
             {selected ? selected.label : placeholder}
@@ -98,8 +92,7 @@ function CountrySelect({
         </span>
         <RiArrowDownSLine
           className={
-            "text-base shrink-0 " +
-            (hasError ? "text-red-600" : "text-gray-500 dark:text-gray-400")
+            "text-base shrink-0 " + (hasError ? "text-red-600" : "text-black/50")
           }
           aria-hidden
         />
@@ -108,7 +101,7 @@ function CountrySelect({
       {open ? (
         <div
           role="listbox"
-          className="absolute top-full left-0 mt-2 w-full rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark shadow-soft overflow-hidden z-50"
+          className="absolute top-full left-0 mt-2 w-full rounded-xl border border-[var(--color-accent)] bg-white shadow-[var(--shadow-soft)] overflow-hidden z-50"
         >
           {options.map((opt) => (
             <button
@@ -121,10 +114,10 @@ function CountrySelect({
                 setOpen(false);
               }}
               className={
-                "w-full px-4 py-3 flex items-center gap-3 text-sm hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors " +
+                "w-full px-4 py-3 flex items-center gap-3 text-sm hover:bg-white/70 transition-colors " +
                 (opt.value === value
-                  ? "bg-primary/10 text-primary"
-                  : "text-gray-700 dark:text-gray-200")
+                  ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
+                  : "text-[#111811]")
               }
             >
               <span className={`fi fi-${opt.flag}`} aria-hidden />
@@ -170,7 +163,7 @@ function PhoneCountrySelect({
         onClick={() => setOpen((s) => !s)}
         className={
           "h-full px-3 py-3 gap-2 inline-flex items-center justify-center whitespace-nowrap " +
-          (hasError ? "text-red-600" : "text-gray-700 dark:text-gray-200")
+          (hasError ? "text-red-600" : "text-[#111811]")
         }
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -185,7 +178,7 @@ function PhoneCountrySelect({
       {open ? (
         <div
           role="listbox"
-          className="absolute top-full left-0 mt-2 w-64 rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-surface-dark shadow-soft overflow-hidden z-50"
+          className="absolute top-full left-0 mt-2 w-64 rounded-xl border border-[var(--color-accent)] bg-white shadow-[var(--shadow-soft)] overflow-hidden z-50"
         >
           {options.map((opt) => (
             <button
@@ -198,15 +191,15 @@ function PhoneCountrySelect({
                 setOpen(false);
               }}
               className={
-                "w-full px-4 py-3 flex items-center gap-3 text-sm hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors " +
+                "w-full px-4 py-3 flex items-center gap-3 text-sm hover:bg-white/70 transition-colors " +
                 (opt.value === value
-                  ? "bg-primary/10 text-primary"
-                  : "text-gray-700 dark:text-gray-200")
+                  ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
+                  : "text-[#111811]")
               }
             >
               <span className={`fi fi-${opt.flag}`} aria-hidden />
               <span className="flex-1 text-right">{opt.label}</span>
-              <span className="text-gray-500 dark:text-gray-400" dir="ltr">
+              <span className="text-black/50" dir="ltr">
                 {opt.dial}
               </span>
             </button>
@@ -233,47 +226,21 @@ export default function Step2CustomerInfo({
   isSaving?: boolean;
 }) {
   const t = useTranslations("cart.step2");
-
   const resolvedFormId = formId ?? "customer-info-form";
 
   const countryOptions = useMemo<CountryOption[]>(
     () => [
-      {
-        value: "id",
-        dial: "+62",
-        flag: "id",
-        label: t("options.countries.id"),
-      },
-      {
-        value: "ms",
-        dial: "+60",
-        flag: "my",
-        label: t("options.countries.ms"),
-      },
-      {
-        value: "tr",
-        dial: "+90",
-        flag: "tr",
-        label: t("options.countries.tr"),
-      },
-      {
-        value: "lk",
-        dial: "+94",
-        flag: "lk",
-        label: t("options.countries.lk"),
-      },
+      { value: "id", dial: "+62", flag: "id", label: t("options.countries.id") },
+      { value: "ms", dial: "+60", flag: "my", label: t("options.countries.ms") },
+      { value: "tr", dial: "+90", flag: "tr", label: t("options.countries.tr") },
+      { value: "lk", dial: "+94", flag: "lk", label: t("options.countries.lk") },
     ],
     [t],
   );
 
   const phoneCountryOptions = useMemo<PhoneCountryOption[]>(
     () => [
-      {
-        value: "sa",
-        dial: "+966",
-        flag: "sa",
-        label: t("options.phoneCountries.sa"),
-      },
+      { value: "sa", dial: "+966", flag: "sa", label: t("options.phoneCountries.sa") },
       ...countryOptions.map((c) => ({
         value: c.value,
         dial: c.dial,
@@ -336,51 +303,49 @@ export default function Step2CustomerInfo({
   const birthDatePickerRef = useRef<HTMLInputElement | null>(null);
 
   const fieldBaseClassName =
-    "w-full rounded-xl border bg-background-light dark:bg-background-dark px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/30 focus:border-primary";
+    "w-full rounded-xl border bg-white px-4 py-3 text-[#111811] focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]";
 
   return (
-    <section className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft p-6 border border-gray-100 dark:border-[#332e25]">
-      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-[#332e25]">
-        <div className="size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+    <section className="rounded-3xl bg-white/60 backdrop-blur border border-[var(--color-accent)] p-6">
+      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[var(--color-accent)]">
+        <div className="size-8 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-sm">
           2
         </div>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-          {t("title")}
-        </h3>
+        <h3 className="text-xl font-bold text-[#111811]">{t("title")}</h3>
       </div>
 
       <form id={resolvedFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-black/60">
               {t("fields.fullNameLabel")}
             </label>
             <input
               {...register("fullName")}
-              className={`${fieldBaseClassName} ${errors.fullName ? "border-red-400 dark:border-red-500 focus:ring-red-500/30 focus:border-red-500" : "border-gray-200 dark:border-[#332e25]"}`}
+              className={`${fieldBaseClassName} ${errors.fullName ? "border-red-400 focus:ring-red-500/30 focus:border-red-500" : "border-[var(--color-accent)]"}`}
               placeholder={t("fields.fullNamePlaceholder")}
               type="text"
               aria-invalid={Boolean(errors.fullName)}
             />
             {errors.fullName?.message ? (
-              <p className="text-sm text-red-500">{errors.fullName.message}</p>
+              <p className="text-sm text-red-600">{errors.fullName.message}</p>
             ) : null}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-black/60">
               {t("fields.phoneLabel")}
             </label>
             <div dir="ltr">
               <div
                 className={
-                  "w-full rounded-xl border bg-background-light dark:bg-background-dark flex items-stretch focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary " +
+                  "w-full rounded-xl border bg-white overflow-hidden flex items-stretch focus-within:ring-2 focus-within:ring-[var(--color-primary)]/30 focus-within:border-[var(--color-primary)] " +
                   (errors.phone || errors.phoneCountry
-                    ? "border-red-400 dark:border-red-500"
-                    : "border-gray-200 dark:border-[#332e25]")
+                    ? "border-red-400"
+                    : "border-[var(--color-accent)]")
                 }
               >
-                <div className="border-r border-gray-200 dark:border-[#332e25] bg-surface-light/50 dark:bg-background-dark flex items-stretch">
+                <div className="border-r border-[var(--color-accent)] bg-white/50 flex items-stretch">
                   <Controller
                     control={control}
                     name="phoneCountry"
@@ -397,7 +362,7 @@ export default function Step2CustomerInfo({
 
                 <input
                   {...register("phone")}
-                  className="flex-1 bg-transparent px-4 py-3 text-gray-900 dark:text-white focus:outline-none"
+                  className="flex-1 bg-white px-4 py-3 text-[#111811] focus:outline-none"
                   placeholder={t("fields.phonePlaceholder")}
                   type="tel"
                   inputMode="numeric"
@@ -406,34 +371,32 @@ export default function Step2CustomerInfo({
               </div>
             </div>
             {errors.phone?.message ? (
-              <p className="text-sm text-red-500">{errors.phone.message}</p>
+              <p className="text-sm text-red-600">{errors.phone.message}</p>
             ) : null}
             {errors.phoneCountry?.message ? (
-              <p className="text-sm text-red-500">
-                {errors.phoneCountry.message}
-              </p>
+              <p className="text-sm text-red-600">{errors.phoneCountry.message}</p>
             ) : null}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-black/60">
               {t("fields.emailLabel")}
             </label>
             <input
               {...register("email")}
-              className={`${fieldBaseClassName} ${errors.email ? "border-red-400 dark:border-red-500 focus:ring-red-500/30 focus:border-red-500" : "border-gray-200 dark:border-[#332e25]"}`}
+              className={`${fieldBaseClassName} ${errors.email ? "border-red-400 focus:ring-red-500/30 focus:border-red-500" : "border-[var(--color-accent)]"}`}
               placeholder={t("fields.emailPlaceholder")}
               type="email"
               dir="ltr"
               aria-invalid={Boolean(errors.email)}
             />
             {errors.email?.message ? (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-sm text-red-600">{errors.email.message}</p>
             ) : null}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-black/60">
               {t("fields.countryLabel")}
             </label>
             <Controller
@@ -450,12 +413,12 @@ export default function Step2CustomerInfo({
               )}
             />
             {errors.country?.message ? (
-              <p className="text-sm text-red-500">{errors.country.message}</p>
+              <p className="text-sm text-red-600">{errors.country.message}</p>
             ) : null}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-black/60">
               {t("fields.birthDateLabel")}
             </label>
             <div className="relative">
@@ -466,7 +429,7 @@ export default function Step2CustomerInfo({
                     target.value = formatBirthDateInput(target.value);
                   },
                 })}
-                className={`${fieldBaseClassName} pr-12 ${errors.birthDate ? "border-red-400 dark:border-red-500 focus:ring-red-500/30 focus:border-red-500" : "border-gray-200 dark:border-[#332e25]"}`}
+                className={`${fieldBaseClassName} pr-12 ${errors.birthDate ? "border-red-400 focus:ring-red-500/30 focus:border-red-500" : "border-[var(--color-accent)]"}`}
                 placeholder={t("fields.birthDatePlaceholder")}
                 type="text"
                 dir="ltr"
@@ -481,8 +444,8 @@ export default function Step2CustomerInfo({
                   const el = birthDatePickerRef.current;
                   if (!el) return;
                   if (
-                    typeof (el as unknown as { showPicker?: () => void })
-                      .showPicker === "function"
+                    typeof (el as unknown as { showPicker?: () => void }).showPicker ===
+                    "function"
                   ) {
                     (el as unknown as { showPicker: () => void }).showPicker();
                     return;
@@ -490,7 +453,7 @@ export default function Step2CustomerInfo({
                   el.focus();
                   el.click();
                 }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-black/50 hover:text-[#111811]"
                 aria-label={t("fields.birthDateLabel")}
               >
                 <RiCalendar2Line className="text-[20px]" aria-hidden />
@@ -513,47 +476,47 @@ export default function Step2CustomerInfo({
               />
             </div>
             {errors.birthDate?.message ? (
-              <p className="text-sm text-red-500">{errors.birthDate.message}</p>
+              <p className="text-sm text-red-600">{errors.birthDate.message}</p>
             ) : null}
           </div>
 
           <div className="space-y-2">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-medium text-black/60">
               {t("fields.performedHajjOrUmrahBeforeLabel")}
             </span>
 
             <div
               className={
-                "w-full rounded-xl border bg-background-light dark:bg-background-dark px-4 py-3 flex items-center gap-6 focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary " +
+                "w-full rounded-xl border bg-white px-4 py-3 flex items-center gap-6 focus-within:ring-2 focus-within:ring-[var(--color-primary)]/30 focus-within:border-[var(--color-primary)] " +
                 (errors.performedHajjOrUmrahBefore
-                  ? "border-red-400 dark:border-red-500"
-                  : "border-gray-200 dark:border-[#332e25]")
+                  ? "border-red-400"
+                  : "border-[var(--color-accent)]")
               }
               role="radiogroup"
               aria-invalid={Boolean(errors.performedHajjOrUmrahBefore)}
             >
-              <label className="inline-flex items-center gap-2 text-gray-700 dark:text-gray-200">
+              <label className="inline-flex items-center gap-2 text-[#111811]">
                 <input
                   type="radio"
                   value="yes"
                   {...register("performedHajjOrUmrahBefore")}
-                  className="accent-primary"
+                  className="accent-[var(--color-primary)]"
                 />
                 <span>{t("options.yesNo.yes")}</span>
               </label>
-              <label className="inline-flex items-center gap-2 text-gray-700 dark:text-gray-200">
+              <label className="inline-flex items-center gap-2 text-[#111811]">
                 <input
                   type="radio"
                   value="no"
                   {...register("performedHajjOrUmrahBefore")}
-                  className="accent-primary"
+                  className="accent-[var(--color-primary)]"
                 />
                 <span>{t("options.yesNo.no")}</span>
               </label>
             </div>
 
             {errors.performedHajjOrUmrahBefore?.message ? (
-              <p className="text-sm text-red-500">
+              <p className="text-sm text-red-600">
                 {errors.performedHajjOrUmrahBefore.message}
               </p>
             ) : null}
@@ -564,13 +527,13 @@ export default function Step2CustomerInfo({
           <button
             type="button"
             onClick={onBack}
-            className="px-5 py-3 rounded-xl border border-gray-200 dark:border-[#332e25] bg-surface-light dark:bg-background-dark text-gray-700 dark:text-gray-200 font-bold hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors"
+            className="px-5 py-3 rounded-xl border border-[var(--color-accent)] bg-white text-black/60 font-bold hover:text-[#111811] hover:bg-white/80 transition-colors"
           >
             {t("actions.back")}
           </button>
 
           {submitError ? (
-            <p className="sm:order-3 sm:ml-auto sm:self-center text-sm text-red-500">
+            <p className="sm:order-3 sm:ml-auto sm:self-center text-sm text-red-600">
               {submitError}
             </p>
           ) : null}
@@ -578,7 +541,7 @@ export default function Step2CustomerInfo({
           <button
             type="submit"
             disabled={isSubmitting || Boolean(isSaving)}
-            className="px-5 py-3 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold shadow-lg shadow-primary/30 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+            className="px-5 py-3 rounded-xl bg-[var(--color-primary)] text-white font-bold shadow-sm hover:bg-[var(--color-primary-dark)] transition-colors disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-[var(--color-primary)]"
           >
             {t("actions.next")}
           </button>
