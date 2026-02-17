@@ -1,5 +1,6 @@
 import FaqAccordion from "./FaqAccordion";
 import BadalRequestButton from "./BadalRequestButton";
+import HeroSection from "./HeroSection";
 import type { IconType } from "react-icons";
 import {
   MdAccessible,
@@ -90,6 +91,8 @@ export default function BadalServicePage() {
 
   return (
     <main className="flex-grow w-full overflow-x-hidden">
+      <HeroSection />
+
       {/* About & Conditions Section */}
       <section className="py-20 bg-surface-light dark:bg-surface-dark relative">
         <div className="container mx-auto px-4">
