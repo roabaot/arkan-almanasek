@@ -6,10 +6,8 @@ import { useTranslations } from "next-intl";
 import DOMPurify from "dompurify";
 import { FaShirt, FaSoap } from "react-icons/fa6";
 import {
+  RiInformationLine,
   RiShieldCheckLine,
-  RiStarFill,
-  RiStarHalfFill,
-  RiStarLine,
   RiTruckLine,
 } from "react-icons/ri";
 
@@ -17,12 +15,14 @@ import type { TabKey } from "./types";
 import { ProductT } from "@/app/api/products";
 
 type ProductFeatureItem = {
-  logo: string;
+  logo: string | null;
   name: string;
   description: string;
 };
 
-function decodeSvgDataUri(input: string): string | null {
+function decodeSvgDataUri(input: unknown): string | null {
+  if (typeof input !== "string") return null;
+
   const trimmed = input.trim();
   if (!trimmed) return null;
 
@@ -46,8 +46,9 @@ function decodeSvgDataUri(input: string): string | null {
   }
 }
 
-function renderFeatureIcon(icon: string): ReactNode {
-  const svgMarkup = decodeSvgDataUri(icon);
+function renderFeatureIcon(icon: unknown): ReactNode {
+  const iconText = typeof icon === "string" ? icon : "";
+  const svgMarkup = decodeSvgDataUri(iconText);
 
   if (svgMarkup) {
     const sanitized = DOMPurify.sanitize(svgMarkup, {
@@ -64,7 +65,7 @@ function renderFeatureIcon(icon: string): ReactNode {
     );
   }
 
-  switch (icon.trim().toLowerCase()) {
+  switch (iconText.trim().toLowerCase()) {
     case "shirt":
     case "fa-shirt":
       return <FaShirt className="text-xl" aria-hidden="true" />;
@@ -80,7 +81,7 @@ function renderFeatureIcon(icon: string): ReactNode {
     case "ri-truck-line":
       return <RiTruckLine className="text-xl" aria-hidden="true" />;
     default:
-      return <RiStarLine className="text-xl" aria-hidden="true" />;
+      return <RiInformationLine className="text-xl" aria-hidden="true" />;
   }
 }
 
@@ -91,10 +92,23 @@ export default function ProductDetailsTabs({ product }: { product: ProductT }) {
   const tabButtonBase =
     "px-8 py-5 text-sm font-bold transition-colors border-b-2";
 
-  const features: ProductFeatureItem[] =
-    Array.isArray(product.specifications) && product.specifications.length > 0
-      ? product.specifications
-      : [];
+  const features: ProductFeatureItem[] = Array.isArray(product.specifications)
+    ? product.specifications.flatMap((item) => {
+        if (!item || typeof item !== "object") return [];
+
+        const candidate = item as Record<string, unknown>;
+        const name = typeof candidate.name === "string" ? candidate.name : null;
+        const description =
+          typeof candidate.description === "string"
+            ? candidate.description
+            : null;
+
+        if (!name || !description) return [];
+
+        const logo = typeof candidate.logo === "string" ? candidate.logo : null;
+        return [{ name, description, logo }];
+      })
+    : [];
 
   return (
     <div className="mt-16 bg-white dark:bg-[#1a160e] rounded-2xl shadow-sm border border-gray-100 dark:border-[#332d22] overflow-hidden">
@@ -395,7 +409,10 @@ export default function ProductDetailsTabs({ product }: { product: ProductT }) {
             </div> */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
               {features.map((feature, idx) => (
-                <div className="flex gap-4" key={`${feature.logo}-${idx}`}>
+                <div
+                  className="flex gap-4"
+                  key={`${feature.name || "feature"}-${idx}`}
+                >
                   <div className="size-12 rounded-full bg-background/85 dark:bg-[#2a241a] flex items-center justify-center text-secondary shrink-0">
                     {renderFeatureIcon(feature.logo)}
                   </div>

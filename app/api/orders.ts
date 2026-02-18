@@ -18,7 +18,7 @@ export type CheckoutPayload = {
     performed_hajj_or_umrah_before?: string;
     phone_country?: string;
   };
-  items: CartItem[];
+  cart: CartItem[];
 };
 
 export type RequestT = {

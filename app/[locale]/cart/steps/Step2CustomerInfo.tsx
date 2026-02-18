@@ -374,13 +374,13 @@ export default function Step2CustomerInfo({
             <div dir="ltr">
               <div
                 className={
-                  "w-full rounded-xl border bg-background-light dark:bg-background-dark flex items-stretch focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary " +
+                  "w-full min-w-0 rounded-xl border bg-background-light dark:bg-background-dark flex items-stretch focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary " +
                   (errors.phone || errors.phoneCountry
                     ? "border-red-400 dark:border-red-500"
                     : "border-gray-200 dark:border-[#332e25]")
                 }
               >
-                <div className="border-r border-gray-200 dark:border-[#332e25] bg-surface-light/50 dark:bg-background-dark flex items-stretch">
+                <div className="shrink-0 border-r border-gray-200 dark:border-[#332e25] bg-surface-light/50 dark:bg-background-dark flex items-stretch">
                   <Controller
                     control={control}
                     name="phoneCountry"
@@ -397,7 +397,7 @@ export default function Step2CustomerInfo({
 
                 <input
                   {...register("phone")}
-                  className="flex-1 bg-transparent px-4 py-3 text-gray-900 dark:text-white focus:outline-none"
+                  className="min-w-0 w-0 flex-1 bg-transparent px-4 py-3 text-gray-900 dark:text-white focus:outline-none"
                   placeholder={t("fields.phonePlaceholder")}
                   type="tel"
                   inputMode="numeric"

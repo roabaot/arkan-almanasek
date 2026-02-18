@@ -330,9 +330,8 @@ export default function CheckoutWizard() {
         country: values.country,
         dob: isoDateFromDDMMYYYY(values.birthDate),
         performed_hajj_or_umrah_before: values.performedHajjOrUmrahBefore,
-        phone_country: values.phoneCountry,
       },
-      items,
+      cart: items,
     };
 
     addRequestMutation.reset();
