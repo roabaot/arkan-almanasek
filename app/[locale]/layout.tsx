@@ -11,6 +11,7 @@ import { routing } from "../../i18n/routing";
 import AppShell from "../components/layout/AppShell";
 import ThemeProvider from "../components/providers/ThemeProvider";
 import ReactQueryProvider from "../components/providers/ReactQueryProvider";
+import Toaster from "../components/ui/Toaster";
 
 const APP_NAME = "Arkan Almnasek";
 const APP_DEFAULT_TITLE = "My Awesome Arkan Almnasek";
@@ -85,6 +86,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <ReactQueryProvider>
             <ThemeProvider defaultTheme="light">
+              <Toaster />
               <AppShell>{children}</AppShell>
             </ThemeProvider>
           </ReactQueryProvider>

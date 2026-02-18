@@ -48,7 +48,7 @@ export default function ProductDetailsClient({
       </div>
 
       {/* Product Main Section */}
-      {product && <ProductMainSection params={params} product={product} />}
+      {product && <ProductMainSection product={product} />}
 
       {/* Details Section Tabs */}
       {product && <ProductDetailsTabs product={product} />}

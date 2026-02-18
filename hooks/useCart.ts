@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { toast } from "@/app/components/ui/toast";
 import {
   getCart,
   addToCart,
@@ -55,6 +56,12 @@ export function useCart() {
     (item: CartItem, mode: "increment" | "replace" = "increment") => {
       const updated = addToCart(item, mode);
       emitChange(updated);
+
+      if (typeof document !== "undefined") {
+        const lang = document.documentElement.lang;
+        const message = lang === "ar" ? "تمت الإضافة إلى السلة بنجاح" : "Added to cart";
+        toast.success(message);
+      }
     },
     [],
   );

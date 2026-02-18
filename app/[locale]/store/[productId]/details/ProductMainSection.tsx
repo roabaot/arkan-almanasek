@@ -4,24 +4,15 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   RiAddLine,
-  RiHeartFill,
-  RiHeartLine,
   RiShareLine,
   RiShoppingBagLine,
   RiSubtractLine,
 } from "react-icons/ri";
 
-import type { PageParams } from "./types";
 import { ProductT } from "@/app/api/products";
 import { useCart } from "@/hooks/useCart";
 
-export default function ProductMainSection({
-  params,
-  product,
-}: {
-  params: PageParams;
-  product: ProductT;
-}) {
+export default function ProductMainSection({ product }: { product: ProductT }) {
   const t = useTranslations("store");
   const { addProduct } = useCart();
 
@@ -207,11 +198,6 @@ export default function ProductMainSection({
             onClick={() => {
               // Placeholder: wire this to your cart store/action
               addProduct({ ...product, quantity, type: "product" }, "replace");
-              console.log("add-to-cart", {
-                locale: params.locale,
-                productId: params.productId,
-                quantity,
-              });
             }}
           >
             <RiShoppingBagLine className="text-xl" aria-hidden="true" />
