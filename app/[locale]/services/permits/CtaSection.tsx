@@ -4,10 +4,23 @@ import { Link } from "@/i18n/navigation";
 import React, { useRef, useState } from "react";
 
 import PermitsRequestModal from "./PermitsRequestModal";
+import { useQuery } from "@tanstack/react-query";
+import { GetPermitResT, getPermits } from "@/app/api/permit";
 
-export default function CtaSection() {
+export default function CtaSection({
+  initialPermits,
+}: {
+  initialPermits: GetPermitResT;
+}) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  const { data: permitRes } = useQuery({
+    queryKey: ["permit"],
+    queryFn: getPermits,
+    initialData: initialPermits,
+    staleTime: 1000 * 60,
+  });
 
   return (
     <section className="py-20 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800">
@@ -47,6 +60,7 @@ export default function CtaSection() {
       <PermitsRequestModal
         open={open}
         onOpenChange={(nextOpen) => setOpen(nextOpen)}
+        permits={permitRes}
         onComplete={(payload) => console.log("permits request:", payload)}
         modalProps={{ finalFocusRef: buttonRef }}
       />

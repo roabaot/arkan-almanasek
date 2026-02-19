@@ -10,6 +10,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  editPermitRequest,
+  postPermitRequest,
+  type GetPermitResT,
+  type PermitPayload,
+  type PermitTypeT,
+} from "@/app/api/permit";
+import {
   MdAddAPhoto,
   MdArrowBack,
   MdArrowForward,
@@ -190,11 +197,19 @@ export type PermitsRequestPayload = {
   payment: PaymentValues;
 };
 
+type PermitSubmitArgs = {
+  apiPayload: PermitPayload;
+  apiResponse: unknown;
+  mode: "create" | "update";
+};
+
 export type PermitsRequestModalProps = {
   open: boolean;
   onOpenChange: (open: boolean, reason: ModalCloseReason) => void;
 
-  onComplete?: (payload: PermitsRequestPayload) => void | Promise<void>;
+  permits?: GetPermitResT;
+
+  onComplete?: (args: PermitSubmitArgs) => void | Promise<void>;
 
   modalProps?: Omit<
     AnimatedModalProps,
@@ -220,6 +235,7 @@ function getPermitLabel(type: PermitType) {
 export default function PermitsRequestModal({
   open,
   onOpenChange,
+  permits,
   onComplete,
   modalProps,
 }: PermitsRequestModalProps) {
@@ -228,6 +244,12 @@ export default function PermitsRequestModal({
   const [idFile, setIdFile] = useState<File | null>(null);
   const [personalPhoto, setPersonalPhoto] = useState<File | null>(null);
   const [docsError, setDocsError] = useState<string | null>(null);
+
+  const [isSending, setIsSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [savedRequest, setSavedRequest] = useState<PermitSubmitArgs | null>(
+    null,
+  );
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [cardData, setCardData] = useState<CardData>({
@@ -259,7 +281,7 @@ export default function PermitsRequestModal({
     mode: "onSubmit",
   });
 
-  const canClose = !isSubmitting;
+  const canClose = !(isSubmitting || isSending);
 
   useEffect(() => {
     if (open) return;
@@ -268,6 +290,9 @@ export default function PermitsRequestModal({
     setIdFile(null);
     setPersonalPhoto(null);
     setDocsError(null);
+    setSubmitError(null);
+    setIsSending(false);
+    setSavedRequest(null);
     setPaymentMethod("card");
     setCardData({ cardholder: "", cardNumber: "", expiry: "", cvc: "" });
     setBankReceipt(null);
@@ -275,6 +300,103 @@ export default function PermitsRequestModal({
   }, [open, reset]);
 
   const permitType = watch("permitType") as PermitType;
+
+  const formatNumber = useMemo(
+    () =>
+      new Intl.NumberFormat(undefined, {
+        maximumFractionDigits: 2,
+      }),
+    [],
+  );
+
+  function formatSAR(value: number) {
+    return `${formatNumber.format(value)} SAR`;
+  }
+
+  const permitPriceByType = useMemo(() => {
+    const out: Partial<Record<PermitType, number>> = {};
+    for (const p of permits?.permits ?? []) {
+      if (p?.type === "PermitHajj") out.hajj = Number(p.price);
+      if (p?.type === "PermitUmrah") out.umrah = Number(p.price);
+    }
+    return out;
+  }, [permits]);
+
+  function mapPermitTypeToApi(type: PermitType): PermitTypeT {
+    return type === "hajj" ? "PermitHajj" : "PermitUmrah";
+  }
+
+  function hasSavedRequestToken(): boolean {
+    try {
+      const token = window.localStorage.getItem("token");
+      return typeof token === "string" && token.length >= 10;
+    } catch {
+      return false;
+    }
+  }
+
+  function persistRequestToken(token: string) {
+    try {
+      window.localStorage.setItem("token", token);
+    } catch {
+      // ignore
+    }
+  }
+
+  async function savePermitRequest(): Promise<PermitSubmitArgs> {
+    if (!idFile || !personalPhoto) {
+      throw new Error("يرجى رفع صورة الهوية والصورة الشخصية");
+    }
+
+    const values = getValues();
+    const apiPayload: PermitPayload = {
+      customer: {
+        name: values.fullName.trim(),
+        phone: "",
+        country: "",
+        email: "",
+        dob: values.birthDate,
+        id_number: values.idNumber.trim(),
+        nationality: values.nationality,
+        additional_notes: values.notes?.trim() ? values.notes.trim() : "",
+        permit_type: mapPermitTypeToApi(values.permitType as PermitType),
+      },
+      files: {
+        id_number_file: idFile,
+        personal_photo_file: personalPhoto,
+      },
+    };
+
+    const hasToken = hasSavedRequestToken();
+    let apiResponse: unknown;
+    let mode: "create" | "update";
+
+    if (hasToken) {
+      mode = "update";
+      apiResponse = await editPermitRequest(apiPayload);
+    } else {
+      mode = "create";
+      apiResponse = await postPermitRequest(apiPayload);
+
+      const token = (apiResponse as { token?: unknown } | null)?.token;
+      if (typeof token === "string" && token.length >= 10) {
+        persistRequestToken(token);
+      }
+    }
+
+    return { apiPayload, apiResponse, mode };
+  }
+
+  async function finalizeAndClose() {
+    setSubmitError(null);
+    try {
+      const args = savedRequest ?? (await savePermitRequest());
+      await (onComplete?.(args) ?? Promise.resolve());
+      onOpenChange(false, "programmatic");
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+    }
+  }
 
   const progressPercent = useMemo(() => {
     const idx = step - 1;
@@ -333,13 +455,23 @@ export default function PermitsRequestModal({
       ]);
       if (!ok) return;
       if (!validateDocuments()) return;
-      setStep(3);
+
+      setSubmitError(null);
+      setIsSending(true);
+      try {
+        const args = await savePermitRequest();
+        setSavedRequest(args);
+        setStep(3);
+      } catch (e) {
+        setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+      } finally {
+        setIsSending(false);
+      }
       return;
     }
 
     if (step === 3) {
-      const payment = validatePayment();
-      if (!payment) return;
+      // Payment integration isn't wired yet; allow moving forward.
       setStep(4);
     }
   }
@@ -351,30 +483,7 @@ export default function PermitsRequestModal({
   }
 
   async function submitRequest() {
-    const formOk = await trigger();
-    const docsOk = validateDocuments();
-    const payment = validatePayment();
-    if (!formOk || !docsOk || !payment) return;
-
-    const values = getValues();
-    const payload: PermitsRequestPayload = {
-      permitType: values.permitType as PermitType,
-      notes: values.notes?.trim() ? values.notes.trim() : undefined,
-      applicant: {
-        fullName: values.fullName.trim(),
-        idNumber: values.idNumber.trim(),
-        birthDate: values.birthDate,
-        nationality: values.nationality,
-      },
-      documents: {
-        idFile: idFile as File,
-        personalPhoto: personalPhoto as File,
-      },
-      payment,
-    };
-
-    await (onComplete?.(payload) ?? Promise.resolve());
-    onOpenChange(false, "programmatic");
+    await finalizeAndClose();
   }
 
   const steps = [
@@ -426,6 +535,12 @@ export default function PermitsRequestModal({
                   <h3 className="font-bold text-gray-900 dark:text-white text-lg">
                     تصريح حج
                   </h3>
+                  {typeof permitPriceByType.hajj === "number" &&
+                  Number.isFinite(permitPriceByType.hajj) ? (
+                    <p className="mt-2 text-sm font-bold text-primary">
+                      {formatSAR(permitPriceByType.hajj)}
+                    </p>
+                  ) : null}
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
                     إصدار تصريح لأداء فريضة الحج للمواطنين والمقيمين.
                   </p>
@@ -455,6 +570,12 @@ export default function PermitsRequestModal({
                   <h3 className="font-bold text-gray-900 dark:text-white text-lg">
                     تصريح عمرة
                   </h3>
+                  {typeof permitPriceByType.umrah === "number" &&
+                  Number.isFinite(permitPriceByType.umrah) ? (
+                    <p className="mt-2 text-sm font-bold text-primary">
+                      {formatSAR(permitPriceByType.umrah)}
+                    </p>
+                  ) : null}
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
                     إصدار تصريح لأداء العمرة وزيارة الروضة الشريفة.
                   </p>
@@ -1085,49 +1206,55 @@ export default function PermitsRequestModal({
           {stepPanel}
         </form>
 
-        <footer className="p-6 border-t border-gray-100 dark:border-gray-700/50 flex items-center justify-between bg-surface-light dark:bg-surface-dark rounded-b-3xl">
-          <button
-            type="button"
-            onClick={
-              step === 1 ? () => onOpenChange(false, "programmatic") : goBack
-            }
-            disabled={!canClose}
-            className="px-6 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 group"
-          >
-            <MdArrowForward
-              className="text-lg group-hover:-translate-x-1 transition-transform ltr:rotate-180"
-              aria-hidden
-            />
-            {step === 1 ? "إلغاء" : "السابق"}
-          </button>
+        <footer className="p-6 border-t border-gray-100 dark:border-gray-700/50 bg-surface-light dark:bg-surface-dark rounded-b-3xl">
+          {submitError ? (
+            <p className="mb-3 text-sm text-red-500">{submitError}</p>
+          ) : null}
 
-          {step === 4 ? (
+          <div className="flex items-center justify-between">
             <button
               type="button"
-              onClick={() => submitRequest()}
-              disabled={isSubmitting}
-              className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95"
+              onClick={
+                step === 1 ? () => onOpenChange(false, "programmatic") : goBack
+              }
+              disabled={!canClose}
+              className="px-6 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 group"
             >
-              إرسال الطلب
-              <MdArrowBack
-                className="text-lg group-hover:translate-x-[-4px] transition-transform ltr:rotate-180"
+              <MdArrowForward
+                className="text-lg group-hover:-translate-x-1 transition-transform ltr:rotate-180"
                 aria-hidden
               />
+              {step === 1 ? "إلغاء" : "السابق"}
             </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => goNext()}
-              disabled={isSubmitting}
-              className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95"
-            >
-              التالي
-              <MdArrowBack
-                className="text-lg group-hover:translate-x-[-4px] transition-transform ltr:rotate-180"
-                aria-hidden
-              />
-            </button>
-          )}
+
+            {step === 4 ? (
+              <button
+                type="button"
+                onClick={() => submitRequest()}
+                disabled={!canClose}
+                className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95"
+              >
+                إرسال الطلب
+                <MdArrowBack
+                  className="text-lg group-hover:translate-x-[-4px] transition-transform ltr:rotate-180"
+                  aria-hidden
+                />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => goNext()}
+                disabled={!canClose}
+                className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95"
+              >
+                التالي
+                <MdArrowBack
+                  className="text-lg group-hover:translate-x-[-4px] transition-transform ltr:rotate-180"
+                  aria-hidden
+                />
+              </button>
+            )}
+          </div>
         </footer>
       </main>
     </AnimatedModal>

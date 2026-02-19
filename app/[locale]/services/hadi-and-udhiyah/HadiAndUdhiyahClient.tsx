@@ -285,27 +285,18 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
     setStep(2);
   }
 
-  async function hasRequestTokenCookie() {
+  function hasSavedRequestToken(): boolean {
     try {
-      const res = await fetch("/api/session/request-token", {
-        method: "GET",
-        cache: "no-store",
-      });
-      if (!res.ok) return false;
-      const json = (await res.json()) as { hasToken?: boolean };
-      return Boolean(json?.hasToken);
+      const token = window.localStorage.getItem("token");
+      return typeof token === "string" && token.length >= 10;
     } catch {
       return false;
     }
   }
 
-  async function persistRequestTokenCookie(token: string) {
+  function persistRequestToken(token: string) {
     try {
-      await fetch("/api/session/request-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
+      window.localStorage.setItem("token", token);
     } catch {
       // ignore
     }
@@ -353,7 +344,7 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
     };
 
     try {
-      const hasToken = await hasRequestTokenCookie();
+      const hasToken = hasSavedRequestToken();
 
       if (hasToken) {
         await editHadiRequest(payload);
@@ -362,7 +353,7 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
           token?: string;
         };
         if (typeof res?.token === "string" && res.token.length >= 10) {
-          await persistRequestTokenCookie(res.token);
+          persistRequestToken(res.token);
         }
       }
 

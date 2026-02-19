@@ -1,3 +1,4 @@
+import { getPermits } from "@/app/api/permit";
 import AboutSection from "./AboutSection";
 import CtaSection from "./CtaSection";
 import HeroSection from "./HeroSection";
@@ -6,7 +7,7 @@ import PermitTypesSection from "./PermitTypesSection";
 import RequiredDocumentsSection from "./RequiredDocumentsSection";
 import StepsSection from "./StepsSection";
 
-export default function PermitsServicePage() {
+export default async function PermitsServicePage() {
   const permitCards = [
     {
       title: "تصريح الحج",
@@ -63,6 +64,8 @@ export default function PermitsServicePage() {
     },
   ] as const;
 
+  const initialPermits = await getPermits();
+
   return (
     <main className="flex-grow w-full overflow-x-hidden">
       <HeroSection />
@@ -71,7 +74,7 @@ export default function PermitsServicePage() {
       <RequiredDocumentsSection docs={requiredDocs} />
       <StepsSection steps={steps} />
       <NoticeSection />
-      <CtaSection />
+      <CtaSection initialPermits={initialPermits} />
     </main>
   );
 }

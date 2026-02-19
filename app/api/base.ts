@@ -39,10 +39,14 @@ function buildApiUrl(endpoint: string): string {
   return `${base}${path}`;
 }
 
-function buildProxyUrl(endpoint: string): string {
-  if (/^https?:\/\//i.test(endpoint)) return endpoint;
-  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-  return `/api/proxy${path}`;
+function getClientToken(): string | null {
+  try {
+    if (typeof window === "undefined") return null;
+    const token = window.localStorage?.getItem("token");
+    return typeof token === "string" && token.length >= 10 ? token : null;
+  } catch {
+    return null;
+  }
 }
 
 async function doFetch<T>(url: string, options?: RequestInit): Promise<T> {
@@ -52,15 +56,26 @@ async function doFetch<T>(url: string, options?: RequestInit): Promise<T> {
       : "ar";
 
   const { headers, ...fetchOptions } = options ?? {};
+  const providedHeaders = new Headers(headers ?? undefined);
+  const isFormDataBody =
+    typeof FormData !== "undefined" && fetchOptions.body instanceof FormData;
+
+  const reqHeaders = new Headers();
+  if (!isFormDataBody) {
+    reqHeaders.set("Content-Type", "application/json");
+  }
+  reqHeaders.set("Accept", "application/json");
+  reqHeaders.set("Accept-Language", defaultLocale);
+  reqHeaders.set("locale", defaultLocale);
+
+  // Let caller override/extend.
+  providedHeaders.forEach((value, key) => {
+    reqHeaders.set(key, value);
+  });
+
   const res = await fetch(url, {
     ...fetchOptions,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "Accept-Language": defaultLocale,
-      locale: defaultLocale,
-      ...(headers || {}),
-    },
+    headers: reqHeaders,
   });
 
   if (!res.ok) {
@@ -91,11 +106,44 @@ export async function apiFetch<T>(
   return doFetch<T>(url, options);
 }
 
-// Opt-in: use same-origin proxy (e.g. when relying on HttpOnly cookies)
+// apiFetchViaProxy: same endpoint as apiFetch, but attaches token automatically.
+// Client uses localStorage token; server uses HttpOnly cookie (when available).
 export async function apiFetchViaProxy<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
-  const url = buildProxyUrl(endpoint);
-  return doFetch<T>(url, options);
+  // Client: call the upstream API directly so the request URL is
+  // `${NEXT_PUBLIC_API_BASE_URL}/...` (not localhost). Token is read from localStorage.
+  if (typeof window !== "undefined") {
+    const url = buildApiUrl(endpoint);
+    const nextHeaders = new Headers(options?.headers ?? undefined);
+    const token = getClientToken();
+    if (token) {
+      if (!nextHeaders.has("Authorization")) {
+        nextHeaders.set("Authorization", `Bearer ${token}`);
+      }
+      nextHeaders.set("token", token);
+    }
+    return doFetch<T>(url, { ...(options ?? {}), headers: nextHeaders });
+  }
+
+  // Server: best-effort direct upstream call with token from HttpOnly cookie.
+  const url = buildApiUrl(endpoint);
+  const nextHeaders = new Headers(options?.headers ?? undefined);
+
+  try {
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (token) {
+      if (!nextHeaders.has("Authorization")) {
+        nextHeaders.set("Authorization", `Bearer ${token}`);
+      }
+      nextHeaders.set("token", token);
+    }
+  } catch {
+    // ignore
+  }
+
+  return doFetch<T>(url, { ...(options ?? {}), headers: nextHeaders });
 }
