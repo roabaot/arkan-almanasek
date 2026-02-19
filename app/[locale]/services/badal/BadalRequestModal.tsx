@@ -11,6 +11,12 @@ import AnimatedModal, {
   type ModalCloseReason,
 } from "@/app/components/ui/AnimatedModal";
 
+import {
+  editBadelRequest,
+  postBadelRequest,
+  type BadelPayload,
+} from "@/app/api/badel";
+
 import { formatCardNumber, formatExpiry, formatFileSize } from "@/lib/utils";
 
 export type BadalServiceType = "umrah" | "hajj";
@@ -380,7 +386,6 @@ export default function BadalRequestModal({
     handleSubmit,
     watch,
     setValue,
-    trigger,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<CustomerFormValues>({
@@ -407,6 +412,9 @@ export default function BadalRequestModal({
   const [bankReceipt, setBankReceipt] = useState<File | null>(null);
   const [paymentErrors, setPaymentErrors] = useState<PaymentErrors>({});
 
+  const [isSending, setIsSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const phoneCountry = watch("phoneCountry");
   const selectedPhoneDial =
     countryOptions.find((c) => c.value === phoneCountry)?.dial ?? "";
@@ -419,6 +427,8 @@ export default function BadalRequestModal({
     setCardData({ cardholder: "", cardNumber: "", expiry: "", cvc: "" });
     setBankReceipt(null);
     setPaymentErrors({});
+    setIsSending(false);
+    setSubmitError(null);
   }, [open, reset]);
 
   const inputBase =
@@ -430,11 +440,69 @@ export default function BadalRequestModal({
 
   const stepTitle = step === 1 ? "بيانات المستفيد" : "الدفع";
 
-  const canClose = !isSubmitting;
+  const canClose = !(isSubmitting || isSending);
 
-  async function goToStep2() {
-    const ok = await trigger();
-    if (ok) setStep(2);
+  function hasSavedRequestToken(): boolean {
+    try {
+      const token = window.localStorage.getItem("token");
+      return typeof token === "string" && token.length >= 10;
+    } catch {
+      return false;
+    }
+  }
+
+  function persistRequestToken(token: string) {
+    try {
+      window.localStorage.setItem("token", token);
+    } catch {
+      // ignore
+    }
+  }
+
+  async function saveAndGoToStep2(customerValues: CustomerFormValues) {
+    setSubmitError(null);
+
+    const dial =
+      countryOptions.find((c) => c.value === customerValues.phoneCountry)
+        ?.dial ?? "";
+    const phone = `${dial}${customerValues.phone.replace(/\s+/g, "")}`;
+
+    const apiPayload: BadelPayload = {
+      customer: {
+        name: customerValues.fullName,
+        phone,
+        email:
+          customerValues.email && customerValues.email !== ""
+            ? customerValues.email
+            : undefined,
+        country: customerValues.country,
+        dob: customerValues.birthDate,
+        performed_hajj: customerValues.performedHajjOrUmrahBefore === "yes",
+      },
+    };
+
+    setIsSending(true);
+    try {
+      const hasToken = hasSavedRequestToken();
+
+      if (hasToken) {
+        await editBadelRequest(apiPayload);
+      } else {
+        const res = (await postBadelRequest(apiPayload)) as unknown as {
+          token?: unknown;
+        };
+        const token = res?.token;
+        if (typeof token === "string" && token.length >= 10) {
+          persistRequestToken(token);
+        }
+      }
+
+      setStep(2);
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+    } finally {
+      setIsSending(false);
+    }
   }
 
   function validatePayment(): PaymentValues | null {
@@ -462,6 +530,45 @@ export default function BadalRequestModal({
     }
     setPaymentErrors(nextErrors);
     return null;
+  }
+
+  async function submitRequest(customerValues: CustomerFormValues) {
+    setSubmitError(null);
+
+    const paymentValues = validatePayment();
+    if (!paymentValues) return;
+
+    const dial =
+      countryOptions.find((c) => c.value === customerValues.phoneCountry)
+        ?.dial ?? "";
+    const phone = `${dial}${customerValues.phone.replace(/\s+/g, "")}`;
+
+    const uiPayload: BadalRequestPayload = {
+      serviceType,
+      customer: {
+        name: customerValues.fullName,
+        phone,
+        email:
+          customerValues.email && customerValues.email !== ""
+            ? customerValues.email
+            : undefined,
+        country: customerValues.country,
+        dob: customerValues.birthDate,
+        performed_hajj_or_umrah_before: customerValues.performedHajjOrUmrahBefore,
+        phone_country: customerValues.phoneCountry,
+      },
+      payment: paymentValues,
+    };
+
+    setIsSending(true);
+    try {
+      await onComplete?.(uiPayload);
+      onOpenChange(false, "programmatic");
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+    } finally {
+      setIsSending(false);
+    }
   }
 
   const panel = (
@@ -510,7 +617,7 @@ export default function BadalRequestModal({
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
           >
-            <form id={formId} onSubmit={handleSubmit(async () => goToStep2())}>
+            <form id={formId} onSubmit={handleSubmit(saveAndGoToStep2)}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <label className="md:col-span-2 space-y-2">
                   <span className="text-sm font-bold text-gray-900 dark:text-white">
@@ -704,12 +811,18 @@ export default function BadalRequestModal({
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isSending}
                   className="px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary/90 transition-colors"
                 >
-                  التالي
+                  {isSending ? "جارٍ حفظ الطلب..." : "التالي"}
                 </button>
               </div>
+
+              {submitError ? (
+                <p className="mt-4 text-sm text-red-600 dark:text-red-400">
+                  {submitError}
+                </p>
+              ) : null}
             </form>
           </motion.div>
         ) : (
@@ -951,7 +1064,11 @@ export default function BadalRequestModal({
               <div className="mt-8 flex items-center justify-between gap-3">
                 <button
                   type="button"
-                  onClick={() => setStep(1)}
+                  onClick={() => {
+                    setSubmitError(null);
+                    setStep(1);
+                  }}
+                  disabled={isSending}
                   className="px-5 py-3 rounded-xl border border-gray-200 dark:border-[#332e25] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-[#221d14] transition-colors"
                 >
                   السابق
@@ -959,45 +1076,23 @@ export default function BadalRequestModal({
 
                 <button
                   type="button"
-                  disabled={isSubmitting}
-                  onClick={handleSubmit(async (customerValues) => {
-                    const paymentValues = validatePayment();
-                    if (!paymentValues) return;
-
-                    const dial =
-                      countryOptions.find(
-                        (c) => c.value === customerValues.phoneCountry,
-                      )?.dial ?? "";
-                    const phone = `${dial}${customerValues.phone.replace(/\s+/g, "")}`;
-
-                    const payload: BadalRequestPayload = {
-                      serviceType,
-                      customer: {
-                        name: customerValues.fullName,
-                        phone,
-                        email:
-                          customerValues.email && customerValues.email !== ""
-                            ? customerValues.email
-                            : undefined,
-                        country: customerValues.country,
-                        dob: customerValues.birthDate,
-                        performed_hajj_or_umrah_before:
-                          customerValues.performedHajjOrUmrahBefore,
-                        phone_country: customerValues.phoneCountry,
-                      },
-                      payment: paymentValues,
-                    };
-
-                    await onComplete?.(payload);
-                    onOpenChange(false, "programmatic");
-                  })}
+                  disabled={isSubmitting || isSending}
+                  onClick={handleSubmit(submitRequest)}
                   className="px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary/90 transition-colors"
                 >
-                  {serviceType === "umrah"
-                    ? "تأكيد طلب عمرة بدل"
-                    : "تأكيد طلب حج بدل"}
+                  {isSending
+                    ? "جارٍ إرسال الطلب..."
+                    : serviceType === "umrah"
+                      ? "تأكيد طلب عمرة بدل"
+                      : "تأكيد طلب حج بدل"}
                 </button>
               </div>
+
+              {submitError ? (
+                <p className="mt-4 text-sm text-red-600 dark:text-red-400">
+                  {submitError}
+                </p>
+              ) : null}
             </div>
           </motion.div>
         )}
