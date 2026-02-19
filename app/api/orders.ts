@@ -43,6 +43,39 @@ type AddRequestResT = {
   [key: string]: unknown;
 };
 
+type ProductT = {
+  id: number;
+  code?: string;
+  name?: string;
+  sub_title?: string | null;
+  description?: string;
+  details?: string;
+  price?: number;
+  discount_price?: number | null;
+  quantity?: number;
+  available?: boolean;
+  category?: string | null;
+  tag?: string | null;
+  images?: string[];
+  image?: string | null;
+  specifications?: string[];
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type CartItemsByIdsResT = {
+  products: ProductT[];
+};
+
+export function getCartItemsByIds(ids: number[]): Promise<CartItemsByIdsResT> {
+  if (ids.length === 0) return Promise.resolve({ products: [] });
+
+  return apiFetch<CartItemsByIdsResT>("/carts/items", {
+    method: "POST",
+    body: JSON.stringify({ product_ids: ids }),
+  });
+}
+
 export function addRequest(payload: CheckoutPayload) {
   return apiFetch<AddRequestResT>("/requests/create", {
     method: "POST",

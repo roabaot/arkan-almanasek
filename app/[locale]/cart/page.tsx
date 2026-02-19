@@ -1,5 +1,5 @@
 import CheckoutWizard from "./CheckoutWizard";
 
-export default function CartPage() {
+export default async function CartPage() {
   return <CheckoutWizard />;
 }

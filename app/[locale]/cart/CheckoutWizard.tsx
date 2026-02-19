@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   RiArrowLeftLine,
   RiArrowLeftSLine,
@@ -16,7 +16,12 @@ import Step2CustomerInfo from "./steps/Step2CustomerInfo";
 import Step3Payment from "./steps/Step3Payment";
 import { Link } from "@/i18n/navigation";
 import { useCart } from "@/hooks/useCart";
-import { addRequest, getRequestCart, type CheckoutPayload } from "@/app/api";
+import {
+  addRequest,
+  getCartItemsByIds,
+  getRequestCart,
+  type CheckoutPayload,
+} from "@/app/api";
 import { isoDateFromDDMMYYYY } from "@/lib/utils";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
 import type { CartItem as StoredCartItem } from "@/lib/utils/cart";
@@ -132,6 +137,35 @@ export default function CheckoutWizard() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { total: cartSubtotal, cart, replaceCart } = useCart();
+
+  const itemsIds = useMemo(() => cart.map((item) => item.id), [cart]);
+
+  const { data: cartItemsData } = useQuery({
+    queryKey: ["cartItems", itemsIds],
+    queryFn: () => getCartItemsByIds(itemsIds),
+    staleTime: 1000 * 60,
+  });
+
+  const cartItems: StoredCartItem[] = useMemo(() => {
+    const products = cartItemsData?.products ?? [];
+
+    return products.map((product) => {
+      const cartItem = cart.find((c) => c.id === product.id);
+      const effectivePrice =
+        product.discount_price ?? product.price ?? undefined;
+
+      return {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: effectivePrice,
+        image: product.image ?? undefined,
+        maxQuantity: product.quantity ?? undefined,
+        quantity: cartItem?.quantity ?? 0,
+        type: cartItem?.type ?? "product",
+      };
+    });
+  }, [cartItemsData, cart]);
 
   useEffect(() => {
     let cancelled = false;
@@ -376,7 +410,7 @@ export default function CheckoutWizard() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1 space-y-8">
-            {step === 1 ? <Step1CartReview items={cart} /> : null}
+            {step === 1 ? <Step1CartReview items={cartItems} /> : null}
 
             {step === 2 ? (
               <Step2CustomerInfo

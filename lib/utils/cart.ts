@@ -9,6 +9,7 @@ export type CartItem = {
   price?: number;
   image?: string;
   quantity: number;
+  maxQuantity?: number;
   type: CartItemTypeT;
 };
 
@@ -23,6 +24,15 @@ function isBrowser() {
 function saveCart(cart: CartItem[]) {
   if (!isBrowser()) return;
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function clampQuantity(nextQuantity: number, maxQuantity?: number) {
+  const normalized = Number.isFinite(nextQuantity) ? nextQuantity : 1;
+  const minApplied = Math.max(1, Math.floor(normalized));
+  if (typeof maxQuantity === "number" && Number.isFinite(maxQuantity)) {
+    return Math.min(minApplied, Math.max(1, Math.floor(maxQuantity)));
+  }
+  return minApplied;
 }
 
 export function setCart(cart: CartItem[]) {
@@ -58,6 +68,13 @@ export function addToCart(
 
   const existingItem = cart[existingIndex];
 
+  // Keep maxQuantity if provided by either side.
+  const effectiveMaxQuantity =
+    existingItem.maxQuantity ?? item.maxQuantity ?? undefined;
+  if (effectiveMaxQuantity !== undefined) {
+    existingItem.maxQuantity = effectiveMaxQuantity;
+  }
+
   // نفس الكمية بالضبط → لا نغير شيء
   if (existingItem.quantity === item.quantity && mode === "replace") {
     return cart;
@@ -65,9 +82,12 @@ export function addToCart(
 
   // تحديث حسب الوضع
   if (mode === "increment") {
-    existingItem.quantity += item.quantity;
+    existingItem.quantity = clampQuantity(
+      existingItem.quantity + item.quantity,
+      effectiveMaxQuantity,
+    );
   } else {
-    existingItem.quantity = item.quantity;
+    existingItem.quantity = clampQuantity(item.quantity, effectiveMaxQuantity);
   }
 
   saveCart(cart);
@@ -78,7 +98,9 @@ export function updateQuantity(productId: number, quantity: number) {
   const cart = getCart();
 
   const updated = cart.map((item) =>
-    item.id === productId ? { ...item, quantity } : item,
+    item.id === productId
+      ? { ...item, quantity: clampQuantity(quantity, item.maxQuantity) }
+      : item,
   );
 
   saveCart(updated);

@@ -37,12 +37,18 @@ export default function CartItemCard({
   const t = useTranslations("cart");
   const tItemCard = useTranslations("cart.itemCard");
   const locale = useLocale();
-  const { removeProduct } = useCart();
+  const { removeProduct, updateProduct } = useCart();
 
   const displayName = item.name ?? String(item.id);
   const description = item.description ?? "";
   const imageSrc = item.image;
   const unitPrice = item.price ?? 0;
+
+  const canDecrease = item.quantity > 1;
+  const canIncrease =
+    typeof item.maxQuantity === "number" && Number.isFinite(item.maxQuantity)
+      ? item.quantity < item.maxQuantity
+      : true;
 
   const priceLabel = `${new Intl.NumberFormat(locale, {
     maximumFractionDigits: 2,
@@ -100,8 +106,18 @@ export default function CartItemCard({
           <div className="flex items-center border border-gray-200 dark:border-[#332e25] rounded-lg bg-background-light dark:bg-background-dark">
             <button
               type="button"
-              className="flex p-2 text-gray-500 hover:text-primary transition-colors"
+              className={
+                "flex p-2 text-gray-500 transition-colors " +
+                (canDecrease
+                  ? "hover:text-primary"
+                  : "opacity-50 cursor-not-allowed")
+              }
               aria-label={tItemCard("decreaseQtyAria", { item: displayName })}
+              disabled={!canDecrease}
+              onClick={() => {
+                if (!canDecrease) return;
+                updateProduct(item.id, item.quantity - 1);
+              }}
             >
               <RiSubtractLine className="text-sm" aria-hidden />
             </button>
@@ -110,8 +126,18 @@ export default function CartItemCard({
             </span>
             <button
               type="button"
-              className="flex p-2 text-gray-500 hover:text-primary transition-colors"
+              className={
+                "flex p-2 text-gray-500 transition-colors " +
+                (canIncrease
+                  ? "hover:text-primary"
+                  : "opacity-50 cursor-not-allowed")
+              }
               aria-label={tItemCard("increaseQtyAria", { item: displayName })}
+              disabled={!canIncrease}
+              onClick={() => {
+                if (!canIncrease) return;
+                updateProduct(item.id, item.quantity + 1);
+              }}
             >
               <RiAddLine className="text-sm" aria-hidden />
             </button>

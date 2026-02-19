@@ -5,14 +5,11 @@ import { useTranslations } from "next-intl";
 import ProductDetailsTabs from "./ProductDetailsTabs";
 import ProductMainSection from "./ProductMainSection";
 
-import type { GalleryImage, PageParams } from "./types";
 import { ProductT } from "@/app/api/products";
 
 export default function ProductDetailsClient({
-  params,
   product,
 }: {
-  params: PageParams;
   product: ProductT;
 }) {
   const t = useTranslations("store");

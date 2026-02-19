@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-const COOKIE_NAME = "mh_request_token";
+const COOKIE_NAME = "token";
 
 type RouteContext = { params: Promise<{ path: string[] }> };
 

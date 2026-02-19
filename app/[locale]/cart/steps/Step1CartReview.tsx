@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import CartItemCard from "../CartItemCard";
 import { CartItem } from "@/lib/utils/cart";
 
-export default function Step1CartReview({ items }: { items: CartItem[] }) {
+export default function Step1CartReview({ items }: { items?: CartItem[] }) {
   const t = useTranslations("cart.step1");
 
   return (
@@ -15,7 +15,7 @@ export default function Step1CartReview({ items }: { items: CartItem[] }) {
         </h3>
       </div>
 
-      {items.map((item, index) => (
+      {items?.map((item, index) => (
         <CartItemCard
           key={item.id}
           item={item}

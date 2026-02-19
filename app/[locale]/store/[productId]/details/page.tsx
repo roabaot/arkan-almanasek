@@ -11,5 +11,5 @@ export default async function ProductDetailsPage({
 
   console.log("product: ", product);
 
-  return <ProductDetailsClient params={resolvedParams} product={product} />;
+  return <ProductDetailsClient product={product} />;
 }
