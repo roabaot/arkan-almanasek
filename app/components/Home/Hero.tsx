@@ -14,7 +14,7 @@ export default async function HomeHero() {
   const t = await getTranslations("home.hero");
 
   return (
-    <section className="relative flex h-[calc(100vh+144px)] w-full items-center overflow-hidden">
+    <section className="relative isolate flex h-[calc(100vh+144px)] w-full items-center overflow-hidden supports-[height:100svh]:h-[calc(100svh+144px)]">
       <div
         className="absolute inset-0 h-full w-full scale-105 bg-cover bg-no-repeat transition-transform duration-[20s] ease-linear hover:scale-110 saturate-125 brightness-90 [background-position:50%_35%]"
         data-alt={t("backgroundAlt")}
@@ -26,7 +26,7 @@ export default async function HomeHero() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-background via-background/70 to-transparent" />
       <div className="bg-islamic-pattern pointer-events-none absolute inset-0 opacity-10" />
 
-      <div className="relative z-10 sm:flex block h-full w-full max-w-7xl items-center mt-[25vh] px-4 sm:mt-0 sm:px-6 lg:mx-auto lg:px-8">
+      <div className="relative z-10 block h-full w-full max-w-7xl items-center px-4 mt-[25vh] supports-[height:100svh]:mt-[25svh] sm:flex sm:mt-0 sm:px-6 lg:mx-auto lg:px-8">
         <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12">
           <div className="flex flex-col gap-8 pt-20 text-right lg:col-span-7 lg:pt-0">
             <div
@@ -127,9 +127,9 @@ export default async function HomeHero() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute inset-0 opacity-30">
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 transform-gpu overflow-visible [contain:layout] will-change-transform">
               <svg
-                className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-[spin_60s_linear_infinite] text-primary/20"
+                className="h-full w-full animate-[spin_60s_linear_infinite] origin-center text-primary/20 opacity-30 will-change-transform [backface-visibility:hidden]"
                 fill="currentColor"
                 viewBox="0 0 100 100"
                 xmlns="http://www.w3.org/2000/svg"
