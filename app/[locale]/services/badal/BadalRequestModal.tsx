@@ -554,7 +554,8 @@ export default function BadalRequestModal({
             : undefined,
         country: customerValues.country,
         dob: customerValues.birthDate,
-        performed_hajj_or_umrah_before: customerValues.performedHajjOrUmrahBefore,
+        performed_hajj_or_umrah_before:
+          customerValues.performedHajjOrUmrahBefore,
         phone_country: customerValues.phoneCountry,
       },
       payment: paymentValues,

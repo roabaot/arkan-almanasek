@@ -633,6 +633,7 @@
       "sectionTitle": "منتجات مختارة",
       "viewAll": "عرض الكل",
       "addToCartAria": "إضافة {title} إلى السلة",
+      "emptyMessage": "لا توجد منتجات متاحة حالياً.",
       "items": {
         "ihram-set": {
           "title": "طقم إحرام فاخر",

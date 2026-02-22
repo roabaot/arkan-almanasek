@@ -3,8 +3,10 @@ import VideoSection from "../components/Home/VideoSection";
 import HomeCta from "../components/Home/Cta";
 import HomeProducts from "../components/Home/Products";
 import HomeServices from "../components/Home/Services";
+import { getProducts } from "../api";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const products = await getProducts({ tag_id: "1" });
   return (
     <main className="bg-[#f6f8f6] text-[#111811] antialiased">
       <HomeHero />
@@ -15,7 +17,7 @@ export default function HomePage() {
           src: "https://www.youtube-nocookie.com/embed/2DYa4aHfdWk?autoplay=1&mute=0&controls=1&playsinline=1&rel=0",
         }}
       />
-      <HomeProducts />
+      <HomeProducts initialProducts={products} />
       <HomeServices />
       <HomeCta />
     </main>

@@ -750,6 +750,7 @@
       "sectionTitle": "Featured products",
       "viewAll": "View all",
       "addToCartAria": "Add {title} to cart",
+      "emptyMessage": "No products available right now.",
       "items": {
         "ihram-set": {
           "title": "Luxury Ihram set",
