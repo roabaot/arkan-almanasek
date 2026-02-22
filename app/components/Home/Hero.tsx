@@ -2,7 +2,6 @@ import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import {
   RiArrowLeftLine,
-  RiCompass3Line,
   RiCustomerService2Line,
   RiGroupLine,
   RiPhoneFill,
@@ -27,7 +26,7 @@ export default async function HomeHero() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-background via-background/70 to-transparent" />
       <div className="bg-islamic-pattern pointer-events-none absolute inset-0 opacity-10" />
 
-      <div className="relative z-10 flex h-full w-full max-w-7xl items-center px-4 sm:px-6 lg:mx-auto lg:px-8">
+      <div className="relative z-10 sm:flex block h-full w-full max-w-7xl items-center mt-[25vh] px-4 sm:mt-0 sm:px-6 lg:mx-auto lg:px-8">
         <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12">
           <div className="flex flex-col gap-8 pt-20 text-right lg:col-span-7 lg:pt-0">
             <div
@@ -90,8 +89,12 @@ export default async function HomeHero() {
                     <RiGroupLine className="size-6" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white">{t("stats.pilgrimsValue")}</h3>
-                    <p className="text-sm text-gray-300">{t("stats.pilgrimsLabel")}</p>
+                    <h3 className="text-2xl font-bold text-white">
+                      {t("stats.pilgrimsValue")}
+                    </h3>
+                    <p className="text-sm text-gray-300">
+                      {t("stats.pilgrimsLabel")}
+                    </p>
                   </div>
                 </div>
                 <div className="mt-2 h-1.5 w-full rounded-full bg-white/10">
@@ -110,11 +113,17 @@ export default async function HomeHero() {
                     <RiCustomerService2Line className="size-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">{t("support.title")}</h3>
-                    <p className="text-sm font-bold text-secondary">{t("support.subtitle")}</p>
+                    <h3 className="text-lg font-bold text-white">
+                      {t("support.title")}
+                    </h3>
+                    <p className="text-sm font-bold text-secondary">
+                      {t("support.subtitle")}
+                    </p>
                   </div>
                 </div>
-                <p className="mt-2 text-xs leading-relaxed text-gray-300">{t("support.body")}</p>
+                <p className="mt-2 text-xs leading-relaxed text-gray-300">
+                  {t("support.body")}
+                </p>
               </div>
             </div>
 
