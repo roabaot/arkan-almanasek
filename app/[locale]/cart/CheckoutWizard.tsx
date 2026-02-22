@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   RiArrowLeftLine,
@@ -23,6 +23,7 @@ import {
   type CheckoutPayload,
 } from "@/app/api";
 import { isoDateFromDDMMYYYY } from "@/lib/utils";
+import SarAmount from "@/app/components/ui/SarAmount";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
 import type { CartItem as StoredCartItem } from "@/lib/utils/cart";
 
@@ -33,21 +34,6 @@ function parseStep(value: string | null): Step | null {
   const num = Number(value);
   if (num === 1 || num === 2 || num === 3) return num;
   return null;
-}
-
-function formatNumberWithCurrency({
-  locale,
-  value,
-  currencyLabel,
-}: {
-  locale: string;
-  value: number;
-  currencyLabel: string;
-}) {
-  const formatted = new Intl.NumberFormat(locale, {
-    maximumFractionDigits: 2,
-  }).format(value);
-  return `${formatted} ${currencyLabel}`;
 }
 
 function Stepper({ step }: { step: Step }) {
@@ -131,8 +117,6 @@ function ProgressBar({ step }: { step: Step }) {
 
 export default function CheckoutWizard() {
   const t = useTranslations("cart.checkout");
-  const tCart = useTranslations("cart");
-  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -274,27 +258,8 @@ export default function CheckoutWizard() {
   const serviceFeeSar = 0;
   const totalSar = subtotalSar + vatSar + serviceFeeSar;
 
-  const currencyLabel = tCart("currency.sar");
-  const subtotalLabel = formatNumberWithCurrency({
-    locale,
-    value: subtotalSar,
-    currencyLabel,
-  });
-  const vatLabel = formatNumberWithCurrency({
-    locale,
-    value: vatSar,
-    currencyLabel,
-  });
-  const serviceFeeLabel = formatNumberWithCurrency({
-    locale,
-    value: serviceFeeSar,
-    currencyLabel,
-  });
-  const totalLabel = formatNumberWithCurrency({
-    locale,
-    value: totalSar,
-    currencyLabel,
-  });
+  // Render amounts with the official Riyal mark (asset-based) instead of
+  // string currency symbols.
 
   const stepFromUrl = parseStep(searchParams.get("step")) ?? 1;
   const [step, setStep] = useState<Step>(stepFromUrl);
@@ -450,15 +415,15 @@ export default function CheckoutWizard() {
                 <div className="space-y-4 mb-6 text-sm">
                   <div className="flex justify-between text-gray-600 dark:text-gray-400">
                     <span>{t("summary.subtotal")}</span>
-                    <span>{subtotalLabel}</span>
+                    <SarAmount value={subtotalSar} />
                   </div>
                   <div className="flex justify-between text-gray-600 dark:text-gray-400">
                     <span>{t("summary.vat", { rate: 15 })}</span>
-                    <span>{vatLabel}</span>
+                    <SarAmount value={vatSar} />
                   </div>
                   <div className="flex justify-between text-gray-600 dark:text-gray-400">
                     <span>{t("summary.serviceFee")}</span>
-                    <span>{serviceFeeLabel}</span>
+                    <SarAmount value={serviceFeeSar} />
                   </div>
                 </div>
 
@@ -468,7 +433,11 @@ export default function CheckoutWizard() {
                       {t("summary.total")}
                     </span>
                     <span className="text-2xl font-black text-primary">
-                      {totalLabel}
+                      <SarAmount
+                        value={totalSar}
+                        className="text-2xl font-black text-primary"
+                        symbolClassName="inline-block h-[0.95em] w-auto"
+                      />
                     </span>
                   </div>
                 </div>

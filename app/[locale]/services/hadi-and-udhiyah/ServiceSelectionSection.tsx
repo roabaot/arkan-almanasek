@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { GiCamel, GiCow, GiSheep } from "react-icons/gi";
 
 import type { Section, Classification } from "./types";
+import type { ReactNode } from "react";
 
 type TranslateFn = (
   key: string,
@@ -15,6 +16,7 @@ type Props = {
   committedSelection: Record<string | number, Record<string, number>>;
   formatNumber: Intl.NumberFormat;
   t: TranslateFn;
+  currencyMark: ReactNode;
   onClearSection: (sectionId: string | number) => void;
   onCommitSection: (section: Section) => void;
   onUpdateQty: (
@@ -31,6 +33,7 @@ export default function ServiceSelectionSection({
   committedSelection,
   formatNumber,
   t,
+  currencyMark,
   onClearSection,
   onCommitSection,
   onUpdateQty,
@@ -104,7 +107,7 @@ export default function ServiceSelectionSection({
             </div>
 
             <div className="text-3xl font-bold text-[var(--color-primary)] mb-6">
-              {t("currency.sar")}
+              {currencyMark}
             </div>
 
             <div className="space-y-3 mt-auto">
@@ -176,7 +179,7 @@ export default function ServiceSelectionSection({
                         {formatNumber.format(item.price)}
                       </span>
                       <span className="text-sm text-black/60">
-                        {t("currency.sar")}
+                        {currencyMark}
                       </span>
                     </div>
                   </div>

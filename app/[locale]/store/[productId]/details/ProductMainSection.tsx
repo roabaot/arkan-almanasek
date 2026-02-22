@@ -11,6 +11,7 @@ import {
 
 import { ProductT } from "@/app/api/products";
 import { useCart } from "@/hooks/useCart";
+import SarAmount from "@/app/components/ui/SarAmount";
 
 export default function ProductMainSection({ product }: { product: ProductT }) {
   const t = useTranslations("store");
@@ -124,24 +125,27 @@ export default function ProductMainSection({ product }: { product: ProductT }) {
         <div className="mb-8 p-4 bg-white dark:bg-[#1a160e] rounded-xl border border-dashed border-[#dcdcdc] dark:border-[#332d22] inline-block w-full">
           {product.discount_price ? (
             <div className="flex items-baseline gap-3 flex-wrap">
-              <div className="flex items-baseline gap-2">
-                <p className="text-4xl font-bold text-primary">
-                  {product.price}
-                </p>
-                <p className="text-lg text-text-main dark:text-gray-300 font-medium">
-                  {t("product.price.currency")}
-                </p>
-              </div>
-              <p className="text-lg text-text-sub line-through font-bold">
-                {product.discount_price}
-              </p>
+              <SarAmount
+                value={product.discount_price}
+                maximumFractionDigits={2}
+                className="text-4xl font-bold text-primary"
+                symbolClassName="inline-block h-[0.9em] w-auto"
+              />
+              <SarAmount
+                value={product.price}
+                maximumFractionDigits={2}
+                className="text-lg text-text-sub line-through font-bold"
+                symbolClassName="inline-block h-[0.85em] w-auto"
+              />
             </div>
           ) : (
             <div className="flex items-baseline gap-2">
-              <p className="text-4xl font-bold text-primary">{product.price}</p>
-              <p className="text-lg text-text-main dark:text-gray-300 font-medium">
-                {t("product.price.currency")}
-              </p>
+              <SarAmount
+                value={product.price}
+                maximumFractionDigits={2}
+                className="text-4xl font-bold text-primary"
+                symbolClassName="inline-block h-[0.9em] w-auto"
+              />
             </div>
           )}
           <p className="text-sm text-text-sub mt-1">

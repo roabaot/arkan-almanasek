@@ -14,6 +14,7 @@ import {
   RiSearchLine,
   RiShoppingBagLine,
 } from "react-icons/ri";
+import SarAmount from "@/app/components/ui/SarAmount";
 
 type StoreClientProps = {
   initialProducts: ProductsResT;
@@ -384,20 +385,28 @@ export default function StorePage({
                         </p>
 
                         <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                          {"originalPriceSar" in product &&
-                          product.originalPriceSar ? (
+                          {product.discount_price ? (
                             <div className="flex flex-col">
-                              <span className="text-xs text-gray-400 line-through">
-                                {product.price}
-                              </span>
-                              <span className="text-xl font-black text-primary">
-                                {product.price}
-                              </span>
+                              <SarAmount
+                                value={product.price}
+                                maximumFractionDigits={2}
+                                className="text-xs text-gray-400 line-through"
+                                symbolClassName="inline-block h-[0.75em] w-auto"
+                              />
+                              <SarAmount
+                                value={product.discount_price}
+                                maximumFractionDigits={2}
+                                className="text-xl font-black text-primary"
+                                symbolClassName="inline-block h-[0.9em] w-auto"
+                              />
                             </div>
                           ) : (
-                            <span className="text-xl font-black text-primary">
-                              {product.price}
-                            </span>
+                            <SarAmount
+                              value={product.price}
+                              maximumFractionDigits={2}
+                              className="text-xl font-black text-primary"
+                              symbolClassName="inline-block h-[0.9em] w-auto"
+                            />
                           )}
 
                           <button

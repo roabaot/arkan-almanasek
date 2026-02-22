@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
+import SarAmount from "@/app/components/ui/SarAmount";
 
 import type { Step2CustomerInfoValues } from "@/lib/validation";
 import type { PaymentSummary } from "@/app/[locale]/cart/steps/Step3Payment";
@@ -17,7 +18,6 @@ type CartLine = {
 export default function CheckoutReview({
   cartLines,
   formatNumber,
-  formatSAR,
   subtotal,
   tax,
   total,
@@ -28,7 +28,6 @@ export default function CheckoutReview({
 }: {
   cartLines: CartLine[];
   formatNumber: Intl.NumberFormat;
-  formatSAR: (value: number) => string;
   subtotal: number;
   tax: number;
   total: number;
@@ -182,7 +181,7 @@ export default function CheckoutReview({
                 </div>
               </div>
               <div className="text-sm font-bold text-[var(--color-primary)]">
-                {formatSAR(line.lineTotal)}
+                <SarAmount value={line.lineTotal} />
               </div>
             </div>
           ))}
@@ -192,20 +191,28 @@ export default function CheckoutReview({
               <span className="text-black/60 font-light">
                 {tQurbani("summary.subtotal")}
               </span>
-              <span className="font-medium">{formatSAR(subtotal)}</span>
+              <span className="font-medium">
+                <SarAmount value={subtotal} />
+              </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-black/60 font-light">
                 {tQurbani("summary.tax", { rate: 15 })}
               </span>
-              <span className="font-medium">{formatSAR(tax)}</span>
+              <span className="font-medium">
+                <SarAmount value={tax} />
+              </span>
             </div>
             <div className="flex justify-between items-center pt-2">
               <span className="font-bold text-lg">
                 {tQurbani("summary.total")}
               </span>
               <span className="text-[var(--color-primary)] text-2xl font-bold">
-                {formatSAR(total)}
+                <SarAmount
+                  value={total}
+                  className="text-[var(--color-primary)] text-2xl font-bold"
+                  symbolClassName="inline-block h-[0.95em] w-auto"
+                />
               </span>
             </div>
           </div>

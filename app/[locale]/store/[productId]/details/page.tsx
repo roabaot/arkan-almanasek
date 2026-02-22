@@ -9,7 +9,5 @@ export default async function ProductDetailsPage({
   const resolvedParams = await params;
   const product = await getProductById(resolvedParams.productId);
 
-  console.log("product: ", product);
-
   return <ProductDetailsClient product={product} />;
 }

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { CartItem as StoredCartItem } from "@/lib/utils/cart";
+import SarAmount from "@/app/components/ui/SarAmount";
 import {
   RiAddLine,
   RiDeleteBin6Line,
@@ -34,9 +35,7 @@ export default function CartItemCard({
   item: CartItemCardItem;
   variant: "first" | "stacked";
 }) {
-  const t = useTranslations("cart");
   const tItemCard = useTranslations("cart.itemCard");
-  const locale = useLocale();
   const { removeProduct, updateProduct } = useCart();
 
   const displayName = item.name ?? String(item.id);
@@ -50,9 +49,7 @@ export default function CartItemCard({
       ? item.quantity < item.maxQuantity
       : true;
 
-  const priceLabel = `${new Intl.NumberFormat(locale, {
-    maximumFractionDigits: 2,
-  }).format(unitPrice * item.quantity)} ${t("currency.sar")}`;
+  const totalPrice = unitPrice * item.quantity;
 
   const containerClassName =
     variant === "first"
@@ -142,7 +139,9 @@ export default function CartItemCard({
               <RiAddLine className="text-sm" aria-hidden />
             </button>
           </div>
-          <p className="text-xl font-bold text-primary">{priceLabel}</p>
+          <p className="text-xl font-bold text-primary">
+            <SarAmount value={totalPrice} className="text-xl font-bold text-primary" />
+          </p>
         </div>
       </div>
     </div>

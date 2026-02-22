@@ -16,6 +16,7 @@ import {
   type PermitPayload,
   type PermitTypeT,
 } from "@/app/api/permit";
+import SarAmount from "@/app/components/ui/SarAmount";
 import {
   MdAddAPhoto,
   MdArrowBack,
@@ -301,17 +302,7 @@ export default function PermitsRequestModal({
 
   const permitType = watch("permitType") as PermitType;
 
-  const formatNumber = useMemo(
-    () =>
-      new Intl.NumberFormat(undefined, {
-        maximumFractionDigits: 2,
-      }),
-    [],
-  );
-
-  function formatSAR(value: number) {
-    return `${formatNumber.format(value)} SAR`;
-  }
+  // currency display handled via <SarAmount />
 
   const permitPriceByType = useMemo(() => {
     const out: Partial<Record<PermitType, number>> = {};
@@ -538,7 +529,7 @@ export default function PermitsRequestModal({
                   {typeof permitPriceByType.hajj === "number" &&
                   Number.isFinite(permitPriceByType.hajj) ? (
                     <p className="mt-2 text-sm font-bold text-primary">
-                      {formatSAR(permitPriceByType.hajj)}
+                      <SarAmount value={permitPriceByType.hajj} />
                     </p>
                   ) : null}
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
@@ -573,7 +564,7 @@ export default function PermitsRequestModal({
                   {typeof permitPriceByType.umrah === "number" &&
                   Number.isFinite(permitPriceByType.umrah) ? (
                     <p className="mt-2 text-sm font-bold text-primary">
-                      {formatSAR(permitPriceByType.umrah)}
+                      <SarAmount value={permitPriceByType.umrah} />
                     </p>
                   ) : null}
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">

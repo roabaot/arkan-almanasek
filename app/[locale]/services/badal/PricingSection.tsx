@@ -4,6 +4,7 @@ import { MdCheck, MdModeNight, MdMosque } from "react-icons/md";
 import BadalRequestButton from "./BadalRequestButton";
 import { GetBadelResT, getBadels } from "@/app/api/badel";
 import { useQuery } from "@tanstack/react-query";
+import SarAmount from "@/app/components/ui/SarAmount";
 
 export default function PricingSection({
   initialBadels,
@@ -57,10 +58,13 @@ export default function PricingSection({
               </div>
 
               <div className="text-3xl font-bold text-primary mb-6">
-                {umrahBadel?.price}{" "}
-                <span className="text-sm text-gray-500 font-normal">
-                  ريال سعودي
-                </span>
+                {umrahBadel?.price != null ? (
+                  <SarAmount
+                    value={Number(umrahBadel.price)}
+                    className="text-3xl font-bold text-primary"
+                    symbolClassName="inline-block h-[0.9em] w-auto"
+                  />
+                ) : null}
               </div>
 
               <ul className="space-y-4 mb-8">
@@ -113,10 +117,13 @@ export default function PricingSection({
               </div>
 
               <div className="text-3xl font-bold text-primary mb-6">
-                {hajjBadel?.price}{" "}
-                <span className="text-sm text-gray-300 font-normal">
-                  ريال سعودي
-                </span>
+                {hajjBadel?.price != null ? (
+                  <SarAmount
+                    value={Number(hajjBadel.price)}
+                    className="text-3xl font-bold text-primary"
+                    symbolClassName="inline-block h-[0.9em] w-auto"
+                  />
+                ) : null}
               </div>
 
               <ul className="space-y-4 mb-8">

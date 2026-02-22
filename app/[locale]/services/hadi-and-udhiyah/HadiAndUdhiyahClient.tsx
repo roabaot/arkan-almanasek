@@ -30,6 +30,7 @@ import StepsStrip from "./StepsStrip";
 import type { Item, Section } from "./types";
 import { clampQty } from "./utils";
 import Step3Payment, { PaymentSummary } from "./Step3Payment";
+import SaudiRiyalSymbol from "@/app/components/ui/SaudiRiyalSymbol";
 
 type Props = {
   initialHadi: GetHadiResT;
@@ -114,9 +115,12 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
     [locale],
   );
 
-  function formatSAR(value: number) {
-    return `${formatNumber.format(value)} ${t("currency.sar")}`;
-  }
+  const currencyMark = useMemo(
+    () => (
+      <SaudiRiyalSymbol className="inline-block h-[0.9em] w-auto" title="SAR" />
+    ),
+    [],
+  );
 
   const [selection, setSelection] = useState<
     Record<string, Record<string, number>>
@@ -404,6 +408,7 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
                     committedSelection={committedSelection}
                     formatNumber={formatNumber}
                     t={t}
+                    currencyMark={currencyMark}
                     onClearSection={clearSection}
                     onCommitSection={commitSectionToCart}
                     onUpdateQty={updateSelectionQty}
@@ -436,7 +441,6 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
               <CheckoutReview
                 cartLines={cartLines}
                 formatNumber={formatNumber}
-                formatSAR={formatSAR}
                 subtotal={subtotal}
                 tax={tax}
                 total={total}
@@ -451,7 +455,6 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
           <CartSummary
             cartLines={cartLines}
             formatNumber={formatNumber}
-            formatSAR={formatSAR}
             subtotal={subtotal}
             tax={tax}
             total={total}

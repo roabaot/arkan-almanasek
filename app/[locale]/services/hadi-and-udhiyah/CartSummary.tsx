@@ -1,4 +1,5 @@
 import { MdShield, MdShoppingBasket, MdSupportAgent } from "react-icons/md";
+import SarAmount from "@/app/components/ui/SarAmount";
 
 type TranslateFn = (
   key: string,
@@ -16,7 +17,6 @@ type CartLine = {
 type Props = {
   cartLines: CartLine[];
   formatNumber: Intl.NumberFormat;
-  formatSAR: (value: number) => string;
   subtotal: number;
   tax: number;
   total: number;
@@ -34,7 +34,6 @@ type Props = {
 export default function CartSummary({
   cartLines,
   formatNumber,
-  formatSAR,
   subtotal,
   tax,
   total,
@@ -77,7 +76,7 @@ export default function CartSummary({
                     </p>
                   </div>
                   <span className="text-sm font-bold text-[var(--color-primary)]">
-                    {formatSAR(line.lineTotal)}
+                    <SarAmount value={line.lineTotal} />
                   </span>
                 </div>
               ))}
@@ -87,20 +86,28 @@ export default function CartSummary({
                   <span className="text-black/60 font-light">
                     {t("summary.subtotal")}
                   </span>
-                  <span className="font-medium">{formatSAR(subtotal)}</span>
+                  <span className="font-medium">
+                    <SarAmount value={subtotal} />
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-black/60 font-light">
                     {t("summary.tax", { rate: 15 })}
                   </span>
-                  <span className="font-medium">{formatSAR(tax)}</span>
+                  <span className="font-medium">
+                    <SarAmount value={tax} />
+                  </span>
                 </div>
                 <div className="flex justify-between items-center pt-2">
                   <span className="font-bold text-lg">
                     {t("summary.total")}
                   </span>
                   <span className="text-[var(--color-primary)] text-2xl font-bold">
-                    {formatSAR(total)}
+                    <SarAmount
+                      value={total}
+                      className="text-[var(--color-primary)] text-2xl font-bold"
+                      symbolClassName="inline-block h-[0.95em] w-auto"
+                    />
                   </span>
                 </div>
               </div>
