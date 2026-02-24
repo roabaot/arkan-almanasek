@@ -346,7 +346,8 @@
       }
     },
     "step1": {
-      "title": "Kandungan troli"
+      "title": "Kandungan troli",
+      "emptyMessage": "Troli anda kosong buat masa ini."
     },
     "checkout": {
       "title": "Pembayaran",

@@ -348,7 +348,8 @@
       }
     },
     "step1": {
-      "title": "Cart contents"
+      "title": "Cart contents",
+      "emptyMessage": "Your cart is currently empty."
     },
     "checkout": {
       "title": "Checkout",

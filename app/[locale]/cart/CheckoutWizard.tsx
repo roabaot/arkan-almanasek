@@ -122,6 +122,8 @@ export default function CheckoutWizard() {
   const searchParams = useSearchParams();
   const { total: cartSubtotal, cart, replaceCart } = useCart();
 
+  const isCartEmpty = cart.length === 0;
+
   const itemsIds = useMemo(() => cart.map((item) => item.id), [cart]);
 
   const { data: cartItemsData } = useQuery({
@@ -261,12 +263,25 @@ export default function CheckoutWizard() {
   // Render amounts with the official Riyal mark (asset-based) instead of
   // string currency symbols.
 
-  const stepFromUrl = parseStep(searchParams.get("step")) ?? 1;
+  const rawStepFromUrl = parseStep(searchParams.get("step")) ?? 1;
+  const stepFromUrl: Step = isCartEmpty ? 1 : rawStepFromUrl;
   const [step, setStep] = useState<Step>(stepFromUrl);
 
   useEffect(() => {
     setStep(stepFromUrl);
   }, [stepFromUrl]);
+
+  useEffect(() => {
+    if (!isCartEmpty) return;
+    if (!searchParams.get("step")) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("step");
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
+  }, [isCartEmpty, pathname, router, searchParams]);
 
   const setStepAndSyncUrl = (next: Step) => {
     setStep(next);
@@ -285,6 +300,7 @@ export default function CheckoutWizard() {
     e.preventDefault();
 
     if (step === 1) {
+      if (isCartEmpty) return;
       setStepAndSyncUrl(2);
       return;
     }
@@ -375,7 +391,9 @@ export default function CheckoutWizard() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1 space-y-8">
-            {step === 1 ? <Step1CartReview items={cartItems} /> : null}
+            {step === 1 ? (
+              <Step1CartReview items={cartItems} isEmpty={isCartEmpty} />
+            ) : null}
 
             {step === 2 ? (
               <Step2CustomerInfo
@@ -459,8 +477,14 @@ export default function CheckoutWizard() {
                 <button
                   type="button"
                   onClick={onPrimaryActionClick}
-                  disabled={step === 2 ? addRequestMutation.isPending : false}
-                  className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all duration-300 flex items-center justify-center gap-2 group"
+                  disabled={
+                    step === 1
+                      ? isCartEmpty
+                      : step === 2
+                        ? addRequestMutation.isPending
+                        : false
+                  }
+                  className="w-full bg-primary hover:bg-primary-dark disabled:hover:bg-primary disabled:opacity-60 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all duration-300 flex items-center justify-center gap-2 group disabled:cursor-not-allowed"
                 >
                   <span>
                     {step === 1

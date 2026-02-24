@@ -8,11 +8,10 @@ import {
   RiCloseLine,
   RiMenuLine,
   RiShoppingBag3Line,
-  RiUser3Line,
 } from "react-icons/ri";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoHorizontal from "../ui/LogoHorizontal";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 
 export default function Header() {
   const t = useTranslations("header");
@@ -22,6 +21,7 @@ export default function Header() {
   const [isMobileServicesMenuOpen, setIsMobileServicesMenuOpen] =
     useState(false);
   const locale = useLocale();
+  const pathname = usePathname();
   const servicesMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -76,6 +76,18 @@ export default function Header() {
     ? "translate-x-full"
     : "-translate-x-full";
 
+  const isRouteActive = (href: string, options?: { exact?: boolean }) => {
+    const exact = options?.exact ?? false;
+    if (!pathname) return false;
+    if (href === "/") return pathname === "/";
+    if (exact) return pathname === href;
+    return pathname === href || pathname.startsWith(href + "/");
+  };
+
+  const isServicesActive = Boolean(
+    pathname && pathname.startsWith("/services"),
+  );
+
   const servicesItems = useMemo(
     () =>
       [
@@ -86,12 +98,12 @@ export default function Header() {
         },
         { key: "badal", href: "/services/badal", disabled: false },
         { key: "permits", href: "/services/permits", disabled: false },
-        {
-          key: "consultations",
-          href: "/services/consultations",
-          disabled: true,
-        },
-        { key: "manasik", href: "/services/manasik", disabled: true },
+        // {
+        //   key: "consultations",
+        //   href: "/services/consultations",
+        //   disabled: true,
+        // },
+        // { key: "manasik", href: "/services/manasik", disabled: true },
       ] as const,
     [],
   );
@@ -158,13 +170,13 @@ export default function Header() {
                     (isRtl ? "flex-row-reverse" : "flex-row")
                   }
                 >
-                  <button
+                  {/* <button
                     type="button"
                     className="flex items-center justify-center rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-800 dark:bg-[#0f1f0f] dark:text-gray-200 dark:hover:bg-[#132813]"
                     aria-label={t("actions.account")}
                   >
                     <RiUser3Line className="text-lg" />
-                  </button>
+                  </button> */}
                   <Link
                     href="/cart"
                     className="relative flex items-center justify-center rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-800 dark:bg-[#0f1f0f] dark:text-gray-200 dark:hover:bg-[#132813]"
@@ -183,9 +195,15 @@ export default function Header() {
               }
             >
               <Link
-                className="rounded-lg px-3 py-2 text-sm font-bold text-gray-800 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-100 dark:hover:bg-background"
+                className={
+                  "rounded-lg px-3 py-2 text-sm transition-colors dark:hover:bg-background " +
+                  (isRouteActive("/")
+                    ? "bg-gray-100 text-secondary dark:bg-background"
+                    : "text-gray-800 hover:bg-gray-100 hover:text-secondary dark:text-gray-100")
+                }
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-current={isRouteActive("/") ? "page" : undefined}
               >
                 {t("nav.home")}
               </Link>
@@ -193,7 +211,10 @@ export default function Header() {
                 <button
                   type="button"
                   className={
-                    "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background "
+                    "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors dark:hover:bg-background " +
+                    (isServicesActive
+                      ? "bg-gray-100 text-secondary dark:bg-background"
+                      : "text-gray-700 hover:bg-gray-100 hover:text-secondary dark:text-gray-200")
                   }
                   onClick={() => setIsMobileServicesMenuOpen((open) => !open)}
                   aria-expanded={isMobileServicesMenuOpen}
@@ -232,12 +253,20 @@ export default function Header() {
                     ) : (
                       <Link
                         key={item.href}
-                        className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
+                        className={
+                          "rounded-lg px-3 py-2 text-sm font-medium transition-colors dark:hover:bg-background " +
+                          (isRouteActive(item.href)
+                            ? "bg-gray-100 text-secondary dark:bg-background"
+                            : "text-gray-700 hover:bg-gray-100 hover:text-secondary dark:text-gray-200")
+                        }
                         href={item.href}
                         onClick={() => {
                           setIsMobileServicesMenuOpen(false);
                           setIsMobileMenuOpen(false);
                         }}
+                        aria-current={
+                          isRouteActive(item.href) ? "page" : undefined
+                        }
                       >
                         {t(`services.items.${item.key}`)}
                       </Link>
@@ -246,16 +275,32 @@ export default function Header() {
                 </div>
               </div>
               <Link
-                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
+                className={
+                  "rounded-lg px-3 py-2 text-sm font-medium transition-colors dark:hover:bg-background " +
+                  (isRouteActive("/store")
+                    ? "bg-gray-100 text-secondary dark:bg-background"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-secondary dark:text-gray-200")
+                }
                 href="/store"
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-current={isRouteActive("/store") ? "page" : undefined}
               >
                 {t("nav.products")}
               </Link>
               <Link
-                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-background"
+                className={
+                  "rounded-lg px-3 py-2 text-sm font-medium transition-colors dark:hover:bg-background " +
+                  (isRouteActive("/about-us", { exact: true })
+                    ? "bg-gray-100 text-secondary dark:bg-background"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-secondary dark:text-gray-200")
+                }
                 href="/about-us"
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-current={
+                  isRouteActive("/about-us", { exact: true })
+                    ? "page"
+                    : undefined
+                }
               >
                 {t("nav.about")}
               </Link>
@@ -280,8 +325,14 @@ export default function Header() {
             <div className="flex items-center gap-6">
               <nav className="hidden gap-8 md:flex">
                 <Link
-                  className="text-sm font-bold text-gray-700 transition-colors hover:text-secondary dark:text-gray-200"
+                  className={
+                    "text-sm transition-colors " +
+                    (isRouteActive("/")
+                      ? "font-medium text-secondary"
+                      : "font-medium text-gray-700 hover:text-secondary dark:text-gray-200")
+                  }
                   href="/"
+                  aria-current={isRouteActive("/") ? "page" : undefined}
                 >
                   {t("nav.home")}
                 </Link>
@@ -290,7 +341,11 @@ export default function Header() {
                   <button
                     type="button"
                     className={
-                      "flex items-center gap-1 text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300 " +
+                      "flex items-center gap-1 text-sm font-medium transition-colors " +
+                      (isServicesActive
+                        ? "text-secondary"
+                        : "text-gray-600 hover:text-secondary dark:text-gray-300") +
+                      " " +
                       (isRtl ? "flex-row-reverse" : "flex-row")
                     }
                     aria-haspopup="menu"
@@ -328,9 +383,17 @@ export default function Header() {
                           <Link
                             key={item.href}
                             role="menuitem"
-                            className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-[#132813]"
+                            className={
+                              "block rounded-lg px-3 py-2 text-sm font-medium transition-colors " +
+                              (isRouteActive(item.href)
+                                ? "bg-gray-100 text-secondary dark:bg-[#132813]"
+                                : "text-gray-700 hover:bg-gray-100 hover:text-secondary dark:text-gray-200 dark:hover:bg-[#132813]")
+                            }
                             href={item.href}
                             onClick={() => setIsServicesMenuOpen(false)}
+                            aria-current={
+                              isRouteActive(item.href) ? "page" : undefined
+                            }
                           >
                             {t(`services.items.${item.key}`)}
                           </Link>
@@ -341,14 +404,30 @@ export default function Header() {
                 </div>
 
                 <Link
-                  className="text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300"
+                  className={
+                    "text-sm font-medium transition-colors " +
+                    (isRouteActive("/store")
+                      ? "text-secondary"
+                      : "text-gray-600 hover:text-secondary dark:text-gray-300")
+                  }
                   href="/store"
+                  aria-current={isRouteActive("/store") ? "page" : undefined}
                 >
                   {t("nav.products")}
                 </Link>
                 <Link
-                  className="text-sm font-medium text-gray-600 transition-colors hover:text-secondary dark:text-gray-300"
+                  className={
+                    "text-sm font-medium transition-colors " +
+                    (isRouteActive("/about-us", { exact: true })
+                      ? "text-secondary"
+                      : "text-gray-600 hover:text-secondary dark:text-gray-300")
+                  }
                   href="/about-us"
+                  aria-current={
+                    isRouteActive("/about-us", { exact: true })
+                      ? "page"
+                      : undefined
+                  }
                 >
                   {t("nav.about")}
                 </Link>
@@ -356,18 +435,19 @@ export default function Header() {
 
               <div className="rtl:mr-2 ltr:ml-2 flex items-center gap-3 rtl:border-r ltr:border-l border-gray-200 rtl:pr-6 ltr:pl-6 dark:border-gray-700">
                 <LanguageSwitcher />
-                <button
+                {/* <button
                   type="button"
                   className="flex items-center justify-center rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-background"
                   aria-label={t("actions.account")}
                 >
                   <RiUser3Line />
-                </button>
+                </button> */}
 
                 <Link
                   href="/cart"
                   className="relative flex items-center justify-center rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-background"
                   aria-label={t("actions.cart")}
+                  aria-current={isRouteActive("/cart") ? "page" : undefined}
                 >
                   <RiShoppingBag3Line />
                   <span className="absolute right-1 top-1 size-2 rounded-full bg-[#d4af37]" />

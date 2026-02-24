@@ -4,7 +4,13 @@ import { useTranslations } from "next-intl";
 import CartItemCard from "../CartItemCard";
 import { CartItem } from "@/lib/utils/cart";
 
-export default function Step1CartReview({ items }: { items?: CartItem[] }) {
+export default function Step1CartReview({
+  items,
+  isEmpty,
+}: {
+  items?: CartItem[];
+  isEmpty?: boolean;
+}) {
   const t = useTranslations("cart.step1");
 
   return (
@@ -15,13 +21,19 @@ export default function Step1CartReview({ items }: { items?: CartItem[] }) {
         </h3>
       </div>
 
-      {items?.map((item, index) => (
-        <CartItemCard
-          key={item.id}
-          item={item}
-          variant={index === 0 ? "first" : "stacked"}
-        />
-      ))}
+      {isEmpty ? (
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {t("emptyMessage")}
+        </p>
+      ) : (
+        items?.map((item, index) => (
+          <CartItemCard
+            key={item.id}
+            item={item}
+            variant={index === 0 ? "first" : "stacked"}
+          />
+        ))
+      )}
     </section>
   );
 }

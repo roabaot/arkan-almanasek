@@ -18,6 +18,7 @@ export type GetBadelResT = {
 };
 
 export type BadelPayload = {
+  on_behalf_type: BadelTypeT;
   customer: {
     name: string;
     phone: string;

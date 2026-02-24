@@ -462,12 +462,16 @@ export default function BadalRequestModal({
   async function saveAndGoToStep2(customerValues: CustomerFormValues) {
     setSubmitError(null);
 
+    const onBehalfType: BadelPayload["on_behalf_type"] =
+      serviceType === "hajj" ? "OnBehalfHajj" : "OnBehalfUmrah";
+
     const dial =
       countryOptions.find((c) => c.value === customerValues.phoneCountry)
         ?.dial ?? "";
     const phone = `${dial}${customerValues.phone.replace(/\s+/g, "")}`;
 
     const apiPayload: BadelPayload = {
+      on_behalf_type: onBehalfType,
       customer: {
         name: customerValues.fullName,
         phone,

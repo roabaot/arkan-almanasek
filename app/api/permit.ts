@@ -30,8 +30,8 @@ export type PermitPayload = {
     permit_type: PermitTypeT;
   };
   files: {
-    id_number_file: File;
-    personal_photo_file: File;
+    customer_personal_photo: File;
+    customer_id_photo: File;
   };
 };
 
@@ -49,8 +49,11 @@ function toPermitFormData(payload: PermitPayload): FormData {
   fd.append("customer[additional_notes]", payload.customer.additional_notes);
   fd.append("customer[permit_type]", payload.customer.permit_type);
 
-  fd.append("files[id_number_file]", payload.files.id_number_file);
-  fd.append("files[personal_photo_file]", payload.files.personal_photo_file);
+  fd.append(
+    "files[customer_personal_photo]",
+    payload.files.customer_personal_photo,
+  );
+  fd.append("files[customer_id_photo]", payload.files.customer_id_photo);
 
   return fd;
 }

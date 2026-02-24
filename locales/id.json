@@ -346,7 +346,8 @@
       }
     },
     "step1": {
-      "title": "Isi keranjang"
+      "title": "Isi keranjang",
+      "emptyMessage": "Keranjang Anda kosong saat ini."
     },
     "checkout": {
       "title": "Checkout",

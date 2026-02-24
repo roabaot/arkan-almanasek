@@ -69,22 +69,22 @@ export default function Footer() {
                   {t("quickLinks.products")}
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
                   {t("quickLinks.blog")}
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
                   {t("quickLinks.privacyPolicy")}
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -93,14 +93,14 @@ export default function Footer() {
               {t("support.title")}
             </h4>
             <ul className="space-y-4">
-              <li>
+              {/* <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
                   {t("support.helpCenter")}
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
@@ -109,14 +109,14 @@ export default function Footer() {
                   {t("support.faq")}
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
                   href="#"
                 >
                   {t("support.trackOrder")}
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   className="text-sm text-gray-500 transition-colors hover:text-secondary dark:text-gray-400"
@@ -149,7 +149,7 @@ export default function Footer() {
               />
               <button
                 type="submit"
-                className="rounded-lg bg-secondary px-4 py-2 text-white cursor-pointer transition-colors hover:bg-secondary/90"
+                className="rounded-lg bg-secondary px-4 py-2 rtl:rotate-180 text-white cursor-pointer transition-colors hover:bg-secondary/90"
                 aria-label={t("newsletter.submitAria")}
               >
                 <RiSendPlane2Line className="text-lg" />

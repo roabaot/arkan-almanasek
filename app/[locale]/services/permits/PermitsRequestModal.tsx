@@ -5,7 +5,7 @@ import AnimatedModal, {
   type ModalCloseReason,
 } from "@/app/components/ui/AnimatedModal";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useId, useMemo, useState } from "react";
+import React, { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,6 +52,165 @@ type PaymentErrors = Partial<
     string
   >
 >;
+
+type CountryValue = "sa" | "id" | "ms" | "tr" | "lk";
+
+type CountryOption = {
+  value: CountryValue;
+  dial: string;
+  flag: string;
+  label: string;
+};
+
+const COUNTRY_OPTIONS: readonly CountryOption[] = [
+  { value: "sa", dial: "+966", flag: "sa", label: "السعودية" },
+  { value: "id", dial: "+62", flag: "id", label: "إندونيسيا" },
+  { value: "ms", dial: "+60", flag: "my", label: "ماليزيا" },
+  { value: "tr", dial: "+90", flag: "tr", label: "تركيا" },
+  { value: "lk", dial: "+94", flag: "lk", label: "سريلانكا" },
+] as const;
+
+type CountryDropdownMode = "dial" | "country";
+
+function CountryDropdown({
+  value,
+  onChange,
+  options,
+  mode,
+  placeholder,
+  invalid,
+  buttonClassName,
+  dir,
+}: {
+  value: CountryValue | "";
+  onChange: (value: CountryValue | "") => void;
+  options: readonly CountryOption[];
+  mode: CountryDropdownMode;
+  placeholder?: string;
+  invalid?: boolean;
+  buttonClassName: string;
+  dir?: "ltr" | "rtl";
+}) {
+  const listboxId = useId();
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [open, setOpen] = useState(false);
+
+  const selected = useMemo(
+    () => options.find((o) => o.value === value) ?? null,
+    [options, value],
+  );
+
+  useEffect(() => {
+    if (!open) return;
+
+    function onPointerDown(event: MouseEvent | TouchEvent) {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (!rootRef.current?.contains(target)) setOpen(false);
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  const displayText =
+    mode === "dial"
+      ? (selected?.dial ?? placeholder ?? "")
+      : (selected?.label ?? placeholder ?? "");
+
+  return (
+    <div ref={rootRef} className="relative" dir={dir}>
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listboxId}
+        onClick={() => setOpen((s) => !s)}
+        className={buttonClassName}
+        data-invalid={invalid ? "true" : "false"}
+      >
+        <span className="flex min-w-0 items-center gap-2">
+          {selected ? (
+            <span
+              className={`fi fi-${selected.flag} inline-block size-4 shrink-0 overflow-hidden rounded-sm ring-1 ring-black/10`}
+              aria-hidden
+            />
+          ) : null}
+          <span className="truncate">{displayText}</span>
+        </span>
+        <span className="ml-3 text-gray-400" aria-hidden="true">
+          ▾
+        </span>
+      </button>
+
+      {open ? (
+        <div
+          id={listboxId}
+          role="listbox"
+          className="absolute z-50 mt-2 w-full overflow-auto rounded-xl border border-gray-200 bg-background-light shadow-sm dark:border-[#332e25] dark:bg-background-dark max-h-64"
+        >
+          {mode === "country" && placeholder ? (
+            <button
+              type="button"
+              role="option"
+              aria-selected={value === ""}
+              onClick={() => {
+                onChange("");
+                setOpen(false);
+              }}
+              className="w-full px-4 py-2 text-right text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-[#221d14]"
+            >
+              {placeholder}
+            </button>
+          ) : null}
+
+          {options.map((o) => {
+            const isSelected = o.value === value;
+            return (
+              <button
+                key={o.value}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                onClick={() => {
+                  onChange(o.value);
+                  setOpen(false);
+                }}
+                className={joinClassNames(
+                  "flex w-full items-center justify-between gap-3 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-[#221d14]",
+                  isSelected
+                    ? "bg-primary/5 text-gray-900 dark:text-white"
+                    : "text-gray-700 dark:text-gray-200",
+                )}
+              >
+                <span className="flex min-w-0 items-center gap-2">
+                  <span
+                    className={`fi fi-${o.flag} inline-block size-4 shrink-0 overflow-hidden rounded-sm ring-1 ring-black/10`}
+                    aria-hidden
+                  />
+                  <span className="truncate">{o.label}</span>
+                </span>
+                <span className="shrink-0" dir="ltr">
+                  {mode === "dial" ? o.dial : o.value.toUpperCase()}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 function joinClassNames(...values: Array<string | undefined | false | null>) {
   return values.filter(Boolean).join(" ");
@@ -132,6 +291,37 @@ const step1Schema = z.object({
 
 const step2Schema = z.object({
   fullName: z.string().trim().min(1, "الاسم الكامل مطلوب"),
+  phoneCountry: z
+    .string()
+    .trim()
+    .min(1, "رمز الدولة مطلوب")
+    .refine(
+      (v) => COUNTRY_OPTIONS.some((c) => c.value === v),
+      "رمز الدولة غير صالح",
+    ),
+  phone: z
+    .string()
+    .trim()
+    .min(1, "رقم الجوال مطلوب")
+    .transform((value) => value.replace(/\s+/g, ""))
+    .refine((value) => /^\d{8,12}$/.test(value), "رقم الجوال غير صحيح"),
+  country: z
+    .string()
+    .trim()
+    .min(1, "الدولة مطلوبة")
+    .refine(
+      (v) => COUNTRY_OPTIONS.some((c) => c.value === v),
+      "الدولة غير صالحة",
+    ),
+  email: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (v) => v == null || v === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+      "البريد الإلكتروني غير صحيح",
+    ),
   idNumber: z.string().trim().min(6, "رقم الهوية / الجواز غير صحيح"),
   birthDate: z
     .string()
@@ -187,6 +377,10 @@ export type PermitsRequestPayload = {
   notes?: string;
   applicant: {
     fullName: string;
+    phoneCountry: string;
+    phone: string;
+    country: string;
+    email?: string;
     idNumber: string;
     birthDate: string;
     nationality: string;
@@ -267,6 +461,7 @@ export default function PermitsRequestModal({
     trigger,
     watch,
     getValues,
+    setValue,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormValues>({
@@ -275,6 +470,10 @@ export default function PermitsRequestModal({
       permitType: "umrah",
       notes: "",
       fullName: "",
+      phoneCountry: "sa",
+      phone: "",
+      country: "sa",
+      email: "",
       idNumber: "",
       birthDate: "",
       nationality: "",
@@ -301,6 +500,11 @@ export default function PermitsRequestModal({
   }, [open, reset]);
 
   const permitType = watch("permitType") as PermitType;
+  const countryOptions = useMemo(() => COUNTRY_OPTIONS, []);
+
+  const phoneCountry = watch("phoneCountry") as CountryValue | "";
+  const selectedPhoneDial =
+    countryOptions.find((c) => c.value === phoneCountry)?.dial ?? "";
 
   // currency display handled via <SarAmount />
 
@@ -340,12 +544,18 @@ export default function PermitsRequestModal({
     }
 
     const values = getValues();
+
+    const dial = COUNTRY_OPTIONS.find((c) => c.value === values.phoneCountry)
+      ?.dial;
+    const safeDial = typeof dial === "string" ? dial : "";
+    const phone = `${safeDial}${String(values.phone ?? "").replace(/\s+/g, "")}`;
+
     const apiPayload: PermitPayload = {
       customer: {
         name: values.fullName.trim(),
-        phone: "",
-        country: "",
-        email: "",
+        phone,
+        country: String(values.country ?? ""),
+        email: values.email?.trim() ? values.email.trim() : "",
         dob: values.birthDate,
         id_number: values.idNumber.trim(),
         nationality: values.nationality,
@@ -353,8 +563,8 @@ export default function PermitsRequestModal({
         permit_type: mapPermitTypeToApi(values.permitType as PermitType),
       },
       files: {
-        id_number_file: idFile,
-        personal_photo_file: personalPhoto,
+        customer_personal_photo: idFile,
+        customer_id_photo: personalPhoto,
       },
     };
 
@@ -388,11 +598,6 @@ export default function PermitsRequestModal({
       setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
     }
   }
-
-  const progressPercent = useMemo(() => {
-    const idx = step - 1;
-    return Math.round((idx / 3) * 100);
-  }, [step]);
 
   const inputBase =
     "w-full pr-10 pl-4 py-3 bg-input-fill dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-[#332e25] focus:ring-2 focus:ring-primary/50 focus:border-primary text-gray-900 dark:text-white placeholder-gray-400 transition-all";
@@ -440,6 +645,10 @@ export default function PermitsRequestModal({
     if (step === 2) {
       const ok = await trigger([
         "fullName",
+        "phoneCountry",
+        "phone",
+        "country",
+        "email",
         "idNumber",
         "birthDate",
         "nationality",
@@ -632,6 +841,108 @@ export default function PermitsRequestModal({
                   <p className="text-sm text-red-500">
                     {errors.fullName.message}
                   </p>
+                ) : null}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  رقم الجوال (مع مفتاح الدولة)
+                </label>
+
+                <div className="flex w-full min-w-0" dir="ltr">
+                  <CountryDropdown
+                    value={watch("phoneCountry") as CountryValue}
+                    onChange={(next) =>
+                      setValue("phoneCountry", next as CountryValue, {
+                        shouldValidate: true,
+                      })
+                    }
+                    options={countryOptions}
+                    mode="dial"
+                    invalid={Boolean(errors.phoneCountry)}
+                    dir="ltr"
+                    buttonClassName={joinClassNames(
+                      "shrink-0 inline-flex items-center justify-between rounded-l-lg border bg-input-fill dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-200 dark:border-[#332e25]",
+                      errors.phoneCountry ? "ring-2 ring-red-500/40" : undefined,
+                    )}
+                  />
+
+                  <input
+                    {...register("phone")}
+                    className={joinClassNames(
+                      "flex-1 min-w-0 w-0 rounded-r-lg border-t border-r border-b bg-input-fill dark:bg-gray-800 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-200 dark:border-[#332e25]",
+                      errors.phone ? "ring-2 ring-red-500/40" : undefined,
+                    )}
+                    inputMode="numeric"
+                    placeholder="5xxxxxxxx"
+                    aria-invalid={Boolean(errors.phone)}
+                  />
+                </div>
+
+                {(errors.phoneCountry?.message || errors.phone?.message) && (
+                  <p className="text-sm text-red-500">
+                    {errors.phoneCountry?.message ?? errors.phone?.message}
+                  </p>
+                )}
+
+                {selectedPhoneDial ? (
+                  <p
+                    className="text-xs text-gray-500 dark:text-gray-400"
+                    dir="ltr"
+                  >
+                    سيتم الحفظ بصيغة: {selectedPhoneDial}
+                    {String(watch("phone") ?? "").replace(/\s+/g, "")}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  الدولة
+                </label>
+                <CountryDropdown
+                  value={watch("country") as CountryValue | ""}
+                  onChange={(next) =>
+                    setValue("country", next as CountryValue, {
+                      shouldValidate: true,
+                    })
+                  }
+                  options={countryOptions}
+                  mode="country"
+                  placeholder="اختر الدولة"
+                  invalid={Boolean(errors.country)}
+                  buttonClassName={joinClassNames(
+                    inputBaseNoIcon,
+                    "inline-flex items-center justify-between",
+                    errors.country ? "ring-2 ring-red-500/40" : undefined,
+                  )}
+                />
+                {errors.country?.message ? (
+                  <p className="text-sm text-red-500">
+                    {errors.country.message}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  البريد الإلكتروني (اختياري)
+                </label>
+                <div className="relative">
+                  <input
+                    {...register("email")}
+                    className={joinClassNames(
+                      inputBaseNoIcon,
+                      errors.email ? "ring-2 ring-red-500/40" : undefined,
+                    )}
+                    placeholder="name@example.com"
+                    type="email"
+                    inputMode="email"
+                    aria-invalid={Boolean(errors.email)}
+                  />
+                </div>
+                {errors.email?.message ? (
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
                 ) : null}
               </div>
 
@@ -1065,6 +1376,42 @@ export default function PermitsRequestModal({
               </div>
 
               <div className="flex justify-between border-b border-primary/10 pb-2">
+                <span className="text-gray-500">رقم الجوال</span>
+                <span className="font-bold text-gray-900 dark:text-white" dir="ltr">
+                  {(() => {
+                    const dial =
+                      countryOptions.find(
+                        (c) => c.value === watch("phoneCountry"),
+                      )?.dial ?? "";
+                    const digits = String(watch("phone") ?? "").replace(
+                      /\s+/g,
+                      "",
+                    );
+                    return dial && digits ? `${dial}${digits}` : "—";
+                  })()}
+                </span>
+              </div>
+
+              <div className="flex justify-between border-b border-primary/10 pb-2">
+                <span className="text-gray-500">الدولة</span>
+                <span className="font-bold text-gray-900 dark:text-white">
+                  {(() => {
+                    const value = watch("country");
+                    const label = countryOptions.find((c) => c.value === value)
+                      ?.label;
+                    return label ?? "—";
+                  })()}
+                </span>
+              </div>
+
+              <div className="flex justify-between border-b border-primary/10 pb-2">
+                <span className="text-gray-500">البريد الإلكتروني</span>
+                <span className="font-bold text-gray-900 dark:text-white">
+                  {watch("email") || "—"}
+                </span>
+              </div>
+
+              <div className="flex justify-between border-b border-primary/10 pb-2">
                 <span className="text-gray-500">الجنسية</span>
                 <span className="font-bold text-gray-900 dark:text-white">
                   {watch("nationality") || "—"}
@@ -1109,12 +1456,12 @@ export default function PermitsRequestModal({
       {...modalProps}
     >
       <main className="w-full flex flex-col max-h-[90vh]">
-        <header className="flex items-center justify-between p-6 pb-4 border-b border-gray-100 dark:border-gray-700/50">
+        <header className="flex items-start sm:items-center justify-between gap-4 p-4 sm:p-6 pb-3 sm:pb-4 border-b border-gray-100 dark:border-gray-700/50">
           <div className="min-w-0">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white truncate">
+            <h1 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white leading-snug break-words sm:truncate">
               طلب خدمة تصاريح الحج والعمرة
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1">
               أكمل البيانات للحصول على التصريح الرسمي
             </p>
           </div>
@@ -1129,59 +1476,73 @@ export default function PermitsRequestModal({
           </button>
         </header>
 
-        <div className="px-8 py-6">
-          <div className="flex items-center justify-between relative">
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-700 -z-10 transform -translate-y-1/2 mx-12" />
-            <div
-              className="absolute top-1/2 right-0 h-0.5 bg-primary -z-10 transform -translate-y-1/2 mx-12 transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
-            />
-
-            {steps.map((s) => {
+        <div className="px-4 sm:px-8 py-4 sm:py-6">
+          <div className="flex items-center w-full">
+            {steps.map((s, idx) => {
               const isActive = s.n <= step;
               const isCurrent = s.n === step;
+              const isDone = s.n < step;
+
               return (
-                <div
-                  key={s.n}
-                  className={joinClassNames(
-                    "flex flex-col items-center gap-2 group",
-                    s.n < step ? "cursor-pointer" : "cursor-default",
-                    !isActive ? "opacity-50" : undefined,
-                  )}
-                  onClick={() => {
-                    if (s.n < step) setStep(s.n);
-                  }}
-                  role={s.n < step ? "button" : undefined}
-                  tabIndex={s.n < step ? 0 : -1}
-                  onKeyDown={(e) => {
-                    if (s.n >= step) return;
-                    if (e.key === "Enter" || e.key === " ") setStep(s.n);
-                  }}
-                >
+                <React.Fragment key={s.n}>
                   <div
                     className={joinClassNames(
-                      "w-10 h-10 rounded-full flex items-center justify-center ring-4 ring-white dark:ring-surface-dark z-10 transition-transform",
-                      isActive
-                        ? "bg-primary text-white shadow-lg shadow-primary/30"
-                        : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400",
-                      isCurrent ? "group-hover:scale-105" : undefined,
+                      "shrink-0 flex flex-col items-center gap-1 sm:gap-2 group",
+                      s.n < step ? "cursor-pointer" : "cursor-default",
+                      !isActive ? "opacity-50" : undefined,
                     )}
+                    onClick={() => {
+                      if (s.n < step) setStep(s.n);
+                    }}
+                    role={s.n < step ? "button" : undefined}
+                    tabIndex={s.n < step ? 0 : -1}
+                    onKeyDown={(e) => {
+                      if (s.n >= step) return;
+                      if (e.key === "Enter" || e.key === " ") setStep(s.n);
+                    }}
                   >
-                    <span className="text-lg" aria-hidden>
-                      {s.icon}
+                    <div
+                      className={joinClassNames(
+                        "w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ring-2 sm:ring-4 ring-white dark:ring-surface-dark z-10 transition-transform",
+                        isActive
+                          ? "bg-primary text-white shadow-lg shadow-primary/30"
+                          : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400",
+                        isCurrent ? "group-hover:scale-105" : undefined,
+                      )}
+                    >
+                      <span className="text-base sm:text-lg" aria-hidden>
+                        {s.icon}
+                      </span>
+                    </div>
+
+                    <span
+                      className={joinClassNames(
+                        "hidden sm:block text-xs font-bold text-center leading-tight",
+                        isActive
+                          ? "text-primary"
+                          : "text-gray-500 dark:text-gray-400",
+                      )}
+                    >
+                      {s.label}
                     </span>
                   </div>
-                  <span
-                    className={joinClassNames(
-                      "text-xs font-bold",
-                      isActive
-                        ? "text-primary"
-                        : "text-gray-500 dark:text-gray-400",
-                    )}
-                  >
-                    {s.label}
-                  </span>
-                </div>
+
+                  {idx < steps.length - 1 ? (
+                    <div
+                      className="flex-1 mx-2 sm:mx-4"
+                      aria-hidden
+                    >
+                      <div
+                        className={joinClassNames(
+                          "h-0.5 rounded-full transition-colors",
+                          isDone
+                            ? "bg-primary"
+                            : "bg-gray-200 dark:bg-gray-700",
+                        )}
+                      />
+                    </div>
+                  ) : null}
+                </React.Fragment>
               );
             })}
           </div>
