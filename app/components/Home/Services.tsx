@@ -19,13 +19,13 @@ const SERVICES: ServiceCard[] = [
     href: "/services/hadi-and-udhiyah",
     Icon: RiHandHeartLine,
   },
-  {
-    key: "pilgrimageGuide",
-    title: "",
-    description: "",
-    href: "/services/pilgrimage-guide",
-    Icon: RiBookOpenLine,
-  },
+  // {
+  //   key: "pilgrimageGuide",
+  //   title: "",
+  //   description: "",
+  //   href: "/services/pilgrimage-guide",
+  //   Icon: RiBookOpenLine,
+  // },
   {
     key: "permits",
     title: "",
@@ -33,13 +33,13 @@ const SERVICES: ServiceCard[] = [
     href: "/services/permits",
     Icon: FaPassport,
   },
-  {
-    key: "shariaConsultations",
-    title: "",
-    description: "",
-    href: "/services/sharia-consultations",
-    Icon: FaMosque,
-  },
+  // {
+  //   key: "shariaConsultations",
+  //   title: "",
+  //   description: "",
+  //   href: "/services/sharia-consultations",
+  //   Icon: FaMosque,
+  // },
   {
     key: "hajjAndUmrahOnBehalf",
     title: "",
