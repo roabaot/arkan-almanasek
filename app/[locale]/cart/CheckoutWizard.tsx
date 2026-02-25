@@ -462,7 +462,7 @@ export default function CheckoutWizard() {
 
                 <div className="flex gap-2 mb-6">
                   <input
-                    className="flex-1 rounded-lg border border-gray-200 dark:border-[#332e25] bg-background-light dark:bg-background-dark px-4 py-3 text-sm focus:border-primary focus:ring-primary"
+                    className="md:w-auto w-full flex-1 rounded-lg border border-gray-200 dark:border-[#332e25] bg-background-light dark:bg-background-dark px-4 py-3 text-sm focus:border-primary focus:ring-primary"
                     placeholder={t("discount.placeholder")}
                     type="text"
                   />

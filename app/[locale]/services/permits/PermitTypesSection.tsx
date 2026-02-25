@@ -39,21 +39,9 @@ export default function PermitTypesSection({
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                 {card.title}
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+              <p className="text-gray-500 dark:text-gray-400 leading-relaxed">
                 {card.description}
               </p>
-              <a
-                className="inline-flex items-center text-primary font-medium hover:underline"
-                href={card.detailsHref}
-              >
-                المزيد من التفاصيل
-                <span
-                  className="material-symbols-outlined text-sm mr-1 rtl:rotate-180"
-                  aria-hidden
-                >
-                  arrow_forward
-                </span>
-              </a>
             </div>
           ))}
         </div>

@@ -141,7 +141,7 @@ export default function Footer() {
               onSubmit={(event) => event.preventDefault()}
             >
               <input
-                className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:border-secondary focus:outline-none dark:border-gray-700 dark:bg-[#233523]"
+                className="md:w-auto w-full flex-1 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:border-secondary focus:outline-none dark:border-gray-700 dark:bg-[#233523]"
                 placeholder={t("newsletter.emailPlaceholder")}
                 type="email"
                 inputMode="email"
