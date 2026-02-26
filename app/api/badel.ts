@@ -17,6 +17,26 @@ export type GetBadelResT = {
   on_behalves: BadelT[];
 };
 
+export type BadelRequestCustomerT = {
+  id?: number;
+  name: string;
+  phone: string;
+  country: string;
+  email?: string;
+  dob: string;
+  performed_hajj: boolean;
+};
+
+export type BadelRequestT = {
+  id: number;
+  token: string;
+  customer: BadelRequestCustomerT;
+  on_behalf_type: BadelTypeT;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type BadelPayload = {
   on_behalf_type: BadelTypeT;
   customer: {
@@ -31,6 +51,10 @@ export type BadelPayload = {
 
 export const getBadels = () => {
   return apiFetch<GetBadelResT>("/on_behalf");
+};
+
+export const getBadelsWithToken = () => {
+  return apiFetchViaProxy<BadelRequestT>("/on_behalf/get_request");
 };
 
 export const postBadelRequest = (payload: BadelPayload) => {

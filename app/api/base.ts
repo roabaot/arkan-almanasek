@@ -39,14 +39,9 @@ function buildApiUrl(endpoint: string): string {
   return `${base}${path}`;
 }
 
-function getClientToken(): string | null {
-  try {
-    if (typeof window === "undefined") return null;
-    const token = window.localStorage?.getItem("token");
-    return typeof token === "string" && token.length >= 10 ? token : null;
-  } catch {
-    return null;
-  }
+function buildProxyUrl(endpoint: string): string {
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  return `/api/proxy${path}`;
 }
 
 async function doFetch<T>(url: string, options?: RequestInit): Promise<T> {
@@ -112,23 +107,19 @@ export async function apiFetchViaProxy<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
-  // Client: call the upstream API directly so the request URL is
-  // `${NEXT_PUBLIC_API_BASE_URL}/...` (not localhost). Token is read from localStorage.
+  // Client: go through Next.js proxy so the request token can be read from
+  // HttpOnly cookie on the server and forwarded upstream.
   if (typeof window !== "undefined") {
-    const url = buildApiUrl(endpoint);
-    const nextHeaders = new Headers(options?.headers ?? undefined);
-    const token = getClientToken();
-    if (token) {
-      if (!nextHeaders.has("Authorization")) {
-        nextHeaders.set("Authorization", `Bearer ${token}`);
-      }
-      nextHeaders.set("token", token);
-    }
-    return doFetch<T>(url, { ...(options ?? {}), headers: nextHeaders });
+    const url = buildProxyUrl(endpoint);
+    return doFetch<T>(url, {
+      ...(options ?? {}),
+      // Ensure cookies are included for same-origin requests.
+      credentials: "same-origin",
+    });
   }
 
   // Server: best-effort direct upstream call with token from HttpOnly cookie.
-  const url = buildApiUrl(endpoint);
+  const urlObj = new URL(buildApiUrl(endpoint));
   const nextHeaders = new Headers(options?.headers ?? undefined);
 
   try {
@@ -136,14 +127,17 @@ export async function apiFetchViaProxy<T>(
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
     if (token) {
-      if (!nextHeaders.has("Authorization")) {
-        nextHeaders.set("Authorization", `Bearer ${token}`);
-      }
       nextHeaders.set("token", token);
+
+      // Ruby API expects token as query param for request-scoped endpoints.
+      const firstPath = urlObj.pathname.split("/").filter(Boolean)[0];
+      if (firstPath === "requests" && !urlObj.searchParams.has("token")) {
+        urlObj.searchParams.set("token", token);
+      }
     }
   } catch {
     // ignore
   }
 
-  return doFetch<T>(url, { ...(options ?? {}), headers: nextHeaders });
+  return doFetch<T>(urlObj.toString(), { ...(options ?? {}), headers: nextHeaders });
 }

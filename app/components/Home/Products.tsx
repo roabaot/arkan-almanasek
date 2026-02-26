@@ -15,9 +15,9 @@ export default function HomeProducts({
     queryKey: ["products-section"],
     queryFn: () =>
       getProducts({
-        tag_id: "1",
+        is_home: true,
         page: 1,
-        perPage: 3,
+        perPage: 4,
       }),
     initialData: initialProducts,
     placeholderData: keepPreviousData,

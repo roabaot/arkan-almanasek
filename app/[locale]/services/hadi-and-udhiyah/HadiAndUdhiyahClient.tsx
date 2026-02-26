@@ -5,15 +5,19 @@ import Step2CustomerInfo from "./Step2CustomerInfo";
 import {
   editHadiRequest,
   getHadi,
+  getHadiWithToken,
   postHadiRequest,
   type GetHadiResT,
+  type HadiRequestCustomerT,
+  type HadiRequestItemT,
+  type HadiRequestT,
   type QurbaniPayload,
 } from "@/app/api";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
-import { isoDateFromDDMMYYYY } from "@/lib/utils";
+import { ddmmyyyyFromISODate, isoDateFromDDMMYYYY } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   MdAccountBalanceWallet,
   MdDescription,
@@ -31,18 +35,93 @@ import type { Item, Section } from "./types";
 import { clampQty } from "./utils";
 import Step3Payment, { PaymentSummary } from "./Step3Payment";
 import SaudiRiyalSymbol from "@/app/components/ui/SaudiRiyalSymbol";
+import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 
 type Props = {
   initialHadi: GetHadiResT;
+  requestedHadi?: HadiRequestT | null;
 };
 
-export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
+function toISODateOnly(value: string): string {
+  const trimmed = value.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+  const match = /^\d{4}-\d{2}-\d{2}/.exec(trimmed);
+  return match ? match[0] : "";
+}
+
+function buildStep2Prefill(
+  customer?: HadiRequestCustomerT | null,
+): Partial<Step2CustomerInfoValues> | undefined {
+  if (!customer) return undefined;
+
+  const prefill: Partial<Step2CustomerInfoValues> = {};
+  if (typeof customer.name === "string") prefill.fullName = customer.name;
+  if (typeof customer.email === "string") prefill.email = customer.email;
+  if (typeof customer.performed_hajj === "boolean") {
+    prefill.performedHajjOrUmrahBefore = customer.performed_hajj ? "yes" : "no";
+  }
+
+  if (typeof customer.dob === "string") {
+    const iso = toISODateOnly(customer.dob);
+    const ddmmyyyy = ddmmyyyyFromISODate(iso);
+    if (ddmmyyyy) prefill.birthDate = ddmmyyyy;
+  }
+
+  if (typeof customer.country === "string") {
+    // Step2 only allows id/ms/tr/lk.
+    if (
+      customer.country === "id" ||
+      customer.country === "ms" ||
+      customer.country === "tr" ||
+      customer.country === "lk"
+    ) {
+      prefill.country = customer.country;
+    }
+  }
+
+  if (typeof customer.phone === "string") {
+    const raw = customer.phone.trim().replace(/\s+/g, "");
+    const phoneOptions = [
+      { value: "sa" as const, dial: "+966" },
+      { value: "id" as const, dial: "+62" },
+      { value: "ms" as const, dial: "+60" },
+      { value: "tr" as const, dial: "+90" },
+      { value: "lk" as const, dial: "+94" },
+    ];
+
+    const parsed = phoneOptions
+      .map((c) => ({ ...c, dialDigits: c.dial.replace(/^\+/, "") }))
+      .find((c) => raw.startsWith(c.dial) || raw.startsWith(c.dialDigits));
+
+    if (parsed) {
+      prefill.phoneCountry = parsed.value;
+      const remainder = raw.startsWith(parsed.dial)
+        ? raw.slice(parsed.dial.length)
+        : raw.slice(parsed.dialDigits.length);
+      prefill.phone = remainder.replace(/\D+/g, "");
+    }
+  }
+
+  return prefill;
+}
+
+export default function HadiAndUdhiyahClient({
+  initialHadi,
+  requestedHadi,
+}: Props) {
   const t = useTranslations("qurbani");
   const locale = useLocale();
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [customerInfo, setCustomerInfo] =
     useState<Step2CustomerInfoValues | null>(null);
+  const [requestedCustomer, setRequestedCustomer] =
+    useState<HadiRequestCustomerT | null>(
+      () => requestedHadi?.customer ?? null,
+    );
+  const [requestedItems, setRequestedItems] = useState<
+    HadiRequestItemT[] | null
+  >(() => requestedHadi?.items ?? null);
   const [paymentSummary, setPaymentSummary] = useState<PaymentSummary | null>(
     null,
   );
@@ -144,6 +223,14 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
     }
     return index;
   }, [sections]);
+
+  const typeIdToCartKey = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const [key, entry] of itemIndex.entries()) {
+      if (!map.has(entry.item.id)) map.set(entry.item.id, key);
+    }
+    return map;
+  }, [itemIndex]);
 
   const selectionTotals = useMemo(() => {
     const totals: Record<string, number> = {};
@@ -289,22 +376,96 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
     setStep(2);
   }
 
-  function hasSavedRequestToken(): boolean {
-    try {
-      const token = window.localStorage.getItem("token");
-      return typeof token === "string" && token.length >= 10;
-    } catch {
-      return false;
-    }
-  }
-
   function persistRequestToken(token: string) {
+    // Also persist token server-side (HttpOnly cookie) for server components.
     try {
-      window.localStorage.setItem("token", token);
+      fetch("/api/session/request-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      }).catch(() => {
+        // ignore
+      });
     } catch {
       // ignore
     }
   }
+
+  useEffect(() => {
+    // If we already have it from the server, no need to fetch.
+    if (requestedCustomer) return;
+    let cancelled = false;
+
+    (async () => {
+      if (!(await hasRequestTokenCookieClient())) return;
+
+      try {
+        const req = await getHadiWithToken();
+        if (cancelled) return;
+        setRequestedCustomer(req?.customer ?? null);
+        setRequestedItems(req?.items ?? null);
+      } catch {
+        // ignore
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [requestedCustomer]);
+
+  const didPrefillItemsRef = useRef(false);
+
+  useEffect(() => {
+    if (didPrefillItemsRef.current) return;
+    if (step !== 1) return;
+    if (!requestedItems || requestedItems.length === 0) return;
+    if (Object.keys(cart).length > 0) return;
+    if (typeIdToCartKey.size === 0) return;
+
+    const nextCart: Record<string, number> = {};
+
+    for (const it of requestedItems) {
+      const typeId = String(it?.id ?? it?.type_id ?? "");
+      const key = typeIdToCartKey.get(typeId);
+      if (!key) continue;
+
+      const qtyRaw = Number(it?.quantity ?? 0);
+      if (!Number.isFinite(qtyRaw) || qtyRaw <= 0) continue;
+
+      const nextQty = clampQty((nextCart[key] ?? 0) + qtyRaw);
+      if (nextQty <= 0) {
+        delete nextCart[key];
+      } else {
+        nextCart[key] = nextQty;
+      }
+    }
+
+    if (Object.keys(nextCart).length === 0) return;
+
+    const nextSelection: Record<string, Record<string, number>> = {};
+    const nextCommitted: Record<string, Record<string, number>> = {};
+
+    for (const [key, qty] of Object.entries(nextCart)) {
+      const [sectionId, itemId] = key.split(":");
+      if (!sectionId || !itemId) continue;
+
+      nextSelection[sectionId] = {
+        ...(nextSelection[sectionId] ?? {}),
+        [itemId]: qty,
+      };
+      nextCommitted[sectionId] = {
+        ...(nextCommitted[sectionId] ?? {}),
+        [itemId]: qty,
+      };
+    }
+
+    setSelection(nextSelection);
+    setCommittedSelection(nextCommitted);
+    setCart(nextCart);
+    setCheckoutAttempted(false);
+    didPrefillItemsRef.current = true;
+  }, [cart, requestedItems, step, typeIdToCartKey]);
 
   async function submitCustomerInfo(values: Step2CustomerInfoValues) {
     setCustomerInfo(values);
@@ -348,7 +509,7 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
     };
 
     try {
-      const hasToken = hasSavedRequestToken();
+      const hasToken = await hasRequestTokenCookieClient();
 
       if (hasToken) {
         await editHadiRequest(payload);
@@ -421,7 +582,11 @@ export default function HadiAndUdhiyahClient({ initialHadi }: Props) {
               <Step2CustomerInfo
                 onBack={() => setStep(1)}
                 onNext={submitCustomerInfo}
-                initialValues={customerInfo ?? undefined}
+                initialValues={
+                  customerInfo ??
+                  buildStep2Prefill(requestedCustomer) ??
+                  undefined
+                }
                 isSaving={isSavingCustomerInfo}
                 submitError={customerInfoSubmitError}
               />

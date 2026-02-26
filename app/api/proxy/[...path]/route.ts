@@ -47,7 +47,7 @@ async function handler(req: NextRequest, context: RouteContext) {
     if (!headers.has("Authorization")) {
       headers.set("Authorization", `Bearer ${token}`);
     }
-    headers.set("X-Request-Token", token);
+    headers.set(COOKIE_NAME, token);
   }
 
   const method = req.method.toUpperCase();

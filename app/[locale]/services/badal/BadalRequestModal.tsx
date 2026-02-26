@@ -13,11 +13,14 @@ import AnimatedModal, {
 
 import {
   editBadelRequest,
+  getBadelsWithToken,
   postBadelRequest,
   type BadelPayload,
+  type BadelRequestCustomerT,
 } from "@/app/api/badel";
 
 import { formatCardNumber, formatExpiry, formatFileSize } from "@/lib/utils";
+import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 
 export type BadalServiceType = "umrah" | "hajj";
 
@@ -276,6 +279,13 @@ const customerSchema = z.object({
 
 type CustomerFormValues = z.input<typeof customerSchema>;
 
+export type BadalPrefillCustomer = Partial<
+  Pick<
+    BadelRequestCustomerT,
+    "name" | "phone" | "country" | "email" | "dob" | "performed_hajj"
+  >
+>;
+
 type PaymentMethod = "card" | "bank";
 
 type CardData = {
@@ -353,6 +363,8 @@ export type BadalRequestModalProps = {
   onOpenChange: (open: boolean, reason: ModalCloseReason) => void;
   serviceType: BadalServiceType;
 
+  prefillCustomer?: BadalPrefillCustomer;
+
   onComplete?: (payload: BadalRequestPayload) => void | Promise<void>;
 
   modalProps?: Omit<
@@ -369,10 +381,67 @@ function joinClassNames(...values: Array<string | undefined | false | null>) {
   return values.filter(Boolean).join(" ");
 }
 
+const DEFAULT_CUSTOMER_FORM_VALUES: CustomerFormValues = {
+  fullName: "",
+  phoneCountry: "sa",
+  phone: "",
+  country: "sa",
+  email: "",
+  birthDate: "",
+  performedHajjOrUmrahBefore: "",
+};
+
+function toISODateOnly(value: string): string {
+  const trimmed = value.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+  const match = /^\d{4}-\d{2}-\d{2}/.exec(trimmed);
+  return match ? match[0] : "";
+}
+
+function buildPrefilledCustomerValues(
+  customer?: BadalPrefillCustomer,
+): CustomerFormValues {
+  const next: CustomerFormValues = { ...DEFAULT_CUSTOMER_FORM_VALUES };
+  if (!customer) return next;
+
+  if (typeof customer.name === "string") next.fullName = customer.name;
+  if (typeof customer.email === "string") next.email = customer.email;
+  if (typeof customer.dob === "string")
+    next.birthDate = toISODateOnly(customer.dob);
+  if (typeof customer.performed_hajj === "boolean") {
+    next.performedHajjOrUmrahBefore = customer.performed_hajj ? "yes" : "no";
+  }
+
+  if (typeof customer.country === "string") {
+    const found = COUNTRY_OPTIONS.find((c) => c.value === customer.country);
+    if (found) next.country = found.value;
+  }
+
+  if (typeof customer.phone === "string") {
+    const raw = customer.phone.trim().replace(/\s+/g, "");
+    const parsed = COUNTRY_OPTIONS.map((c) => ({
+      value: c.value,
+      dial: c.dial,
+      dialDigits: c.dial.replace(/^\+/, ""),
+    })).find((c) => raw.startsWith(c.dial) || raw.startsWith(c.dialDigits));
+
+    if (parsed) {
+      next.phoneCountry = parsed.value;
+      const remainder = raw.startsWith(parsed.dial)
+        ? raw.slice(parsed.dial.length)
+        : raw.slice(parsed.dialDigits.length);
+      next.phone = remainder.replace(/\D+/g, "");
+    }
+  }
+
+  return next;
+}
+
 export default function BadalRequestModal({
   open,
   onOpenChange,
   serviceType,
+  prefillCustomer,
   onComplete,
   modalProps,
 }: BadalRequestModalProps) {
@@ -390,15 +459,7 @@ export default function BadalRequestModal({
     reset,
   } = useForm<CustomerFormValues>({
     resolver: zodResolver(customerSchema),
-    defaultValues: {
-      fullName: "",
-      phoneCountry: "sa",
-      phone: "",
-      country: "sa",
-      email: "",
-      birthDate: "",
-      performedHajjOrUmrahBefore: "",
-    },
+    defaultValues: DEFAULT_CUSTOMER_FORM_VALUES,
     mode: "onSubmit",
   });
 
@@ -431,6 +492,37 @@ export default function BadalRequestModal({
     setSubmitError(null);
   }, [open, reset]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    let cancelled = false;
+
+    async function prefillFromRequest() {
+      // Priority 1: server-provided customer (if present).
+      if (prefillCustomer) {
+        reset(buildPrefilledCustomerValues(prefillCustomer));
+        return;
+      }
+
+      // Priority 2: fetch by token (covers cases where token was created in-session
+      // without a full page reload).
+      if (!(await hasRequestTokenCookieClient())) return;
+
+      try {
+        const req = await getBadelsWithToken();
+        if (cancelled) return;
+        reset(buildPrefilledCustomerValues(req?.customer));
+      } catch {
+        // ignore - no existing request or API unavailable
+      }
+    }
+
+    prefillFromRequest();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, prefillCustomer, reset]);
+
   const inputBase =
     "w-full rounded-xl border bg-background-light dark:bg-background-dark px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/30 focus:border-primary";
 
@@ -442,18 +534,16 @@ export default function BadalRequestModal({
 
   const canClose = !(isSubmitting || isSending);
 
-  function hasSavedRequestToken(): boolean {
-    try {
-      const token = window.localStorage.getItem("token");
-      return typeof token === "string" && token.length >= 10;
-    } catch {
-      return false;
-    }
-  }
-
   function persistRequestToken(token: string) {
+    // Also persist token server-side (HttpOnly cookie) for server components.
     try {
-      window.localStorage.setItem("token", token);
+      fetch("/api/session/request-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      }).catch(() => {
+        // ignore
+      });
     } catch {
       // ignore
     }
@@ -487,7 +577,7 @@ export default function BadalRequestModal({
 
     setIsSending(true);
     try {
-      const hasToken = hasSavedRequestToken();
+      const hasToken = await hasRequestTokenCookieClient();
 
       if (hasToken) {
         await editBadelRequest(apiPayload);

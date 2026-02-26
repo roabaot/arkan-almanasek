@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import BadalRequestModal, {
   type BadalRequestPayload,
+  type BadalPrefillCustomer,
   type BadalServiceType,
 } from "./BadalRequestModal";
 
@@ -12,6 +13,8 @@ type Props = {
   label: string;
   className?: string;
 
+  prefillCustomer?: BadalPrefillCustomer;
+
   onComplete?: (payload: BadalRequestPayload) => void | Promise<void>;
 };
 
@@ -19,6 +22,7 @@ export default function BadalRequestButton({
   serviceType,
   label,
   className,
+  prefillCustomer,
   onComplete,
 }: Props) {
   const [open, setOpen] = useState(false);
@@ -32,6 +36,7 @@ export default function BadalRequestButton({
       <BadalRequestModal
         open={open}
         serviceType={serviceType}
+        prefillCustomer={prefillCustomer}
         onComplete={
           onComplete ?? ((payload) => console.log("badal request:", payload))
         }

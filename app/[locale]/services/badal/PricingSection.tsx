@@ -2,14 +2,20 @@
 import { MdCheck, MdModeNight, MdMosque } from "react-icons/md";
 
 import BadalRequestButton from "./BadalRequestButton";
-import { GetBadelResT, getBadels } from "@/app/api/badel";
+import {
+  type BadelRequestCustomerT,
+  GetBadelResT,
+  getBadels,
+} from "@/app/api/badel";
 import { useQuery } from "@tanstack/react-query";
 import SarAmount from "@/app/components/ui/SarAmount";
 
 export default function PricingSection({
   initialBadels,
+  requestedCustomer,
 }: {
   initialBadels: GetBadelResT;
+  requestedCustomer?: BadelRequestCustomerT;
 }) {
   const { data: badelsRes } = useQuery({
     queryKey: ["badels"],
@@ -17,8 +23,6 @@ export default function PricingSection({
     initialData: initialBadels,
     staleTime: 1000 * 60,
   });
-
-  console.log("badel: ", badelsRes);
 
   const badels = badelsRes?.on_behalves || [];
   const hajjBadel = badels.find((b) => b.type === "OnBehalfHajj");
@@ -91,6 +95,7 @@ export default function PricingSection({
                   serviceType="umrah"
                   label="طلب عمرة بدل"
                   className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors"
+                  prefillCustomer={requestedCustomer}
                 />
               </div>
             </div>
@@ -153,6 +158,7 @@ export default function PricingSection({
                 serviceType="hajj"
                 label="طلب حج بدل"
                 className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                prefillCustomer={requestedCustomer}
               />
             </div>
           </div>

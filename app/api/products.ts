@@ -57,6 +57,7 @@ export function getProducts(
     minPrice?: number;
     maxPrice?: number;
     available?: boolean;
+    is_home?: boolean;
     page?: number;
     perPage?: number;
   },

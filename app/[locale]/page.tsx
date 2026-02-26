@@ -6,7 +6,7 @@ import HomeServices from "../components/Home/Services";
 import { getProducts } from "../api";
 
 export default async function HomePage() {
-  const products = await getProducts({ tag_id: "1" });
+  const products = await getProducts({ is_home: true, page: 1, perPage: 4 });
   return (
     <main className="bg-[#f6f8f6] text-[#111811] antialiased">
       <HomeHero />

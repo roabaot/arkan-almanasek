@@ -527,7 +527,8 @@ export default function Step2CustomerInfo({
           <button
             type="button"
             onClick={onBack}
-            className="px-5 py-3 rounded-xl border border-[var(--color-accent)] bg-white text-black/60 font-bold hover:text-[#111811] hover:bg-white/80 transition-colors"
+            disabled={isSubmitting || Boolean(isSaving)}
+            className="px-5 py-3 rounded-xl border border-[var(--color-accent)] bg-white text-black/60 font-bold hover:text-[#111811] hover:bg-white/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {t("actions.back")}
           </button>

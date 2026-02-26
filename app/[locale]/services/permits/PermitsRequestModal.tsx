@@ -14,6 +14,7 @@ import {
   postPermitRequest,
   type GetPermitResT,
   type PermitPayload,
+  type PermitRequestT,
   type PermitTypeT,
 } from "@/app/api/permit";
 import SarAmount from "@/app/components/ui/SarAmount";
@@ -34,6 +35,7 @@ import {
   MdPerson,
   MdPublic,
 } from "react-icons/md";
+import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 
 export type PermitType = "hajj" | "umrah";
 
@@ -404,6 +406,8 @@ export type PermitsRequestModalProps = {
 
   permits?: GetPermitResT;
 
+  prefillRequest?: PermitRequestT | null;
+
   onComplete?: (args: PermitSubmitArgs) => void | Promise<void>;
 
   modalProps?: Omit<
@@ -413,6 +417,94 @@ export type PermitsRequestModalProps = {
 };
 
 type FormValues = z.infer<typeof step1Schema> & z.infer<typeof step2Schema>;
+
+const DEFAULT_FORM_VALUES: FormValues = {
+  permitType: "umrah",
+  notes: "",
+  fullName: "",
+  phoneCountry: "sa",
+  phone: "",
+  country: "sa",
+  email: "",
+  idNumber: "",
+  birthDate: "",
+  nationality: "",
+};
+
+function toISODateOnly(value: string): string {
+  const trimmed = value.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+  const match = /^\d{4}-\d{2}-\d{2}/.exec(trimmed);
+  return match ? match[0] : "";
+}
+
+function buildPrefilledValues(req?: PermitRequestT | null): FormValues {
+  const next: FormValues = { ...DEFAULT_FORM_VALUES };
+  if (!req?.customer) return next;
+
+  const c = req.customer;
+
+  if (typeof c.name === "string") next.fullName = c.name;
+  if (typeof c.email === "string") next.email = c.email;
+  if (typeof c.country === "string") {
+    const found = COUNTRY_OPTIONS.find((x) => x.value === c.country);
+    if (found) next.country = found.value;
+  }
+  if (typeof c.dob === "string") next.birthDate = toISODateOnly(c.dob);
+  if (typeof c.id_number === "string") next.idNumber = c.id_number;
+  if (typeof c.nationality === "string") next.nationality = c.nationality;
+  if (typeof c.additional_notes === "string") next.notes = c.additional_notes;
+
+  const apiPermitType =
+    (c.permit_type ?? req.permit_type) === "PermitHajj" ? "hajj" : "umrah";
+  next.permitType = apiPermitType;
+
+  if (typeof c.phone === "string") {
+    const raw = c.phone.trim().replace(/\s+/g, "");
+    const parsed = COUNTRY_OPTIONS.map((x) => ({
+      value: x.value,
+      dial: x.dial,
+      dialDigits: x.dial.replace(/^\+/, ""),
+    })).find((x) => raw.startsWith(x.dial) || raw.startsWith(x.dialDigits));
+
+    if (parsed) {
+      next.phoneCountry = parsed.value;
+      const remainder = raw.startsWith(parsed.dial)
+        ? raw.slice(parsed.dial.length)
+        : raw.slice(parsed.dialDigits.length);
+      next.phone = remainder.replace(/\D+/g, "");
+    }
+  }
+
+  return next;
+}
+
+async function fetchFileFromUrl(
+  url: string,
+  fallbackName: string,
+): Promise<File | null> {
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    const fileName = (() => {
+      try {
+        const u = new URL(url);
+        const pathName = u.pathname.split("/").filter(Boolean).pop();
+        return pathName && pathName.includes(".") ? pathName : fallbackName;
+      } catch {
+        return fallbackName;
+      }
+    })();
+
+    return new File([blob], fileName, {
+      type: blob.type || undefined,
+      lastModified: Date.now(),
+    });
+  } catch {
+    return null;
+  }
+}
 
 const NATIONALITIES = [
   "المملكة العربية السعودية",
@@ -431,6 +523,7 @@ export default function PermitsRequestModal({
   open,
   onOpenChange,
   permits,
+  prefillRequest,
   onComplete,
   modalProps,
 }: PermitsRequestModalProps) {
@@ -466,18 +559,7 @@ export default function PermitsRequestModal({
     reset,
   } = useForm<FormValues>({
     resolver: zodResolver(step1Schema.merge(step2Schema)),
-    defaultValues: {
-      permitType: "umrah",
-      notes: "",
-      fullName: "",
-      phoneCountry: "sa",
-      phone: "",
-      country: "sa",
-      email: "",
-      idNumber: "",
-      birthDate: "",
-      nationality: "",
-    },
+    defaultValues: DEFAULT_FORM_VALUES,
     mode: "onSubmit",
   });
 
@@ -498,6 +580,63 @@ export default function PermitsRequestModal({
     setBankReceipt(null);
     setPaymentErrors({});
   }, [open, reset]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    let cancelled = false;
+
+    async function applyPrefill(req: PermitRequestT | null) {
+      reset(buildPrefilledValues(req));
+
+      const idUrl = req?.files?.customer_id_photo;
+      const personalUrl = req?.files?.customer_personal_photo;
+
+      if (typeof idUrl === "string" && idUrl.length > 0) {
+        const file = await fetchFileFromUrl(idUrl, "id-photo");
+        if (!cancelled && file) setIdFile(file);
+      }
+
+      if (typeof personalUrl === "string" && personalUrl.length > 0) {
+        const file = await fetchFileFromUrl(personalUrl, "personal-photo");
+        if (!cancelled && file) setPersonalPhoto(file);
+      }
+
+      if (!cancelled) {
+        setDocsError(null);
+      }
+    }
+
+    (async () => {
+      // 1) Server-provided request (best quality / no extra network).
+      if (prefillRequest) {
+        await applyPrefill(prefillRequest);
+        return;
+      }
+
+      // 2) Client fetch via /api/proxy using HttpOnly cookie token.
+      const hasToken = await hasRequestTokenCookieClient();
+      if (!hasToken) return;
+
+      try {
+        const res = await fetch("/api/proxy/permit/get_request", {
+          method: "GET",
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) return;
+        const json = (await res.json()) as PermitRequestT;
+        if (cancelled) return;
+        await applyPrefill(json ?? null);
+      } catch {
+        // ignore
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, prefillRequest, reset]);
 
   const permitType = watch("permitType") as PermitType;
   const countryOptions = useMemo(() => COUNTRY_OPTIONS, []);
@@ -521,21 +660,13 @@ export default function PermitsRequestModal({
     return type === "hajj" ? "PermitHajj" : "PermitUmrah";
   }
 
-  function hasSavedRequestToken(): boolean {
-    try {
-      const token = window.localStorage.getItem("token");
-      return typeof token === "string" && token.length >= 10;
-    } catch {
-      return false;
-    }
-  }
-
-  function persistRequestToken(token: string) {
-    try {
-      window.localStorage.setItem("token", token);
-    } catch {
-      // ignore
-    }
+  async function persistRequestToken(token: string) {
+    // Store token securely as HttpOnly cookie (not readable by JS).
+    await fetch("/api/session/request-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
   }
 
   async function savePermitRequest(): Promise<PermitSubmitArgs> {
@@ -545,8 +676,9 @@ export default function PermitsRequestModal({
 
     const values = getValues();
 
-    const dial = COUNTRY_OPTIONS.find((c) => c.value === values.phoneCountry)
-      ?.dial;
+    const dial = COUNTRY_OPTIONS.find(
+      (c) => c.value === values.phoneCountry,
+    )?.dial;
     const safeDial = typeof dial === "string" ? dial : "";
     const phone = `${safeDial}${String(values.phone ?? "").replace(/\s+/g, "")}`;
 
@@ -568,7 +700,7 @@ export default function PermitsRequestModal({
       },
     };
 
-    const hasToken = hasSavedRequestToken();
+    const hasToken = await hasRequestTokenCookieClient();
     let apiResponse: unknown;
     let mode: "create" | "update";
 
@@ -581,7 +713,7 @@ export default function PermitsRequestModal({
 
       const token = (apiResponse as { token?: unknown } | null)?.token;
       if (typeof token === "string" && token.length >= 10) {
-        persistRequestToken(token);
+        await persistRequestToken(token);
       }
     }
 
@@ -589,13 +721,18 @@ export default function PermitsRequestModal({
   }
 
   async function finalizeAndClose() {
+    if (isSending || isSubmitting) return;
+
     setSubmitError(null);
+    setIsSending(true);
     try {
       const args = savedRequest ?? (await savePermitRequest());
       await (onComplete?.(args) ?? Promise.resolve());
       onOpenChange(false, "programmatic");
     } catch (e) {
       setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+    } finally {
+      setIsSending(false);
     }
   }
 
@@ -614,28 +751,9 @@ export default function PermitsRequestModal({
     return true;
   }
 
-  function validatePayment(): PaymentValues | null {
-    const values: unknown =
-      paymentMethod === "card"
-        ? { method: paymentMethod, ...cardData }
-        : { method: paymentMethod, receipt: bankReceipt };
-
-    const result = paymentSchema.safeParse(values);
-    if (result.success) {
-      setPaymentErrors({});
-      return result.data;
-    }
-
-    const nextErrors: PaymentErrors = {};
-    for (const issue of result.error.issues) {
-      const key = (issue.path[0] ?? "method") as keyof PaymentErrors;
-      if (!nextErrors[key]) nextErrors[key] = issue.message;
-    }
-    setPaymentErrors(nextErrors);
-    return null;
-  }
-
   async function goNext() {
+    if (isSending || isSubmitting) return;
+
     if (step === 1) {
       const ok = await trigger(["permitType", "notes"]);
       if (ok) setStep(2);
@@ -671,12 +789,31 @@ export default function PermitsRequestModal({
     }
 
     if (step === 3) {
-      // Payment integration isn't wired yet; allow moving forward.
+      // Payment integration isn't wired yet; allow moving forward,
+      // but still compute inline validation errors for the UI.
+      const values: unknown =
+        paymentMethod === "card"
+          ? { method: paymentMethod, ...cardData }
+          : { method: paymentMethod, receipt: bankReceipt };
+
+      const result = paymentSchema.safeParse(values);
+      if (result.success) {
+        setPaymentErrors({});
+      } else {
+        const nextErrors: PaymentErrors = {};
+        for (const issue of result.error.issues) {
+          const key = (issue.path[0] ?? "method") as keyof PaymentErrors;
+          if (!nextErrors[key]) nextErrors[key] = issue.message;
+        }
+        setPaymentErrors(nextErrors);
+      }
+
       setStep(4);
     }
   }
 
   function goBack() {
+    if (isSending || isSubmitting) return;
     setDocsError(null);
     setPaymentErrors((s) => ({ ...s, method: undefined }));
     setStep((s) => (s === 1 ? 1 : ((s - 1) as 1 | 2 | 3 | 4)));
@@ -863,7 +1000,9 @@ export default function PermitsRequestModal({
                     dir="ltr"
                     buttonClassName={joinClassNames(
                       "shrink-0 inline-flex items-center justify-between rounded-l-lg border bg-input-fill dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-200 dark:border-[#332e25]",
-                      errors.phoneCountry ? "ring-2 ring-red-500/40" : undefined,
+                      errors.phoneCountry
+                        ? "ring-2 ring-red-500/40"
+                        : undefined,
                     )}
                   />
 
@@ -1377,7 +1516,10 @@ export default function PermitsRequestModal({
 
               <div className="flex justify-between border-b border-primary/10 pb-2">
                 <span className="text-gray-500">رقم الجوال</span>
-                <span className="font-bold text-gray-900 dark:text-white" dir="ltr">
+                <span
+                  className="font-bold text-gray-900 dark:text-white"
+                  dir="ltr"
+                >
                   {(() => {
                     const dial =
                       countryOptions.find(
@@ -1397,8 +1539,9 @@ export default function PermitsRequestModal({
                 <span className="font-bold text-gray-900 dark:text-white">
                   {(() => {
                     const value = watch("country");
-                    const label = countryOptions.find((c) => c.value === value)
-                      ?.label;
+                    const label = countryOptions.find(
+                      (c) => c.value === value,
+                    )?.label;
                     return label ?? "—";
                   })()}
                 </span>
@@ -1469,7 +1612,7 @@ export default function PermitsRequestModal({
             type="button"
             onClick={() => onOpenChange(false, "closeButton")}
             disabled={!canClose}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500 dark:text-gray-400"
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500 dark:text-gray-400 disabled:opacity-50"
             aria-label="إغلاق"
           >
             <MdClose className="text-2xl" aria-hidden />
@@ -1492,11 +1635,13 @@ export default function PermitsRequestModal({
                       !isActive ? "opacity-50" : undefined,
                     )}
                     onClick={() => {
+                      if (!canClose) return;
                       if (s.n < step) setStep(s.n);
                     }}
                     role={s.n < step ? "button" : undefined}
                     tabIndex={s.n < step ? 0 : -1}
                     onKeyDown={(e) => {
+                      if (!canClose) return;
                       if (s.n >= step) return;
                       if (e.key === "Enter" || e.key === " ") setStep(s.n);
                     }}
@@ -1528,10 +1673,7 @@ export default function PermitsRequestModal({
                   </div>
 
                   {idx < steps.length - 1 ? (
-                    <div
-                      className="flex-1 mx-2 sm:mx-4"
-                      aria-hidden
-                    >
+                    <div className="flex-1 mx-2 sm:mx-4" aria-hidden>
                       <div
                         className={joinClassNames(
                           "h-0.5 rounded-full transition-colors",
@@ -1570,7 +1712,7 @@ export default function PermitsRequestModal({
                 step === 1 ? () => onOpenChange(false, "programmatic") : goBack
               }
               disabled={!canClose}
-              className="px-6 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 group"
+              className="px-6 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 group disabled:opacity-75"
             >
               <MdArrowForward
                 className="text-lg group-hover:-translate-x-1 transition-transform ltr:rotate-180"
@@ -1584,7 +1726,7 @@ export default function PermitsRequestModal({
                 type="button"
                 onClick={() => submitRequest()}
                 disabled={!canClose}
-                className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95"
+                className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95 disabled:opacity-75"
               >
                 إرسال الطلب
                 <MdArrowBack
@@ -1597,7 +1739,7 @@ export default function PermitsRequestModal({
                 type="button"
                 onClick={() => goNext()}
                 disabled={!canClose}
-                className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95"
+                className="px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 flex items-center gap-2 group transform active:scale-95 disabled:opacity-75"
               >
                 التالي
                 <MdArrowBack

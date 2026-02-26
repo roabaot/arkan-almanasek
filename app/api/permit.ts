@@ -17,6 +17,38 @@ export type GetPermitResT = {
   permits: PermitT[];
 };
 
+export type PermitRequestCustomerT = {
+  id?: number;
+  name: string;
+  phone: string;
+  country?: string | null;
+  email?: string | null;
+  dob?: string | null;
+  performed_hajj?: boolean | null;
+  id_number?: string | null;
+  nationality?: string | null;
+  additional_notes?: string | null;
+  permit_type?: PermitTypeT | null;
+  id_photo_url?: string | null;
+  personal_photo_url?: string | null;
+};
+
+export type PermitRequestFilesT = {
+  customer_id_photo?: string | null;
+  customer_personal_photo?: string | null;
+};
+
+export type PermitRequestT = {
+  id: number;
+  token: string;
+  customer: PermitRequestCustomerT;
+  files?: PermitRequestFilesT | null;
+  permit_type?: PermitTypeT | null;
+  status?: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type PermitPayload = {
   customer: {
     name: string;
@@ -60,6 +92,10 @@ function toPermitFormData(payload: PermitPayload): FormData {
 
 export const getPermits = () => {
   return apiFetch<GetPermitResT>("/permit");
+};
+
+export const getPermitsWithToken = () => {
+  return apiFetchViaProxy<PermitRequestT>("/permit/get_request");
 };
 
 export const postPermitRequest = (payload: PermitPayload) => {

@@ -1,4 +1,8 @@
-import { getPermits } from "@/app/api/permit";
+import {
+  type PermitRequestT,
+  getPermits,
+  getPermitsWithToken,
+} from "@/app/api/permit";
 import AboutSection from "./AboutSection";
 import CtaSection from "./CtaSection";
 import HeroSection from "./HeroSection";
@@ -6,6 +10,7 @@ import NoticeSection from "./NoticeSection";
 import PermitTypesSection from "./PermitTypesSection";
 import RequiredDocumentsSection from "./RequiredDocumentsSection";
 import StepsSection from "./StepsSection";
+import { hasRequestTokenCookieServer } from "@/lib/utils/requestToken.server";
 
 export default async function PermitsServicePage() {
   const permitCards = [
@@ -65,6 +70,15 @@ export default async function PermitsServicePage() {
   ] as const;
 
   const initialPermits = await getPermits();
+  const hasToken = await hasRequestTokenCookieServer();
+  let requestedPermits: PermitRequestT | null = null;
+  if (hasToken) {
+    try {
+      requestedPermits = await getPermitsWithToken();
+    } catch {
+      requestedPermits = null;
+    }
+  }
 
   return (
     <main className="flex-grow w-full overflow-x-hidden">
@@ -74,7 +88,10 @@ export default async function PermitsServicePage() {
       <RequiredDocumentsSection docs={requiredDocs} />
       <StepsSection steps={steps} />
       <NoticeSection />
-      <CtaSection initialPermits={initialPermits} />
+      <CtaSection
+        initialPermits={initialPermits}
+        requestedPermit={requestedPermits}
+      />
     </main>
   );
 }
