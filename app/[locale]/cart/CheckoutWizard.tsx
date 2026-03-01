@@ -20,14 +20,158 @@ import {
   addRequest,
   getCartItemsByIds,
   getRequestCart,
+  updateRequest,
   type CheckoutPayload,
 } from "@/app/api";
-import { isoDateFromDDMMYYYY } from "@/lib/utils";
+import { ApiError } from "@/app/api/base";
+import { ddmmyyyyFromISODate, isoDateFromDDMMYYYY } from "@/lib/utils";
+import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 import SarAmount from "@/app/components/ui/SarAmount";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
 import type { CartItem as StoredCartItem } from "@/lib/utils/cart";
 
 type Step = 1 | 2 | 3;
+
+function toFiniteNumber(v: unknown): number | null {
+  const n = typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN;
+  return Number.isFinite(n) ? n : null;
+}
+
+function mapRequestCartProduct(raw: unknown): StoredCartItem | null {
+  if (!raw || typeof raw !== "object") return null;
+  const obj = raw as Record<string, unknown>;
+
+  const nested =
+    (obj.product as Record<string, unknown> | undefined) ??
+    (obj["product"] as Record<string, unknown> | undefined) ??
+    obj;
+
+  const id =
+    toFiniteNumber(obj.id) ??
+    toFiniteNumber(obj["product_id"]) ??
+    toFiniteNumber(nested?.id);
+
+  const quantity =
+    // Request cart uses requested_quantity (not stock quantity).
+    toFiniteNumber(obj.requested_quantity) ??
+    toFiniteNumber(obj.requestedQuantity) ??
+    toFiniteNumber(obj.quantity) ??
+    toFiniteNumber(obj.qty) ??
+    toFiniteNumber(obj.count) ??
+    1;
+
+  if (!id || !quantity || quantity <= 0) return null;
+
+  const name = typeof nested?.name === "string" ? nested.name : undefined;
+  const description =
+    typeof nested?.description === "string" ? nested.description : undefined;
+  const image =
+    typeof nested?.image === "string"
+      ? nested.image
+      : typeof nested?.image_url === "string"
+        ? (nested.image_url as string)
+        : undefined;
+  const price =
+    toFiniteNumber(nested?.discount_price) ??
+    toFiniteNumber(nested?.price) ??
+    undefined;
+
+  return {
+    id,
+    quantity,
+    type: "product",
+    name,
+    description,
+    image,
+    price: price ?? undefined,
+  };
+}
+
+function coerceBoolean(value: unknown): boolean | null {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") {
+    if (value.toLowerCase() === "true") return true;
+    if (value.toLowerCase() === "false") return false;
+  }
+  if (typeof value === "number") {
+    if (value === 1) return true;
+    if (value === 0) return false;
+  }
+  return null;
+}
+
+function mapRequestCartCustomerToStep2InitialValues(
+  raw: unknown,
+): Partial<Step2CustomerInfoValues> | null {
+  if (!raw || typeof raw !== "object") return null;
+  const obj = raw as Record<string, unknown>;
+
+  const name =
+    (typeof obj.name === "string" ? obj.name : undefined) ??
+    (typeof obj.full_name === "string" ? obj.full_name : undefined) ??
+    (typeof obj.fullName === "string" ? obj.fullName : undefined);
+
+  const email = typeof obj.email === "string" ? obj.email : undefined;
+
+  const countryRaw = typeof obj.country === "string" ? obj.country : undefined;
+  const normalizedCountry = countryRaw?.trim().toLowerCase() ?? "";
+  const normalizedCountryLetters = normalizedCountry.replace(/[^a-z]/g, "");
+  const country =
+    normalizedCountry === "sa" ||
+    normalizedCountryLetters === "ksa" ||
+    normalizedCountryLetters === "saudiarabia"
+      ? "sa"
+      : normalizedCountry === "id" ||
+          normalizedCountry === "ms" ||
+          normalizedCountry === "tr" ||
+          normalizedCountry === "lk"
+        ? normalizedCountry
+        : "";
+
+  const dobRaw = typeof obj.dob === "string" ? obj.dob : undefined;
+  const birthDate = dobRaw ? ddmmyyyyFromISODate(dobRaw) : "";
+
+  const performed = coerceBoolean(obj.performed_hajj);
+  const performedHajjOrUmrahBefore =
+    performed === null ? "" : performed ? "yes" : "no";
+
+  const phoneRaw = typeof obj.phone === "string" ? obj.phone : "";
+  const phoneDigits = phoneRaw.replace(/\D/g, "");
+  const dialMap = [
+    { value: "sa" as const, dial: "966" },
+    { value: "id" as const, dial: "62" },
+    { value: "ms" as const, dial: "60" },
+    { value: "tr" as const, dial: "90" },
+    { value: "lk" as const, dial: "94" },
+  ];
+
+  let phoneCountry: Step2CustomerInfoValues["phoneCountry"] = "sa";
+  let phone = phoneDigits;
+  for (const opt of dialMap) {
+    if (phoneDigits.startsWith(opt.dial)) {
+      phoneCountry = opt.value;
+      phone = phoneDigits.slice(opt.dial.length);
+      break;
+    }
+  }
+  phone = phone.replace(/^0+/, "");
+
+  const out: Partial<Step2CustomerInfoValues> = {
+    fullName: name ?? "",
+    email: email ?? "",
+    country,
+    birthDate,
+    performedHajjOrUmrahBefore,
+    phoneCountry,
+    phone,
+  };
+
+  const hasAny = Object.values(out).some(
+    (v) => typeof v === "string" && v.trim().length > 0,
+  );
+
+  return hasAny ? out : null;
+}
 
 function parseStep(value: string | null): Step | null {
   if (!value) return null;
@@ -120,11 +264,69 @@ export default function CheckoutWizard() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { total: cartSubtotal, cart, replaceCart } = useCart();
+  const { total: cartSubtotal, cart, clearCart } = useCart();
 
-  const isCartEmpty = cart.length === 0;
+  const [hasToken, setHasToken] = useState(false);
 
-  const itemsIds = useMemo(() => cart.map((item) => item.id), [cart]);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const nextHasToken = await hasRequestTokenCookieClient();
+      if (cancelled) return;
+      setHasToken(nextHasToken);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const requestCartQuery = useQuery({
+    queryKey: ["requestCart"],
+    queryFn: () => getRequestCart(),
+    enabled: hasToken,
+    staleTime: 1000 * 30,
+    retry: false,
+  });
+
+  const requestProductLines = useMemo(() => {
+    if (!hasToken) return [] as { id: number; quantity: number }[];
+
+    const raw = requestCartQuery.data?.cart?.products;
+    const products = Array.isArray(raw) ? raw : [];
+
+    const out: { id: number; quantity: number }[] = [];
+    for (const p of products) {
+      const mapped = mapRequestCartProduct(p);
+      if (!mapped) continue;
+      out.push({ id: mapped.id, quantity: mapped.quantity });
+    }
+    return out;
+  }, [hasToken, requestCartQuery.data]);
+
+  const effectiveQtyByProductId = useMemo(() => {
+    const out = new Map<number, number>();
+
+    // Start from request cart quantities (returning users).
+    for (const line of requestProductLines) {
+      out.set(line.id, Math.max(0, Math.floor(line.quantity)));
+    }
+
+    // Overlay local cart quantities (current session). Never reduce.
+    for (const line of cart) {
+      if (line.type !== "product") continue;
+      const prev = out.get(line.id) ?? 0;
+      out.set(line.id, Math.max(prev, line.quantity));
+    }
+
+    return out;
+  }, [cart, requestProductLines]);
+
+  const itemsIds = useMemo(() => {
+    return Array.from(effectiveQtyByProductId.keys());
+  }, [effectiveQtyByProductId]);
+
+  const isCartEmpty = itemsIds.length === 0;
 
   const { data: cartItemsData } = useQuery({
     queryKey: ["cartItems", itemsIds],
@@ -135,10 +337,10 @@ export default function CheckoutWizard() {
   const cartItems: StoredCartItem[] = useMemo(() => {
     const products = cartItemsData?.products ?? [];
 
-    return products.map((product) => {
-      const cartItem = cart.find((c) => c.id === product.id);
+    const itemsFromApi = products.map((product) => {
       const effectivePrice =
         product.discount_price ?? product.price ?? undefined;
+      const quantity = effectiveQtyByProductId.get(product.id) ?? 0;
 
       return {
         id: product.id,
@@ -147,115 +349,70 @@ export default function CheckoutWizard() {
         price: effectivePrice,
         image: product.image ?? undefined,
         maxQuantity: product.quantity ?? undefined,
-        quantity: cartItem?.quantity ?? 0,
-        type: cartItem?.type ?? "product",
+        quantity,
+        type: "product" as const,
       };
     });
-  }, [cartItemsData, cart]);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    const toNumber = (v: unknown) => {
-      const n =
-        typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN;
-      return Number.isFinite(n) ? n : null;
-    };
-
-    const mapItem = (
-      raw: unknown,
-      type: "product" | "service",
-    ): StoredCartItem | null => {
-      if (!raw || typeof raw !== "object") return null;
-      const obj = raw as Record<string, unknown>;
-
-      const nested =
-        (obj[type] as Record<string, unknown> | undefined) ??
-        (type === "product"
-          ? (obj.product as Record<string, unknown> | undefined)
-          : (obj.service as Record<string, unknown> | undefined)) ??
-        obj;
-
-      const id =
-        toNumber(obj.id) ?? toNumber(obj[`${type}_id`]) ?? toNumber(nested?.id);
-
-      const quantity =
-        toNumber(obj.quantity) ?? toNumber(obj.qty) ?? toNumber(obj.count) ?? 1;
-
-      if (!id || !quantity || quantity <= 0) return null;
-
-      const name = typeof nested?.name === "string" ? nested.name : undefined;
-      const description =
-        typeof nested?.description === "string"
-          ? nested.description
-          : undefined;
-      const image =
-        typeof nested?.image === "string"
-          ? nested.image
-          : typeof nested?.image_url === "string"
-            ? (nested.image_url as string)
-            : undefined;
-      const price =
-        toNumber(nested?.price) ??
-        toNumber(nested?.discount_price) ??
-        undefined;
-
-      return {
+    const apiIds = new Set(itemsFromApi.map((p) => p.id));
+    const fallback: StoredCartItem[] = [];
+    for (const id of itemsIds) {
+      if (apiIds.has(id)) continue;
+      const local = cart.find((c) => c.type === "product" && c.id === id);
+      fallback.push({
         id,
-        quantity,
-        type,
-        name,
-        description,
-        image,
-        price: price ?? undefined,
-      };
-    };
+        type: "product",
+        quantity: effectiveQtyByProductId.get(id) ?? 0,
+        name: local?.name,
+        description: local?.description,
+        image: local?.image,
+        price: local?.price,
+        maxQuantity: local?.maxQuantity,
+      });
+    }
 
-    const hydrateFromServerCart = async () => {
-      try {
-        const res = await getRequestCart();
-        if (cancelled) return;
-
-        const products = Array.isArray(res?.cart?.products)
-          ? res.cart.products
-          : [];
-        const services = Array.isArray(res?.cart?.services)
-          ? res.cart.services
-          : [];
-
-        const mapped: StoredCartItem[] = [];
-        for (const p of products) {
-          const item = mapItem(p, "product");
-          if (item) mapped.push(item);
-        }
-        for (const s of services) {
-          const item = mapItem(s, "service");
-          if (item) mapped.push(item);
-        }
-
-        // If token exists but cart is empty, we still sync to empty.
-        replaceCart(mapped);
-      } catch {
-        // No valid cookie / backend rejected / network issue → keep local cart.
-      }
-    };
-
-    void hydrateFromServerCart();
-    return () => {
-      cancelled = true;
-    };
-  }, [replaceCart]);
+    return [...itemsFromApi, ...fallback];
+  }, [cart, cartItemsData, effectiveQtyByProductId, itemsIds]);
 
   const customerInfoFormId = "customer-info-form";
   const [customerInfoValues, setCustomerInfoValues] =
-    useState<Step2CustomerInfoValues | null>(null);
+    useState<Partial<Step2CustomerInfoValues> | null>(null);
   // const [requestOrderId, setRequestOrderId] = useState<number | null>(null);
 
-  const addRequestMutation = useMutation({
-    mutationFn: (payload: CheckoutPayload) => addRequest(payload),
+  const upsertRequestMutation = useMutation({
+    mutationFn: async (payload: CheckoutPayload) => {
+      const hasToken = await hasRequestTokenCookieClient();
+
+      if (hasToken) {
+        try {
+          const res = await updateRequest(payload);
+          return { mode: "update" as const, res };
+        } catch (e) {
+          // Token may be missing/expired server-side. Recover by creating a new
+          // request (and persisting the new token) if the API signals auth.
+          if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+            const res = await addRequest(payload);
+            return { mode: "create" as const, res };
+          }
+          throw e;
+        }
+      }
+
+      const res = await addRequest(payload);
+      return { mode: "create" as const, res };
+    },
   });
 
-  const subtotalSar = cartSubtotal;
+  const subtotalSar = useMemo(() => {
+    // Prefer API-backed prices (from cartItems) when available.
+    if (cartItems.length > 0) {
+      return cartItems.reduce(
+        (sum, item) => sum + (item.price ?? 0) * (item.quantity ?? 0),
+        0,
+      );
+    }
+    return cartSubtotal;
+  }, [cartItems, cartSubtotal]);
   const vatSar = useMemo(() => subtotalSar * 0.15, [subtotalSar]);
   const serviceFeeSar = 0;
   const totalSar = subtotalSar + vatSar + serviceFeeSar;
@@ -270,6 +427,21 @@ export default function CheckoutWizard() {
   useEffect(() => {
     setStep(stepFromUrl);
   }, [stepFromUrl]);
+
+  useEffect(() => {
+    if (step !== 2) return;
+    if (customerInfoValues) return;
+    if (!hasToken) return;
+
+    const rawCustomer =
+      (requestCartQuery.data as { customer?: unknown } | undefined)?.customer ??
+      (requestCartQuery.data as { cart?: { customer?: unknown } } | undefined)
+        ?.cart?.customer;
+
+    const mapped = mapRequestCartCustomerToStep2InitialValues(rawCustomer);
+    if (!mapped) return;
+    setCustomerInfoValues(mapped);
+  }, [customerInfoValues, hasToken, requestCartQuery.data, step]);
 
   useEffect(() => {
     if (!isCartEmpty) return;
@@ -332,10 +504,9 @@ export default function CheckoutWizard() {
     const dial = dialByCountry[values.phoneCountry] ?? "";
     const phone = `${dial}${values.phone}`;
 
-    const items = cart.map(({ id, quantity }) => ({
-      id,
-      quantity,
-    }));
+    const items = itemsIds
+      .map((id) => ({ id, quantity: effectiveQtyByProductId.get(id) ?? 0 }))
+      .filter((it) => it.quantity > 0);
 
     const payload: CheckoutPayload = {
       customer: {
@@ -349,27 +520,48 @@ export default function CheckoutWizard() {
       cart: items,
     };
 
-    addRequestMutation.reset();
+    upsertRequestMutation.reset();
     try {
-      const res = await addRequestMutation.mutateAsync(payload);
-      console.log("addRequest response:", res);
+      const out = await upsertRequestMutation.mutateAsync(payload);
+      console.log("request upsert response:", out);
 
       // Persist token securely (HttpOnly cookie) for returning users.
-      try {
-        await fetch("/api/session/request-token", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: res.token }),
-        });
-      } catch (e) {
-        console.warn("Failed to persist request token:", e);
+      // Only needed on create; update already uses the existing cookie.
+      if (out.mode === "create") {
+        const token = (out.res as { token?: unknown } | null)?.token;
+        if (typeof token === "string" && token.length > 0) {
+          try {
+            const resp = await fetch("/api/session/request-token", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ token }),
+            });
+            if (resp.ok) setHasToken(true);
+          } catch (e) {
+            console.warn("Failed to persist request token:", e);
+          }
+        }
+      } else {
+        // Keep local state in sync (useful if token presence changed in-session).
+        setHasToken(true);
       }
+
+      // Ensure request cart is available for the next step.
+      try {
+        await requestCartQuery.refetch();
+      } catch {
+        // ignore
+      }
+
+      // Step 2 completed successfully -> cart is now captured server-side.
+      // Clear localStorage cart.
+      clearCart();
 
       // setRequestOrderId(res.order_id);
       setStepAndSyncUrl(3);
     } catch (error) {
-      console.error("addRequest failed:", error);
-      // error is surfaced via addRequestMutation.error
+      console.error("request upsert failed:", error);
+      // error is surfaced via upsertRequestMutation.error
     }
   };
 
@@ -401,11 +593,11 @@ export default function CheckoutWizard() {
                 onNext={submitCustomerInfoAndCreateRequest}
                 formId={customerInfoFormId}
                 initialValues={customerInfoValues ?? undefined}
-                isSaving={addRequestMutation.isPending}
+                isSaving={upsertRequestMutation.isPending}
                 submitError={
-                  addRequestMutation.isError
-                    ? addRequestMutation.error instanceof Error
-                      ? addRequestMutation.error.message
+                  upsertRequestMutation.isError
+                    ? upsertRequestMutation.error instanceof Error
+                      ? upsertRequestMutation.error.message
                       : "حدث خطأ غير متوقع"
                     : null
                 }
@@ -481,7 +673,7 @@ export default function CheckoutWizard() {
                     step === 1
                       ? isCartEmpty
                       : step === 2
-                        ? addRequestMutation.isPending
+                        ? upsertRequestMutation.isPending
                         : false
                   }
                   className="w-full bg-primary hover:bg-primary-dark disabled:hover:bg-primary disabled:opacity-60 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all duration-300 flex items-center justify-center gap-2 group disabled:cursor-not-allowed"

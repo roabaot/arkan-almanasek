@@ -83,6 +83,13 @@ export function addRequest(payload: CheckoutPayload) {
   });
 }
 
+export function updateRequest(payload: CheckoutPayload) {
+  return apiFetchViaProxy<AddRequestResT>("/requests/update", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function checkoutCart(payload: CheckoutPayload) {
   return apiFetch<{ order_id: number }>("/cart/checkout", {
     method: "POST",

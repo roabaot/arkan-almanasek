@@ -17,8 +17,8 @@ import {
   isoDateFromDDMMYYYY,
 } from "@/lib/utils";
 
-type CountryValue = "id" | "ms" | "tr" | "lk";
-type PhoneCountryValue = "sa" | CountryValue;
+type CountryValue = "sa" | "id" | "ms" | "tr" | "lk";
+type PhoneCountryValue = CountryValue;
 type CountryFieldValue = "" | CountryValue;
 
 type CountryOption = {
@@ -239,6 +239,13 @@ export default function Step2CustomerInfo({
   const countryOptions = useMemo<CountryOption[]>(
     () => [
       {
+        value: "sa",
+        dial: "+966",
+        flag: "sa",
+        // Reuse the phoneCountries translation (countries.sa isn't present).
+        label: t("options.phoneCountries.sa"),
+      },
+      {
         value: "id",
         dial: "+62",
         flag: "id",
@@ -274,12 +281,14 @@ export default function Step2CustomerInfo({
         flag: "sa",
         label: t("options.phoneCountries.sa"),
       },
-      ...countryOptions.map((c) => ({
-        value: c.value,
-        dial: c.dial,
-        flag: c.flag,
-        label: c.label,
-      })),
+      ...countryOptions
+        .filter((c) => c.value !== "sa")
+        .map((c) => ({
+          value: c.value,
+          dial: c.dial,
+          flag: c.flag,
+          label: c.label,
+        })),
     ],
     [countryOptions, t],
   );
