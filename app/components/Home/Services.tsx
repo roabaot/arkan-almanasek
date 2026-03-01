@@ -44,7 +44,7 @@ const SERVICES: ServiceCard[] = [
     key: "hajjAndUmrahOnBehalf",
     title: "",
     description: "",
-    href: "/services/hajj-and-umrah-on-behalf",
+    href: "/services/badal",
     Icon: FaHandshake,
   },
 ];

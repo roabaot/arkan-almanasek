@@ -80,7 +80,9 @@ function CountrySelect({
         aria-expanded={open}
       >
         <span className="inline-flex items-center gap-3 min-w-0">
-          {selected ? <span className={`fi fi-${selected.flag}`} aria-hidden /> : null}
+          {selected ? (
+            <span className={`fi fi-${selected.flag}`} aria-hidden />
+          ) : null}
           <span
             className={
               "text-sm font-medium min-w-0 truncate " +
@@ -92,7 +94,8 @@ function CountrySelect({
         </span>
         <RiArrowDownSLine
           className={
-            "text-base shrink-0 " + (hasError ? "text-red-600" : "text-black/50")
+            "text-base shrink-0 " +
+            (hasError ? "text-red-600" : "text-black/50")
           }
           aria-hidden
         />
@@ -230,17 +233,42 @@ export default function Step2CustomerInfo({
 
   const countryOptions = useMemo<CountryOption[]>(
     () => [
-      { value: "id", dial: "+62", flag: "id", label: t("options.countries.id") },
-      { value: "ms", dial: "+60", flag: "my", label: t("options.countries.ms") },
-      { value: "tr", dial: "+90", flag: "tr", label: t("options.countries.tr") },
-      { value: "lk", dial: "+94", flag: "lk", label: t("options.countries.lk") },
+      {
+        value: "id",
+        dial: "+62",
+        flag: "id",
+        label: t("options.countries.id"),
+      },
+      {
+        value: "ms",
+        dial: "+60",
+        flag: "my",
+        label: t("options.countries.ms"),
+      },
+      {
+        value: "tr",
+        dial: "+90",
+        flag: "tr",
+        label: t("options.countries.tr"),
+      },
+      {
+        value: "lk",
+        dial: "+94",
+        flag: "lk",
+        label: t("options.countries.lk"),
+      },
     ],
     [t],
   );
 
   const phoneCountryOptions = useMemo<PhoneCountryOption[]>(
     () => [
-      { value: "sa", dial: "+966", flag: "sa", label: t("options.phoneCountries.sa") },
+      {
+        value: "sa",
+        dial: "+966",
+        flag: "sa",
+        label: t("options.phoneCountries.sa"),
+      },
       ...countryOptions.map((c) => ({
         value: c.value,
         dial: c.dial,
@@ -374,7 +402,9 @@ export default function Step2CustomerInfo({
               <p className="text-sm text-red-600">{errors.phone.message}</p>
             ) : null}
             {errors.phoneCountry?.message ? (
-              <p className="text-sm text-red-600">{errors.phoneCountry.message}</p>
+              <p className="text-sm text-red-600">
+                {errors.phoneCountry.message}
+              </p>
             ) : null}
           </div>
 
@@ -444,8 +474,8 @@ export default function Step2CustomerInfo({
                   const el = birthDatePickerRef.current;
                   if (!el) return;
                   if (
-                    typeof (el as unknown as { showPicker?: () => void }).showPicker ===
-                    "function"
+                    typeof (el as unknown as { showPicker?: () => void })
+                      .showPicker === "function"
                   ) {
                     (el as unknown as { showPicker: () => void }).showPicker();
                     return;

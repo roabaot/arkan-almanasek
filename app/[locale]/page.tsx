@@ -4,11 +4,13 @@ import HomeCta from "../components/Home/Cta";
 import HomeProducts from "../components/Home/Products";
 import HomeServices from "../components/Home/Services";
 import { getProducts } from "../api";
+import BackgroundTakbeer from "../components/Home/BackgroundTakbeer";
 
 export default async function HomePage() {
   const products = await getProducts({ is_home: true, page: 1, perPage: 4 });
   return (
     <main className="bg-[#f6f8f6] text-[#111811] antialiased">
+      <BackgroundTakbeer />
       <HomeHero />
       <VideoSection
         video={{

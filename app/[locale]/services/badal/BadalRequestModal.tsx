@@ -352,7 +352,7 @@ export type BadalRequestPayload = {
     email?: string;
     country?: string;
     dob?: string;
-    performed_hajj_or_umrah_before?: string;
+    performed_hajj?: boolean;
     phone_country?: string;
   };
   payment: PaymentValues;
@@ -648,8 +648,7 @@ export default function BadalRequestModal({
             : undefined,
         country: customerValues.country,
         dob: customerValues.birthDate,
-        performed_hajj_or_umrah_before:
-          customerValues.performedHajjOrUmrahBefore,
+        performed_hajj: customerValues.performedHajjOrUmrahBefore === "yes",
         phone_country: customerValues.phoneCountry,
       },
       payment: paymentValues,

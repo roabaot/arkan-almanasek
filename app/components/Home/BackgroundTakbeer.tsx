@@ -2,6 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
+const LOOP_END = 25;
+const REPLAY_AFTER_END = false;
+
 export default function BackgroundTakbeer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -9,21 +12,54 @@ export default function BackgroundTakbeer() {
     const audio = audioRef.current;
     if (!audio) return;
 
+    let hasStarted = false;
+    let hasStopped = false;
+
     const startAudio = () => {
-      audio.play().catch(() => {});
-      window.removeEventListener("click", startAudio);
-      window.removeEventListener("touchstart", startAudio);
+      if (hasStarted) return;
+
+      audio.currentTime = 0;
+
+      audio
+        .play()
+        .then(() => {
+          hasStarted = true;
+          window.removeEventListener("pointerdown", startAudio);
+        })
+        .catch(() => {
+          // لو فشل التشغيل، لا نحذف الـ listener
+          // حتى يعيد المحاولة عند النقر مرة أخرى
+        });
     };
 
-    // أول تفاعل من المستخدم
-    window.addEventListener("click", startAudio);
-    window.addEventListener("touchstart", startAudio);
+    const handleTimeUpdate = () => {
+      if (audio.currentTime >= LOOP_END && !hasStopped) {
+        hasStopped = true;
+
+        if (REPLAY_AFTER_END) {
+          audio.currentTime = 0;
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      }
+    };
+
+    window.addEventListener("pointerdown", startAudio);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
 
     return () => {
-      window.removeEventListener("click", startAudio);
-      window.removeEventListener("touchstart", startAudio);
+      window.removeEventListener("pointerdown", startAudio);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, []);
 
-  return <audio ref={audioRef} src="/audio/takbeer.mp3" loop preload="auto" />;
+  return (
+    <audio
+      ref={audioRef}
+      src="/audio/takbeer.mpeg"
+      preload="auto"
+      playsInline
+    />
+  );
 }

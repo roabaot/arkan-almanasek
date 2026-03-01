@@ -344,7 +344,7 @@ export default function CheckoutWizard() {
         email: values.email,
         country: values.country,
         dob: isoDateFromDDMMYYYY(values.birthDate),
-        performed_hajj_or_umrah_before: values.performedHajjOrUmrahBefore,
+        performed_hajj: values.performedHajjOrUmrahBefore === "yes",
       },
       cart: items,
     };

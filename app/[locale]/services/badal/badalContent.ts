@@ -1,7 +1,7 @@
 import type { IconType } from "react-icons";
 import {
   MdAccessible,
-  MdSavings,
+  MdAccountBalanceWallet,
   MdSentimentDissatisfied,
 } from "react-icons/md";
 
@@ -51,7 +51,7 @@ export const conditions: readonly {
       "المريض مرضاً لا يرجى شفاؤه، أو الكبير في السن الذي لا يستطيع الثبات على الراحلة والسفر.",
   },
   {
-    Icon: MdSavings,
+    Icon: MdAccountBalanceWallet,
     title: "الاستطاعة المالية",
     description:
       "أن يكون الشخص الموكل (طالب الخدمة) قادراً على تحمل نفقات النائب وتوكيله.",

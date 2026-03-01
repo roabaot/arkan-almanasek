@@ -15,7 +15,7 @@ export type CheckoutPayload = {
     email?: string;
     country?: string;
     dob?: string;
-    performed_hajj_or_umrah_before?: string;
+    performed_hajj?: boolean;
     phone_country?: string;
   };
   cart: CartItem[];
