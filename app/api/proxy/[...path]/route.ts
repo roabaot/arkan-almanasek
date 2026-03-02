@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -7,14 +7,13 @@ const COOKIE_NAME = "token";
 type RouteContext = { params: Promise<{ path: string[] }> };
 
 function getApiBaseUrl() {
-  const base =
-    process.env.API_BASE_URL ??
-    process.env.NEXT_PUBLIC_API_BASE_URL ??
-    process.env.NEXT_API_BASE_URL;
+  // Prefer the public base URL (used by both client and server).
+  // This avoids accidentally picking up a misconfigured server-only env var.
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!base) {
     throw new Error(
-      "Missing API_BASE_URL (or NEXT_PUBLIC_API_BASE_URL). Define it in your environment.",
+      "Missing NEXT_PUBLIC_API_BASE_URL. Define it in your environment.",
     );
   }
 

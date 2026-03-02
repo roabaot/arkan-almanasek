@@ -1,4 +1,15 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+function getApiBaseUrlFromEnv(): string {
+  // Single source of truth for API base URL.
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  if (!base) {
+    throw new Error(
+      "Missing NEXT_PUBLIC_API_BASE_URL. Define it in your environment (e.g. https://api.example.com/api/v1).",
+    );
+  }
+
+  return base;
+}
 
 export class ApiError extends Error {
   status: number;
@@ -28,13 +39,7 @@ function buildApiUrl(endpoint: string): string {
   // Allow callers to pass a full URL when needed
   if (/^https?:\/\//i.test(endpoint)) return endpoint;
 
-  if (!API_BASE_URL) {
-    throw new Error(
-      "Missing NEXT_PUBLIC_API_BASE_URL. Define it in your environment (e.g. https://api.example.com)",
-    );
-  }
-
-  const base = API_BASE_URL.replace(/\/+$/, "");
+  const base = getApiBaseUrlFromEnv().replace(/\/+$/, "");
   const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
   return `${base}${path}`;
 }
@@ -139,5 +144,8 @@ export async function apiFetchViaProxy<T>(
     // ignore
   }
 
-  return doFetch<T>(urlObj.toString(), { ...(options ?? {}), headers: nextHeaders });
+  return doFetch<T>(urlObj.toString(), {
+    ...(options ?? {}),
+    headers: nextHeaders,
+  });
 }
