@@ -26,7 +26,7 @@ export default async function ValuesSection() {
         </div>
 
         <div className="bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(180px,auto)] gap-6">
-          <div className="col-span-1 md:col-span-2 row-span-3 grid auto-rows-[minmax(203px,auto)] gap-6">
+          <div className="col-span-1 md:col-span-2 row-span-2 grid auto-rows-[minmax(203px,auto)] gap-6">
             <div className="row-span-1.5 glass-panel px-10 py-7 rounded-3xl bento-item flex flex-col justify-between group border-r-4 border-r-primary/50">
               <div>
                 <div className="w-16 h-16 icon-3d-wrapper text-primary mb-4 group-hover:scale-110 transition-transform duration-500">

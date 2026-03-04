@@ -1,21 +1,9 @@
 {
   "common": {
     "home": "Ana Sayfa",
-    "about": "Hakkımızda",
-    "contact": "İletişim",
-    "privacy_policy": "Gizlilik Politikası",
-    "terms_conditions": "Şartlar ve Koşullar",
     "language": "Dil",
-    "empty": "Veri yok",
-    "next_step": "Sonraki adım",
-    "previous_step": "Önceki adım",
-    "submit": "Gönder",
     "error": "Bir hata oluştu",
-    "try_again": "Tekrar dene",
-    "services": "Services",
-    "projects": "Projects",
-    "blog": "Blog",
-    "consultation": "Free Consultation"
+    "try_again": "Tekrar dene"
   },
   "header": {
     "nav": {
@@ -36,7 +24,6 @@
       }
     },
     "actions": {
-      "account": "Hesap",
       "cart": "Sepet"
     },
     "soon": "Yakında",
@@ -57,15 +44,11 @@
     "quickLinks": {
       "title": "Hızlı bağlantılar",
       "about": "Şirket hakkında",
-      "products": "Ürünler",
-      "blog": "İslami blog",
-      "privacyPolicy": "Gizlilik politikası"
+      "products": "Ürünler"
     },
     "support": {
       "title": "Destek & yardım",
-      "helpCenter": "Yardım merkezi",
       "faq": "SSS",
-      "trackOrder": "Siparişi takip et",
       "contact": "İletişim"
     },
     "newsletter": {
@@ -74,24 +57,7 @@
       "emailPlaceholder": "E-posta adresiniz",
       "submitAria": "Gönder"
     },
-    "copyright": "© MACS {year} | All Rights Reserved",
-    "contact_title": "Contact",
-    "address_label": "Address",
-    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia",
-    "phone_label": "Phone Number",
-    "phone_value": "+966556332242",
-    "unified_number_label": "Unified Number",
-    "email_label": "Email",
-    "email_value": "Info@macs.com.sa",
-    "work_label": "Working Hours",
-    "work_hours": "Sunday - Thursday: 9:00 AM - 5:00 PM",
-    "response_time": "Average response time: within 24 business hours",
-    "newsletter_title": "Newsletter",
-    "newsletter_description": "Technology is constantly evolving, shaping the way we live and work",
-    "newsletter_placeholder": "Your email...",
-    "newsletter_hint": "It only takes 2 minutes to complete.",
-    "newsletter_success": "You have successfully subscribed to the newsletter.",
-    "newsletter_error": "Unable to send your subscription, please try again."
+    "copyright": "© MACS {year} | All Rights Reserved"
   },
   "store": {
     "brand": {
@@ -114,20 +80,7 @@
       "inStockOnly": "Sadece stokta olanlar"
     },
     "categories": {
-      "all": "Tümü",
-      "ihram": "İhram kıyafetleri",
-      "mushaf": "Mushaflar",
-      "books": "İslami kitaplar",
-      "beads": "Tesbih",
-      "prayerRugs": "Seccade",
-      "perfumes": "Parfüm"
-    },
-    "price": {
-      "sar": "{value} SAR"
-    },
-    "priceRange": {
-      "min": "{value} SAR",
-      "max": "{value} SAR"
+      "all": "Tümü"
     },
     "sort": {
       "label": "Sırala:",
@@ -139,7 +92,6 @@
       }
     },
     "actions": {
-      "addToFavorites": "Favorilere ekle",
       "addToCartShort": "Sepete ekle"
     },
     "pagination": {
@@ -148,105 +100,24 @@
     },
     "products": {
       "items": {
-        "ihram-set": {
-          "title": "Premium cotton Ihram set",
-          "description": "Made from high-quality cotton; soft and comfortable for your rituals.",
-          "imageAlt": "White fabric folded neatly",
-          "details": {
-            "title": "Premium cotton Ihram set",
-            "shortDescription": "A high-quality cotton Ihram designed for comfort and breathability during long rituals."
-          }
-        },
-        "madina-quran": {
-          "title": "Madinah Quran (medium size)",
-          "description": "Premium print and paper quality with a sturdy cover.",
-          "badge": "15% off",
-          "imageAlt": "Quran book on a wooden stand",
-          "details": {
-            "title": "Madinah Quran (medium size)",
-            "shortDescription": "A clear, readable print in a convenient size for travel, with a durable cover."
-          }
-        },
-        "aqeeq-beads": {
-          "title": "Authentic Yemeni Aqeeq beads",
-          "description": "Luxury natural Aqeeq beads, 33-count, handcrafted.",
-          "imageAlt": "Prayer beads on a textured surface",
-          "details": {
-            "title": "Authentic Yemeni Aqeeq beads",
-            "shortDescription": "Elegant natural Aqeeq beads suitable for daily dhikr and gifting."
-          }
-        },
-        "zad-al-maad": {
-          "title": "Zad Al-Ma'ad",
-          "description": "A valuable book by Ibn al-Qayyim, verified edition.",
-          "imageAlt": "Collection of Islamic books stacked",
-          "details": {
-            "title": "Zad Al-Ma'ad",
-            "shortDescription": "A key reference that compiles Prophetic guidance in worship and daily life."
-          }
-        },
-        "medical-rug": {
-          "title": "Padded medical prayer rug",
-          "description": "Designed for extra comfort during prayer, especially for seniors.",
-          "imageAlt": "Islamic prayer rug with intricate patterns",
-          "details": {
-            "title": "Padded medical prayer rug",
-            "shortDescription": "A cushioned rug that provides extra support for knees and feet."
-          }
-        },
-        "oud-oil": {
-          "title": "Premium Cambodian oud oil",
-          "description": "Rich scent with long-lasting performance for daily use and occasions.",
-          "imageAlt": "Small bottle of perfume or musk",
-          "details": {
-            "title": "Premium Cambodian oud oil",
-            "shortDescription": "Concentrated oud oil with a refined scent and long wear."
-          }
-        },
         "details": {
-          "title": "Ürün adı",
-          "shortDescription": "Ürünün öne çıkan özelliklerini ve faydalarını anlatan kısa açıklama.",
-          "fullDescription": "Malzeme, kullanım şekli, faydalar ve satın alma kararına yardımcı olabilecek diğer detayları içeren kapsamlı ürün açıklaması."
+          "title": "Ürün adı"
         }
       }
     },
     "product": {
       "actions": {
-        "addToFavorites": "Favorilere ekle",
-        "removeFromFavorites": "Favorilerden çıkar",
         "addToCart": "Sepete ekle",
         "share": "Ürünü paylaş"
       },
       "share": {
         "text": "Ürün detaylarını görüntüle"
       },
-      "gallery": {
-        "thumbnail": "Thumbnail {index}",
-        "alt": {
-          "0": "Main product image",
-          "1": "Product thumbnail",
-          "2": "Accessory item",
-          "3": "Packaging box",
-          "4": "Included travel bag",
-          "5": "Product thumbnail",
-          "6": "Accessory item",
-          "7": "Packaging box",
-          "8": "Included travel bag"
-        },
-        "dataAlt": {
-          "0": "Main view showing the Ihram and accessories"
-        }
-      },
       "stock": {
         "inStock": "Stokta",
         "outOfStock": "Stokta yok"
       },
-      "rating": {
-        "aria": "Puan",
-        "count": "({count} değerlendirme)"
-      },
       "price": {
-        "currency": "Suudi Riyali",
         "vatIncluded": "KDV dahil"
       },
       "quantity": {
@@ -257,93 +128,27 @@
       },
       "tabs": {
         "description": "Açıklama",
-        "specs": "Özellikler",
-        "reviews": "Yorumlar ({count})"
+        "specs": "Özellikler"
       },
       "description": {
         "title": "Full kit details",
         "paragraph1": "This premium kit is thoughtfully designed to support modern pilgrims and worshippers with comfort and practicality.",
         "paragraph2": "It also includes essentials that help you stay organized and prepared throughout your journey."
       },
-      "features": {
-        "cotton": {
-          "title": "100% natural cotton",
-          "description": "Soft material that helps reduce sweating and irritation."
-        },
-        "fragranceFree": {
-          "title": "Fragrance-free",
-          "description": "Care products aligned with Ihram conditions."
-        },
-        "quality": {
-          "title": "Guaranteed quality",
-          "description": "Replacement guarantee in case of manufacturing defects."
-        },
-        "shipping": {
-          "title": "Fast delivery",
-          "description": "Direct shipping to Makkah and Madinah."
-        }
-      },
       "reviews": {
         "title": "Müşteri yorumları",
-        "basedOn": "{count} yoruma göre",
-        "placeholder": "You can list all reviews here or connect real data later.",
-        "items": {
-          "0": {
-            "initial": "A",
-            "name": "Abdullah Al-Mohammad",
-            "timeAgo": "2 days ago",
-            "text": "Excellent product and comfortable material. Packaging was great and it arrived quickly."
-          },
-          "1": {
-            "initial": "S",
-            "name": "Sarah Ahmed",
-            "timeAgo": "1 week ago",
-            "text": "Great quality, but slightly expensive. The bag is very practical and spacious."
-          }
-        }
+        "placeholder": "You can list all reviews here or connect real data later."
       },
       "specs": {
-        "title": "Özellikler",
-        "material": {
-          "label": "Malzeme",
-          "value": "100% cotton"
-        },
-        "accessories": {
-          "label": "Aksesuar",
-          "value": "Bag + care items"
-        },
-        "suitableFor": {
-          "label": "Uygun",
-          "value": "Hajj and Umrah"
-        },
-        "warranty": {
-          "label": "Garanti",
-          "value": "Replacement on defect"
-        }
+        "title": "Özellikler"
       }
     }
   },
   "cart": {
-    "currency": {
-      "sar": "SAR"
-    },
     "itemCard": {
       "removeItemAria": "{item} kaldır",
       "decreaseQtyAria": "{item} adedini azalt",
       "increaseQtyAria": "{item} adedini artır"
-    },
-    "mockItems": {
-      "hajjPackageEconomy": {
-        "title": "Hajj package (economy)",
-        "description": "Includes flights, accommodation in Al Aziziyah, and transportation.",
-        "imageAlt": "Holy Kaaba in Makkah with pilgrims circumambulating",
-        "badgeLabel": "Departure: Jeddah"
-      },
-      "vipAirportPickup": {
-        "title": "VIP airport pickup",
-        "description": "Airport pickup with a private car to the hotel.",
-        "imageAlt": "Modern hotel room interior in Makkah"
-      }
     },
     "step1": {
       "title": "Sepet içeriği",
@@ -397,8 +202,7 @@
         "countryPlaceholder": "Ülke seçin",
         "birthDateLabel": "Doğum tarihi",
         "birthDatePlaceholder": "dd/mm/yyyy",
-        "performedHajjOrUmrahBeforeLabel": "Daha önce Hac veya Umre yaptınız mı?",
-        "nationalAddressLabel": "Ulusal adres (isteğe bağlı)"
+        "performedHajjOrUmrahBeforeLabel": "Daha önce Hac veya Umre yaptınız mı?"
       },
       "options": {
         "countries": {
@@ -508,119 +312,6 @@
       }
     }
   },
-  "languages": {
-    "ar": "العربية",
-    "en": "English",
-    "id": "Bahasa Indonesia",
-    "tr": "Türkçe",
-    "si": "Slovenščina",
-    "ms": "Bahasa Melayu"
-  },
-  "services": {
-    "title": "Our Services",
-    "qurbani": {
-      "title": "خدمة الهدي والأضاحي",
-      "desc": "حجز وذبح الأغنام وفق الضوابط الشرعية"
-    },
-    "manasik": {
-      "title": "إرشادات المناسك",
-      "desc": "دليل شامل لأداء الحج والعمرة"
-    },
-    "permits": {
-      "title": "خدمات التصاريح",
-      "desc": "تسهيل استخراج تصاريح الحج والعمرة"
-    },
-    "consultations": {
-      "title": "خدمات استشارية دينية",
-      "desc": "إجابات موثوقة لأسئلة الحجاج والمعتمرين"
-    },
-    "badal": {
-      "title": "الحج والعمرة بدلًا عن الغير",
-      "desc": "أداء النسك نيابةً عن من لا يستطيع"
-    },
-    "description": "We offer a comprehensive range of diverse services.",
-    "list": {
-      "hr_services": "Human Resources Services",
-      "government_services": "Government Services",
-      "licensing": "Licensing",
-      "consulting": "Management Consulting",
-      "awards": "Awards",
-      "certifications": "Certifications"
-    },
-    "details": {
-      "required_documents": "Required Documents",
-      "benefits": "Benefits",
-      "description": "Service Description",
-      "cost": "Service Cost",
-      "duration": "Service Duration",
-      "government_fees": "Government Fees",
-      "conditions": "Conditions"
-    },
-    "form": {
-      "individual": "Individual",
-      "institution": "Institution",
-      "company": "Company",
-      "step_1": {
-        "title": "Client Type",
-        "description": "Please select the type of client submitting the request"
-      },
-      "step_2": {
-        "title": "Customer Information",
-        "description": "Please provide your information so we can get to know you better"
-      },
-      "step_3": {
-        "title": "Congratulations! 🎉",
-        "description": "Your request has been submitted successfully and we look forward to reviewing it soon.",
-        "back_home": "Return to Home"
-      },
-      "no_audience_available": "There are no available types for this service.",
-      "placeholders": {
-        "name": "Name",
-        "first_name": "First name",
-        "last_name": "Last name",
-        "email": "Email address",
-        "company_name": "Company name",
-        "institution_name": "Institution name",
-        "unified_number": "Unified number",
-        "employee_count": "Employee count",
-        "city": "City",
-        "phone": "Phone number"
-      },
-      "select_default": "Select {selector}",
-      "employee_count": {
-        "options": {
-          "1-10": "1 - 10 employees",
-          "11-50": "11 - 50 employees",
-          "51-100": "51 - 100 employees",
-          "101-250": "101 - 250 employees",
-          "more": "More than 250 employees"
-        }
-      },
-      "Saudi_citizen": {
-        "options": {
-          "riyadh": "Riyadh",
-          "makkah": "Makkah",
-          "madinah": "Madinah",
-          "jeddah": "Jeddah",
-          "alhasa": "Al Hasa",
-          "qassim": "Qassim",
-          "tabuk": "Tabuk",
-          "abha": "Abha",
-          "najran": "Najran",
-          "hail": "Hail",
-          "jouf": "Jouf",
-          "baha": "Baha",
-          "taif": "Taif",
-          "khobar": "Khobar",
-          "dhahran": "Dhahran",
-          "jubail": "Jubail",
-          "jazan": "Jazan",
-          "dammam": "Dammam",
-          "other": "Other"
-        }
-      }
-    }
-  },
   "qurbani": {
     "breadcrumbs": {
       "ariaLabel": "Breadcrumb",
@@ -654,56 +345,11 @@
       "title": "Sharia notice",
       "body": "All slaughtered animals undergo strict veterinary and sharia checks and are distributed to those in need at the prescribed times."
     },
-    "sections": {
-      "udhiyah": {
-        "label": "Udhiyah",
-        "items": {
-          "european": "European",
-          "sawakni": "Sawakni",
-          "african": "African",
-          "hari": "Hari",
-          "naimi": "Naimi"
-        }
-      },
-      "fidya": {
-        "label": "Fidya",
-        "items": {
-          "barbary": "Barbary",
-          "sawakni": "Sawakni"
-        }
-      },
-      "aqiqah": {
-        "label": "Aqiqah",
-        "items": {
-          "naimi": "Naimi",
-          "sawakni": "Sawakni"
-        }
-      }
-    },
-    "currency": {
-      "sar": "SAR"
-    },
-    "section": {
-      "commit": {
-        "addToOrder": "Add to order",
-        "updateOrder": "Update order",
-        "added": "Added"
-      },
-      "costLabel": "Cost",
-      "clear": "Clear"
-    },
-    "items": {
-      "increaseAria": "{item} adedini artır",
-      "decreaseAria": "{item} adedini azalt"
-    },
     "cart": {
       "title": "Sipariş detayları",
-      "empty": "Henüz ürün eklemediniz.",
       "quantityLabel": "Adet:",
-      "clear": "Siparişi temizle",
       "continue": "Devam et",
-      "checkout": "Ödeme",
-      "outOfSync": "Değerler senkron değil. Lütfen şu bölümlerde güncelleyin: {sections}."
+      "checkout": "Ödeme"
     },
     "checkout": {
       "reviewTitle": "Bilgileri gözden geçir ve ödemeyi tamamla"
@@ -712,12 +358,7 @@
       "subtotal": "Ara toplam",
       "tax": "Vergi ({rate}%)",
       "total": "Toplam"
-    },
-    "badges": {
-      "securePayment": "Güvenli ödeme",
-      "support247": "7/24 destek"
-    },
-    "listSeparator": ", "
+    }
   },
   "home": {
     "hero": {
@@ -749,35 +390,7 @@
       "sectionTitle": "Featured products",
       "viewAll": "View all",
       "addToCartAria": "Add {title} to cart",
-      "emptyMessage": "No products available right now.",
-      "items": {
-        "ihram-set": {
-          "title": "Luxury Ihram set",
-          "subtitle": "100% Egyptian cotton, unstitched",
-          "price": "150 SAR",
-          "imageAlt": "Neatly folded white Ihram set",
-          "badgeLabel": "Best seller"
-        },
-        "portable-prayer-rug": {
-          "title": "Portable prayer rug",
-          "subtitle": "Lightweight and water-resistant",
-          "price": "45 SAR",
-          "imageAlt": "Foldable prayer rug"
-        },
-        "personal-care-kit": {
-          "title": "Personal care kit",
-          "subtitle": "Fragrance-free products for ihram",
-          "price": "80 SAR",
-          "imageAlt": "Small travel care kit"
-        },
-        "electronic-misbah": {
-          "title": "Electronic misbah",
-          "subtitle": "Smart counter with LED screen",
-          "price": "25 SAR",
-          "imageAlt": "Small electronic misbah",
-          "badgeLabel": "Special offer"
-        }
-      }
+      "emptyMessage": "No products available right now."
     },
     "services": {
       "sectionTitle": "Our featured services",
@@ -815,7 +428,6 @@
       "trustBadge": "+2k",
       "trustValue": "2,000+",
       "trustLabel": "Pilgrims who trusted us",
-      "appName": "Arkan Al-Manasik",
       "appTagline": "Your smart rituals guide",
       "liveLabel": "Live"
     }
@@ -981,240 +593,5 @@
       "messageTooShort": "Message is too short",
       "messageTooLong": "Message is too long"
     }
-  },
-  "hero": {
-    "title": "Welcome to Business Success Leadership Resources Company",
-    "description": "Your partner for professionalism, distinction, and lasting impact"
-  },
-  "faq": {
-    "title": "Frequently Asked Questions",
-    "description": "Find answers to common questions about our features and services.",
-    "search": "Search FAQs...",
-    "list": {
-      "category_1": "General",
-      "category_2": "Services",
-      "category_3": "Support",
-      "question_1": "Who is Leadership Resources for Business Services?",
-      "answer_1": "A consulting company established in 2017 specializing in business services and direct support for the business sector. We provide comprehensive, fast, and integrated guidance and solutions to organizational challenges.",
-      "question_2": "Why choose Leadership Resources for services?",
-      "answer_2": "If you seek speed, accuracy, and complete confidentiality in delivering business services, Leadership Resources is your optimal choice.",
-      "question_3": "What services does Leadership Resources provide?",
-      "answer_3": "Leadership Resources offers a wide range of services—more than 500—that organizations need within Saudi Arabia, delivered either by our team or via qualified partners to ensure high accuracy and timely completion. Examples include:",
-      "answer_3_list": [
-        "Investor services",
-        "Training and qualification services",
-        "Trademark registration",
-        "Transfer of ownership and liquidation of establishments",
-        "Legal entity transformation for establishments",
-        "Business consulting",
-        "Design and digital marketing services",
-        "Issuing commercial records and licenses",
-        "Leadership Resources HR management services",
-        "Company and establishment formation",
-        "Managing electronic services for establishments",
-        "Direct support services and resolving establishment issues with government platforms"
-      ],
-      "question_4": "What types of establishments do you serve?",
-      "answer_4_list": ["Companies", "Factories", "Sole proprietorships"],
-      "question_5": "How are services delivered to establishments?",
-      "answer_5": "Services are delivered remotely or via on-site visits within the Kingdom, depending on the service and its requirements.",
-      "question_6": "How can I request a service from Leadership Resources?",
-      "answer_6": "You can request services through the following: \n\n Unified number 920019969\nMobile & WhatsApp 0556332242 \n"
-    },
-    "project_completed": "Project Completed",
-    "more_faqs": {
-      "title": "Have more questions?",
-      "description": "If you didn’t find your answer, feel free to contact us for assistance. \n Sunday - Thursday: 9:00 AM - 5:00 PM",
-      "contact_us": "Contact Us",
-      "options": {
-        "phone_us": "Call Us",
-        "email_us": "Email Us",
-        "live_chat": "Live Chat",
-        "start_conversation": "Start a Conversation"
-      }
-    }
-  },
-  "features": {
-    "title": "Why Choose Us",
-    "description": "Here are some reasons that make us your ideal partner.",
-    "paragraph": "Because we believe every organization has a unique story, we support your distinctiveness and success. \n\n At Leadership Resources, we don’t just handle documents—we reshape systems to become real practices that serve you effectively.\n\n We work because we believe resources aren’t just numbers—they are a story with challenges and details worth achieving and telling. \n\n Everything we offer—services, consulting, certifications, and awards—is not just for ‘compliance,’ but because we believe a healthy, motivating work environment drives productivity and sustainable growth. \n\n And because you deserve the best, we’re here to support the best.",
-    "list": {
-      "title_1": "Professionalism",
-      "description_1": "Because the people we work with are not numbers—they are individuals with their own circumstances and challenges. We commit to precise performance that respects time, effort, and goals.",
-      "title_2": "Credibility & Transparency",
-      "description_2": "We honor what we say and deliver what we promise. We work transparently, turning regulations into practical actions with lasting impact.",
-      "title_3": "Impact",
-      "description_3": "We strive to be more than a strategic partner—to be a turning point and leave an enduring impact with our partners.",
-      "title_4": "Flexibility",
-      "description_4": "We believe off-the-shelf solutions rarely do anyone justice. We tailor our services flexibly to partner needs, pursuing the best outcomes."
-    }
-  },
-  "blogs": {
-    "title": "Blogs",
-    "empty": "No blogs found",
-    "search": "Search in blogs...",
-    "author_by": "By {author}",
-    "read_more": "Read More",
-    "categories": "Categories",
-    "tags": "Tags",
-    "same_category_blogs": "Blogs from the same category"
-  },
-  "buttons": {
-    "get_started": "Get Started",
-    "learn_more": "Learn More",
-    "read_more": "Read More",
-    "contact_us": "Contact Us"
-  },
-  "sidebar": {
-    "tagline": "Innovative solutions for business growth and success",
-    "contact_title": "Contact Information",
-    "email_label": "Email",
-    "email_value": "Info@macs.com.sa",
-    "phone_label": "Phone",
-    "phone_value": "+966556332242",
-    "location_title": "Location Information",
-    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia"
-  },
-  "validation": {
-    "role": {
-      "invalid": "Please select a valid role"
-    },
-    "name": {
-      "min": "Name is too short",
-      "max": "Name is too long"
-    },
-    "first_name": {
-      "min": "First name is too short",
-      "max": "First name is too long"
-    },
-    "last_name": {
-      "min": "Last name is too short",
-      "max": "Last name is too long"
-    },
-    "email": {
-      "invalid": "Invalid email address"
-    },
-    "unified_number": {
-      "min": "Unified number is too short",
-      "max": "Unified number is too long",
-      "required": "Unified number is required"
-    },
-    "phoneNumber": {
-      "invalid": "Invalid phone number"
-    },
-    "phone": {
-      "invalid": "Please enter a valid phone number"
-    },
-    "company_name": {
-      "required": "Company name is required"
-    },
-    "institution_name": {
-      "required": "Institution name is required"
-    },
-    "employee_count": {
-      "required": "Employee count is required"
-    }
-  },
-  "contact_page": {
-    "meta_title": "Contact Us | Putech – Business & IT Solutions Next.js Template",
-    "meta_description": "Get in touch with Putech – a modern Next.js template for IT companies, startups, and software agencies. Contact us today for business and IT solutions.",
-    "breadcrumb_title": "Contact Us",
-    "section_label": "Contact us",
-    "section_title": "Get In Touch",
-    "section_description": "Technology is constantly evolving, shaping the way we live and work. It encompasses innovation, automation, and connectivity driving progress",
-    "address_label": "Address",
-    "address_value": "Al Nemer Trade Center, Western Ring Road, Al Uraija Al Gharbiyah, Riyadh 14921, Kingdom of Saudi Arabia",
-    "email_label": "E-mail",
-    "email_value": "Info@macs.com.sa",
-    "form_title": "Send A Message"
-  },
-  "consultation": {
-    "contactSection": {
-      "title": "Request a Free Consultation",
-      "description": "Our experts are ready to help. Schedule your personalized consultation today and discover how we can transform your business.",
-      "haveQuestions": "Have questions?",
-      "visitFaq": "Visit our FAQ"
-    },
-    "form": {
-      "success": {
-        "title": "Request Submitted!",
-        "message": "Thank you for your interest. Our team will contact you within 24 hours to schedule your consultation."
-      },
-      "fields": {
-        "name": {
-          "label": "Name",
-          "placeholder": "please enter your name"
-        },
-        "first_name": {
-          "label": "First Name",
-          "placeholder": "please enter your first name"
-        },
-        "last_name": {
-          "label": "Last Name",
-          "placeholder": "please enter your last name"
-        },
-        "email": {
-          "label": "Email Address",
-          "placeholder": "mohammed@example.com"
-        },
-        "phone": {
-          "label": "Phone Number",
-          "placeholder": "05X XXX XXXX"
-        },
-        "type": {
-          "label": "Consultation Type",
-          "placeholder": "Select a type",
-          "options": {
-            "strategy": "Strategy & Planning",
-            "implementation": "Implementation",
-            "optimization": "Optimization & Performance",
-            "integration": "Integration Support",
-            "training": "Training & Onboarding",
-            "other": "Other"
-          }
-        },
-        "details": {
-          "label": "Project Details",
-          "placeholder": "Tell us about your project and what you're looking to achieve..."
-        }
-      },
-      "submit": {
-        "label": "Request Consultation",
-        "loading": "Submitting..."
-      },
-      "validation": {
-        "name": {
-          "min": "Name must be at least 2 characters"
-        },
-        "first_name": {
-          "min": "First name must be at least 2 characters"
-        },
-        "last_name": {
-          "min": "Last name must be at least 2 characters"
-        },
-        "email": {
-          "invalid": "Please enter a valid email"
-        },
-        "phone": {
-          "invalid": "Please enter a valid phone number"
-        },
-        "type": {
-          "required": "Please select a consultation type"
-        },
-        "details": {
-          "min": "Details must be at least 10 characters",
-          "max": "Details must be less than 1000 characters"
-        }
-      }
-    }
-  },
-  "success_page": {
-    "title": "Completed successfully!",
-    "message": "Your request has been received successfully. We will contact you soon on the registered phone number.",
-    "reference_label": "Reference ID",
-    "reference_value": "#TRX-8829-AB",
-    "copy_button": "Copy",
-    "back_home": "Back to Home",
-    "view_submission": "View Submission"
   }
 }
