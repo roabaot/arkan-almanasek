@@ -5,6 +5,14 @@
     "error": "حدث خطأ ما",
     "try_again": "أعد المحاولة"
   },
+  "languages": {
+    "ar": "العربية",
+    "en": "الإنجليزية",
+    "id": "الإندونيسية",
+    "tr": "التركية",
+    "si": "السنهالية",
+    "ms": "الماليزية"
+  },
   "header": {
     "nav": {
       "home": "الرئيسية",
@@ -324,6 +332,24 @@
       "titleHighlight": "النسك",
       "description": "خدمات ذبح وتوزيع الأضاحي والهدي والفدية وفق الشريعة الإسلامية، بكل سهولة ويسر."
     },
+    "listSeparator": "، ",
+    "badges": {
+      "securePayment": "دفع آمن",
+      "support247": "دعم 24/7"
+    },
+    "items": {
+      "increaseAria": "زيادة كمية {item}",
+      "decreaseAria": "تقليل كمية {item}"
+    },
+    "section": {
+      "costLabel": "التكلفة",
+      "clear": "مسح",
+      "commit": {
+        "addToOrder": "إضافة إلى الطلب",
+        "updateOrder": "تحديث الطلب",
+        "added": "تمت الإضافة"
+      }
+    },
     "steps": {
       "selectType": {
         "title": "حدد نوع النسك",
@@ -348,9 +374,12 @@
     },
     "cart": {
       "title": "تفاصيل الطلب",
+      "empty": "لم تقم بإضافة أي عناصر بعد.",
       "quantityLabel": "الكمية:",
+      "clear": "مسح",
       "continue": "متابعة",
-      "checkout": "إتمام الدفع"
+      "checkout": "إتمام الدفع",
+      "outOfSync": "يرجى تحديث الأقسام التالية قبل المتابعة: {sections}"
     },
     "checkout": {
       "reviewTitle": "مراجعة البيانات وإتمام الدفع"

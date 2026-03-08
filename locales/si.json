@@ -331,6 +331,24 @@
       "titleHighlight": "Ritual",
       "description": "Slaughtering and distribution services for udhiyah, hadi, and fidya according to sharia, with ease and reliability."
     },
+    "listSeparator": ", ",
+    "badges": {
+      "securePayment": "Varno plačilo",
+      "support247": "Podpora 24/7"
+    },
+    "items": {
+      "increaseAria": "Povečaj količino {item}",
+      "decreaseAria": "Zmanjšaj količino {item}"
+    },
+    "section": {
+      "costLabel": "Strošek",
+      "clear": "Počisti",
+      "commit": {
+        "addToOrder": "Dodaj v naročilo",
+        "updateOrder": "Posodobi naročilo",
+        "added": "Dodano"
+      }
+    },
     "steps": {
       "selectType": {
         "title": "Select ritual type",
@@ -355,9 +373,12 @@
     },
     "cart": {
       "title": "Order details",
+      "empty": "Niste dodali nobenih izdelkov.",
       "quantityLabel": "Qty:",
+      "clear": "Počisti",
       "continue": "Nadaljuj",
-      "checkout": "Checkout"
+      "checkout": "Checkout",
+      "outOfSync": "Pred nadaljevanjem posodobite naslednje razdelke: {sections}"
     },
     "checkout": {
       "reviewTitle": "Preglej podatke in zaključi plačilo"

@@ -331,6 +331,24 @@
       "titleHighlight": "Ritual",
       "description": "Slaughtering and distribution services for udhiyah, hadi, and fidya according to sharia, with ease and reliability."
     },
+    "listSeparator": ", ",
+    "badges": {
+      "securePayment": "Güvenli ödeme",
+      "support247": "7/24 destek"
+    },
+    "items": {
+      "increaseAria": "{item} adedini artır",
+      "decreaseAria": "{item} adedini azalt"
+    },
+    "section": {
+      "costLabel": "Tutar",
+      "clear": "Temizle",
+      "commit": {
+        "addToOrder": "Siparişe ekle",
+        "updateOrder": "Siparişi güncelle",
+        "added": "Eklendi"
+      }
+    },
     "steps": {
       "selectType": {
         "title": "Select ritual type",
@@ -355,9 +373,12 @@
     },
     "cart": {
       "title": "Sipariş detayları",
+      "empty": "Henüz hiç öğe eklemediniz.",
       "quantityLabel": "Adet:",
+      "clear": "Temizle",
       "continue": "Devam et",
-      "checkout": "Ödeme"
+      "checkout": "Ödeme",
+      "outOfSync": "Devam etmeden önce şu bölümleri güncelleyin: {sections}"
     },
     "checkout": {
       "reviewTitle": "Bilgileri gözden geçir ve ödemeyi tamamla"
