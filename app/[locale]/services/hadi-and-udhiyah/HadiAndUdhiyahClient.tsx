@@ -13,6 +13,7 @@ import {
   type HadiRequestT,
   type QurbaniPayload,
 } from "@/app/api";
+import { ApiError } from "@/app/api/base";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
 import { ddmmyyyyFromISODate, isoDateFromDDMMYYYY } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -35,7 +36,6 @@ import type { Item, Section } from "./types";
 import { clampQty } from "./utils";
 import Step3Payment, { PaymentSummary } from "./Step3Payment";
 import SaudiRiyalSymbol from "@/app/components/ui/SaudiRiyalSymbol";
-import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 
 type Props = {
   initialHadi: GetHadiResT;
@@ -376,29 +376,12 @@ export default function HadiAndUdhiyahClient({
     setStep(2);
   }
 
-  function persistRequestToken(token: string) {
-    // Also persist token server-side (HttpOnly cookie) for server components.
-    try {
-      fetch("/api/session/request-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      }).catch(() => {
-        // ignore
-      });
-    } catch {
-      // ignore
-    }
-  }
-
   useEffect(() => {
     // If we already have it from the server, no need to fetch.
     if (requestedCustomer) return;
     let cancelled = false;
 
     (async () => {
-      if (!(await hasRequestTokenCookieClient())) return;
-
       try {
         const req = await getHadiWithToken();
         if (cancelled) return;
@@ -509,16 +492,16 @@ export default function HadiAndUdhiyahClient({
     };
 
     try {
-      const hasToken = await hasRequestTokenCookieClient();
-
-      if (hasToken) {
+      try {
         await editHadiRequest(payload);
-      } else {
-        const res = (await postHadiRequest(payload)) as unknown as {
-          token?: string;
-        };
-        if (typeof res?.token === "string" && res.token.length >= 10) {
-          persistRequestToken(res.token);
+      } catch (e) {
+        if (
+          e instanceof ApiError &&
+          (e.status === 401 || e.status === 403 || e.status === 404)
+        ) {
+          await postHadiRequest(payload);
+        } else {
+          throw e;
         }
       }
 

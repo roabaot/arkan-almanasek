@@ -5,6 +5,14 @@
     "error": "Bir hata oluştu",
     "try_again": "Tekrar dene"
   },
+  "languages": {
+    "ar": "Arapça",
+    "en": "İngilizce",
+    "id": "Endonezce",
+    "tr": "Türkçe",
+    "si": "Sinhala",
+    "ms": "Malayca"
+  },
   "header": {
     "nav": {
       "home": "Ana Sayfa",

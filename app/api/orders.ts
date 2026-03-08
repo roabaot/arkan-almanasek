@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchViaProxy } from "./base";
+import { ApiError, apiFetch } from "./base";
 
 export type CartItem = {
   id: number;
@@ -84,7 +84,7 @@ export function addRequest(payload: CheckoutPayload) {
 }
 
 export function updateRequest(payload: CheckoutPayload) {
-  return apiFetchViaProxy<AddRequestResT>("/requests/update", {
+  return apiFetch<AddRequestResT>("/requests/update", {
     method: "POST",
     body: JSON.stringify(payload),
   });
@@ -107,8 +107,14 @@ export function payOrder(orderId: number, paymentMethod: string) {
   });
 }
 
-// Uses Next.js proxy so the request token can be taken from HttpOnly cookie
-// and forwarded to Ruby API as a query param `token`.
 export function getRequestCart() {
-  return apiFetchViaProxy<RequestCartResT>("/requests/cart");
+  return apiFetch<RequestCartResT>("/requests/cart").catch((e: unknown) => {
+    if (
+      e instanceof ApiError &&
+      (e.status === 401 || e.status === 403 || e.status === 404)
+    ) {
+      return null;
+    }
+    throw e;
+  });
 }

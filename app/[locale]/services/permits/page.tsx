@@ -10,7 +10,6 @@ import NoticeSection from "./NoticeSection";
 import PermitTypesSection from "./PermitTypesSection";
 import RequiredDocumentsSection from "./RequiredDocumentsSection";
 import StepsSection from "./StepsSection";
-import { hasRequestTokenCookieServer } from "@/lib/utils/requestToken.server";
 
 export default async function PermitsServicePage() {
   const permitCards = [
@@ -70,14 +69,12 @@ export default async function PermitsServicePage() {
   ] as const;
 
   const initialPermits = await getPermits();
-  const hasToken = await hasRequestTokenCookieServer();
   let requestedPermits: PermitRequestT | null = null;
-  if (hasToken) {
-    try {
-      requestedPermits = await getPermitsWithToken();
-    } catch {
-      requestedPermits = null;
-    }
+
+  try {
+    requestedPermits = await getPermitsWithToken();
+  } catch {
+    requestedPermits = null;
   }
 
   return (

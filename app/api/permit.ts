@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchViaProxy } from "./base";
+import { apiFetch } from "./base";
 
 export type PermitTypeT = "PermitHajj" | "PermitUmrah";
 
@@ -95,7 +95,7 @@ export const getPermits = () => {
 };
 
 export const getPermitsWithToken = () => {
-  return apiFetchViaProxy<PermitRequestT>("/permit/get_request");
+  return apiFetch<PermitRequestT>("/permit/get_request");
 };
 
 export const postPermitRequest = (payload: PermitPayload) => {
@@ -108,7 +108,7 @@ export const postPermitRequest = (payload: PermitPayload) => {
 
 export const editPermitRequest = (payload: PermitPayload) => {
   const body = toPermitFormData(payload);
-  return apiFetchViaProxy("/permit/update_request", {
+  return apiFetch("/permit/update_request", {
     method: "PUT",
     body,
   });

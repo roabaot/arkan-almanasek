@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchViaProxy } from "./base";
+import { apiFetch } from "./base";
 
 export type HadiTypeT = {
   id: number;
@@ -76,7 +76,7 @@ export const getHadi = () => {
 };
 
 export const getHadiWithToken = () => {
-  return apiFetchViaProxy<HadiRequestT>("/hadi/get_request");
+  return apiFetch<HadiRequestT>("/hadi/get_request");
 };
 
 export const postHadiRequest = (payload: QurbaniPayload) => {
@@ -87,7 +87,7 @@ export const postHadiRequest = (payload: QurbaniPayload) => {
 };
 
 export const editHadiRequest = (payload: QurbaniPayload) => {
-  return apiFetchViaProxy("/hadi/update_request", {
+  return apiFetch("/hadi/update_request", {
     method: "PUT",
     body: JSON.stringify(payload),
   });

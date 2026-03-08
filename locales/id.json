@@ -5,6 +5,14 @@
     "error": "Terjadi kesalahan",
     "try_again": "Coba lagi"
   },
+  "languages": {
+    "ar": "Arab",
+    "en": "Inggris",
+    "id": "Indonesia",
+    "tr": "Turki",
+    "si": "Sinhala",
+    "ms": "Melayu"
+  },
   "header": {
     "nav": {
       "home": "Beranda",

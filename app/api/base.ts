@@ -44,11 +44,6 @@ function buildApiUrl(endpoint: string): string {
   return `${base}${path}`;
 }
 
-function buildProxyUrl(endpoint: string): string {
-  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-  return `/api/proxy${path}`;
-}
-
 async function doFetch<T>(url: string, options?: RequestInit): Promise<T> {
   const defaultLocale =
     typeof document !== "undefined"
@@ -103,7 +98,33 @@ export async function apiFetch<T>(
   options?: RequestInit,
 ): Promise<T> {
   const url = buildApiUrl(endpoint);
-  return doFetch<T>(url, options);
+
+  // Client: include cookies for cross-origin session auth.
+  if (typeof window !== "undefined") {
+    return doFetch<T>(url, {
+      ...(options ?? {}),
+      credentials: options?.credentials ?? "include",
+    });
+  }
+
+  // Server: forward incoming cookies (when present) so the API can read the
+  // session cookie even for cross-origin upstream calls.
+  const nextHeaders = new Headers(options?.headers ?? undefined);
+  try {
+    const { headers } = await import("next/headers");
+    const incoming = await headers();
+    const cookie = incoming.get("cookie");
+    if (cookie && !nextHeaders.has("cookie")) {
+      nextHeaders.set("cookie", cookie);
+    }
+  } catch {
+    // ignore
+  }
+
+  return doFetch<T>(url, {
+    ...(options ?? {}),
+    headers: nextHeaders,
+  });
 }
 
 // apiFetchViaProxy: same endpoint as apiFetch, but attaches token automatically.
@@ -112,40 +133,7 @@ export async function apiFetchViaProxy<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
-  // Client: go through Next.js proxy so the request token can be read from
-  // HttpOnly cookie on the server and forwarded upstream.
-  if (typeof window !== "undefined") {
-    const url = buildProxyUrl(endpoint);
-    return doFetch<T>(url, {
-      ...(options ?? {}),
-      // Ensure cookies are included for same-origin requests.
-      credentials: "same-origin",
-    });
-  }
-
-  // Server: best-effort direct upstream call with token from HttpOnly cookie.
-  const urlObj = new URL(buildApiUrl(endpoint));
-  const nextHeaders = new Headers(options?.headers ?? undefined);
-
-  try {
-    const { cookies } = await import("next/headers");
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    if (token) {
-      nextHeaders.set("token", token);
-
-      // Ruby API expects token as query param for request-scoped endpoints.
-      const firstPath = urlObj.pathname.split("/").filter(Boolean)[0];
-      if (firstPath === "requests" && !urlObj.searchParams.has("token")) {
-        urlObj.searchParams.set("token", token);
-      }
-    }
-  } catch {
-    // ignore
-  }
-
-  return doFetch<T>(urlObj.toString(), {
-    ...(options ?? {}),
-    headers: nextHeaders,
-  });
+  // Deprecated: token/proxy-based auth is no longer used.
+  // Keep this function as a compatibility alias.
+  return apiFetch<T>(endpoint, options);
 }

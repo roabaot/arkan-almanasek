@@ -19,8 +19,9 @@ import {
   type BadelRequestCustomerT,
 } from "@/app/api/badel";
 
+import { ApiError } from "@/app/api/base";
+
 import { formatCardNumber, formatExpiry, formatFileSize } from "@/lib/utils";
-import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 
 export type BadalServiceType = "umrah" | "hajj";
 
@@ -506,8 +507,6 @@ export default function BadalRequestModal({
 
       // Priority 2: fetch by token (covers cases where token was created in-session
       // without a full page reload).
-      if (!(await hasRequestTokenCookieClient())) return;
-
       try {
         const req = await getBadelsWithToken();
         if (cancelled) return;
@@ -533,21 +532,6 @@ export default function BadalRequestModal({
   const stepTitle = step === 1 ? "بيانات المستفيد" : "الدفع";
 
   const canClose = !(isSubmitting || isSending);
-
-  function persistRequestToken(token: string) {
-    // Also persist token server-side (HttpOnly cookie) for server components.
-    try {
-      fetch("/api/session/request-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      }).catch(() => {
-        // ignore
-      });
-    } catch {
-      // ignore
-    }
-  }
 
   async function saveAndGoToStep2(customerValues: CustomerFormValues) {
     setSubmitError(null);
@@ -577,17 +561,16 @@ export default function BadalRequestModal({
 
     setIsSending(true);
     try {
-      const hasToken = await hasRequestTokenCookieClient();
-
-      if (hasToken) {
+      try {
         await editBadelRequest(apiPayload);
-      } else {
-        const res = (await postBadelRequest(apiPayload)) as unknown as {
-          token?: unknown;
-        };
-        const token = res?.token;
-        if (typeof token === "string" && token.length >= 10) {
-          persistRequestToken(token);
+      } catch (e) {
+        if (
+          e instanceof ApiError &&
+          (e.status === 401 || e.status === 403 || e.status === 404)
+        ) {
+          await postBadelRequest(apiPayload);
+        } else {
+          throw e;
         }
       }
 

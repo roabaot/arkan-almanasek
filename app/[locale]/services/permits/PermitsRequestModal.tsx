@@ -11,12 +11,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   editPermitRequest,
+  getPermitsWithToken,
   postPermitRequest,
   type GetPermitResT,
   type PermitPayload,
   type PermitRequestT,
   type PermitTypeT,
 } from "@/app/api/permit";
+import { ApiError } from "@/app/api/base";
 import SarAmount from "@/app/components/ui/SarAmount";
 import {
   MdAddAPhoto,
@@ -35,7 +37,6 @@ import {
   MdPerson,
   MdPublic,
 } from "react-icons/md";
-import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 
 export type PermitType = "hajj" | "umrah";
 
@@ -614,18 +615,9 @@ export default function PermitsRequestModal({
         return;
       }
 
-      // 2) Client fetch via /api/proxy using HttpOnly cookie token.
-      const hasToken = await hasRequestTokenCookieClient();
-      if (!hasToken) return;
-
+      // 2) Client fetch using cookie-based session.
       try {
-        const res = await fetch("/api/proxy/permit/get_request", {
-          method: "GET",
-          cache: "no-store",
-          headers: { Accept: "application/json" },
-        });
-        if (!res.ok) return;
-        const json = (await res.json()) as PermitRequestT;
+        const json = await getPermitsWithToken();
         if (cancelled) return;
         await applyPrefill(json ?? null);
       } catch {
@@ -660,15 +652,6 @@ export default function PermitsRequestModal({
     return type === "hajj" ? "PermitHajj" : "PermitUmrah";
   }
 
-  async function persistRequestToken(token: string) {
-    // Store token securely as HttpOnly cookie (not readable by JS).
-    await fetch("/api/session/request-token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    });
-  }
-
   async function savePermitRequest(): Promise<PermitSubmitArgs> {
     if (!idFile || !personalPhoto) {
       throw new Error("يرجى رفع صورة الهوية والصورة الشخصية");
@@ -700,20 +683,21 @@ export default function PermitsRequestModal({
       },
     };
 
-    const hasToken = await hasRequestTokenCookieClient();
     let apiResponse: unknown;
     let mode: "create" | "update";
 
-    if (hasToken) {
+    try {
       mode = "update";
       apiResponse = await editPermitRequest(apiPayload);
-    } else {
-      mode = "create";
-      apiResponse = await postPermitRequest(apiPayload);
-
-      const token = (apiResponse as { token?: unknown } | null)?.token;
-      if (typeof token === "string" && token.length >= 10) {
-        await persistRequestToken(token);
+    } catch (e) {
+      if (
+        e instanceof ApiError &&
+        (e.status === 401 || e.status === 403 || e.status === 404)
+      ) {
+        mode = "create";
+        apiResponse = await postPermitRequest(apiPayload);
+      } else {
+        throw e;
       }
     }
 

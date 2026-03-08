@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchViaProxy } from "./base";
+import { apiFetch } from "./base";
 
 export type BadelTypeT = "OnBehalfHajj" | "OnBehalfUmrah";
 
@@ -54,7 +54,7 @@ export const getBadels = () => {
 };
 
 export const getBadelsWithToken = () => {
-  return apiFetchViaProxy<BadelRequestT>("/on_behalf/get_request");
+  return apiFetch<BadelRequestT>("/on_behalf/get_request");
 };
 
 export const postBadelRequest = (payload: BadelPayload) => {
@@ -65,7 +65,7 @@ export const postBadelRequest = (payload: BadelPayload) => {
 };
 
 export const editBadelRequest = (payload: BadelPayload) => {
-  return apiFetchViaProxy("/on_behalf/update_request", {
+  return apiFetch("/on_behalf/update_request", {
     method: "PUT",
     body: JSON.stringify(payload),
   });

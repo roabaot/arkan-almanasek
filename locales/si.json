@@ -5,6 +5,14 @@
     "error": "An error occurred",
     "try_again": "Try again"
   },
+  "languages": {
+    "ar": "Arabic",
+    "en": "English",
+    "id": "Indonesian",
+    "tr": "Turkish",
+    "si": "Sinhala",
+    "ms": "Malay"
+  },
   "header": {
     "nav": {
       "home": "Home",

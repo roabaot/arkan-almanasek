@@ -25,7 +25,6 @@ import {
 } from "@/app/api";
 import { ApiError } from "@/app/api/base";
 import { ddmmyyyyFromISODate, isoDateFromDDMMYYYY } from "@/lib/utils";
-import { hasRequestTokenCookieClient } from "@/lib/utils/requestToken.client";
 import SarAmount from "@/app/components/ui/SarAmount";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
 import type { CartItem as StoredCartItem } from "@/lib/utils/cart";
@@ -266,32 +265,14 @@ export default function CheckoutWizard() {
   const searchParams = useSearchParams();
   const { total: cartSubtotal, cart, clearCart } = useCart();
 
-  const [hasToken, setHasToken] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const nextHasToken = await hasRequestTokenCookieClient();
-      if (cancelled) return;
-      setHasToken(nextHasToken);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   const requestCartQuery = useQuery({
     queryKey: ["requestCart"],
     queryFn: () => getRequestCart(),
-    enabled: hasToken,
     staleTime: 1000 * 30,
     retry: false,
   });
 
   const requestProductLines = useMemo(() => {
-    if (!hasToken) return [] as { id: number; quantity: number }[];
-
     const raw = requestCartQuery.data?.cart?.products;
     const products = Array.isArray(raw) ? raw : [];
 
@@ -302,7 +283,7 @@ export default function CheckoutWizard() {
       out.push({ id: mapped.id, quantity: mapped.quantity });
     }
     return out;
-  }, [hasToken, requestCartQuery.data]);
+  }, [requestCartQuery.data]);
 
   const effectiveQtyByProductId = useMemo(() => {
     const out = new Map<number, number>();
@@ -381,25 +362,19 @@ export default function CheckoutWizard() {
 
   const upsertRequestMutation = useMutation({
     mutationFn: async (payload: CheckoutPayload) => {
-      const hasToken = await hasRequestTokenCookieClient();
-
-      if (hasToken) {
-        try {
-          const res = await updateRequest(payload);
-          return { mode: "update" as const, res };
-        } catch (e) {
-          // Token may be missing/expired server-side. Recover by creating a new
-          // request (and persisting the new token) if the API signals auth.
-          if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
-            const res = await addRequest(payload);
-            return { mode: "create" as const, res };
-          }
-          throw e;
+      try {
+        const res = await updateRequest(payload);
+        return { mode: "update" as const, res };
+      } catch (e) {
+        if (
+          e instanceof ApiError &&
+          (e.status === 401 || e.status === 403 || e.status === 404)
+        ) {
+          const res = await addRequest(payload);
+          return { mode: "create" as const, res };
         }
+        throw e;
       }
-
-      const res = await addRequest(payload);
-      return { mode: "create" as const, res };
     },
   });
 
@@ -431,7 +406,7 @@ export default function CheckoutWizard() {
   useEffect(() => {
     if (step !== 2) return;
     if (customerInfoValues) return;
-    if (!hasToken) return;
+    if (!requestCartQuery.data) return;
 
     const rawCustomer =
       (requestCartQuery.data as { customer?: unknown } | undefined)?.customer ??
@@ -441,7 +416,7 @@ export default function CheckoutWizard() {
     const mapped = mapRequestCartCustomerToStep2InitialValues(rawCustomer);
     if (!mapped) return;
     setCustomerInfoValues(mapped);
-  }, [customerInfoValues, hasToken, requestCartQuery.data, step]);
+  }, [customerInfoValues, requestCartQuery.data, step]);
 
   useEffect(() => {
     if (!isCartEmpty) return;
@@ -524,27 +499,6 @@ export default function CheckoutWizard() {
     try {
       const out = await upsertRequestMutation.mutateAsync(payload);
       console.log("request upsert response:", out);
-
-      // Persist token securely (HttpOnly cookie) for returning users.
-      // Only needed on create; update already uses the existing cookie.
-      if (out.mode === "create") {
-        const token = (out.res as { token?: unknown } | null)?.token;
-        if (typeof token === "string" && token.length > 0) {
-          try {
-            const resp = await fetch("/api/session/request-token", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ token }),
-            });
-            if (resp.ok) setHasToken(true);
-          } catch (e) {
-            console.warn("Failed to persist request token:", e);
-          }
-        }
-      } else {
-        // Keep local state in sync (useful if token presence changed in-session).
-        setHasToken(true);
-      }
 
       // Ensure request cart is available for the next step.
       try {
