@@ -18,7 +18,7 @@ import {
   type PermitRequestT,
   type PermitTypeT,
 } from "@/app/api/permit";
-import { ApiError } from "@/app/api/base";
+import { getApiErrorMessage, upsertApiRequest } from "@/app/api/base";
 import SarAmount from "@/app/components/ui/SarAmount";
 import {
   MdAddAPhoto,
@@ -683,23 +683,19 @@ export default function PermitsRequestModal({
       },
     };
 
-    let apiResponse: unknown;
-    let mode: "create" | "update";
+    let mode: "create" | "update" = "create";
 
-    try {
-      mode = "update";
-      apiResponse = await editPermitRequest(apiPayload);
-    } catch (e) {
-      if (
-        e instanceof ApiError &&
-        (e.status === 401 || e.status === 403 || e.status === 404)
-      ) {
+    const apiResponse = await upsertApiRequest({
+      hasExistingRequest: Boolean(prefillRequest),
+      update: async () => {
+        mode = "update";
+        return editPermitRequest(apiPayload);
+      },
+      create: async () => {
         mode = "create";
-        apiResponse = await postPermitRequest(apiPayload);
-      } else {
-        throw e;
-      }
-    }
+        return postPermitRequest(apiPayload);
+      },
+    });
 
     return { apiPayload, apiResponse, mode };
   }
@@ -714,7 +710,7 @@ export default function PermitsRequestModal({
       await (onComplete?.(args) ?? Promise.resolve());
       onOpenChange(false, "programmatic");
     } catch (e) {
-      setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+      setSubmitError(getApiErrorMessage(e));
     } finally {
       setIsSending(false);
     }
@@ -765,7 +761,7 @@ export default function PermitsRequestModal({
         setSavedRequest(args);
         setStep(3);
       } catch (e) {
-        setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+        setSubmitError(getApiErrorMessage(e));
       } finally {
         setIsSending(false);
       }

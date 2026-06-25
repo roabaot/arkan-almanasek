@@ -19,7 +19,7 @@ import {
   type BadelRequestCustomerT,
 } from "@/app/api/badel";
 
-import { ApiError } from "@/app/api/base";
+import { getApiErrorMessage, upsertApiRequest } from "@/app/api/base";
 
 import { formatCardNumber, formatExpiry, formatFileSize } from "@/lib/utils";
 
@@ -448,6 +448,9 @@ export default function BadalRequestModal({
 }: BadalRequestModalProps) {
   const formId = useId();
   const [step, setStep] = useState<1 | 2>(1);
+  const [hasExistingRequest, setHasExistingRequest] = useState(
+    () => Boolean(prefillCustomer),
+  );
 
   const countryOptions = useMemo(() => COUNTRY_OPTIONS, []);
 
@@ -501,6 +504,7 @@ export default function BadalRequestModal({
     async function prefillFromRequest() {
       // Priority 1: server-provided customer (if present).
       if (prefillCustomer) {
+        setHasExistingRequest(true);
         reset(buildPrefilledCustomerValues(prefillCustomer));
         return;
       }
@@ -510,9 +514,10 @@ export default function BadalRequestModal({
       try {
         const req = await getBadelsWithToken();
         if (cancelled) return;
+        setHasExistingRequest(Boolean(req?.id));
         reset(buildPrefilledCustomerValues(req?.customer));
       } catch {
-        // ignore - no existing request or API unavailable
+        if (!cancelled) setHasExistingRequest(false);
       }
     }
 
@@ -561,22 +566,15 @@ export default function BadalRequestModal({
 
     setIsSending(true);
     try {
-      try {
-        await editBadelRequest(apiPayload);
-      } catch (e) {
-        if (
-          e instanceof ApiError &&
-          (e.status === 401 || e.status === 403 || e.status === 404)
-        ) {
-          await postBadelRequest(apiPayload);
-        } else {
-          throw e;
-        }
-      }
+      await upsertApiRequest({
+        hasExistingRequest,
+        update: () => editBadelRequest(apiPayload),
+        create: () => postBadelRequest(apiPayload),
+      });
 
       setStep(2);
     } catch (e) {
-      setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+      setSubmitError(getApiErrorMessage(e));
     } finally {
       setIsSending(false);
     }
@@ -642,7 +640,7 @@ export default function BadalRequestModal({
       await onComplete?.(uiPayload);
       onOpenChange(false, "programmatic");
     } catch (e) {
-      setSubmitError(e instanceof Error ? e.message : "حدث خطأ غير متوقع");
+      setSubmitError(getApiErrorMessage(e));
     } finally {
       setIsSending(false);
     }

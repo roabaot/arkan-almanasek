@@ -28,6 +28,54 @@ export class ApiError extends Error {
   }
 }
 
+/** True when update failed because the session/token cookie is missing or invalid. */
+export function isMissingSessionApiError(error: unknown): boolean {
+  return (
+    error instanceof ApiError &&
+    (error.status === 401 ||
+      error.status === 403 ||
+      error.status === 404 ||
+      error.status === 422)
+  );
+}
+
+export function getApiErrorMessage(
+  error: unknown,
+  fallback = "حدث خطأ غير متوقع",
+): string {
+  if (
+    error instanceof ApiError &&
+    typeof error.body === "object" &&
+    error.body !== null &&
+    "error" in error.body &&
+    typeof (error.body as { error: unknown }).error === "string"
+  ) {
+    return (error.body as { error: string }).error;
+  }
+
+  if (error instanceof Error) return error.message;
+  return fallback;
+}
+
+export async function upsertApiRequest<T>(args: {
+  hasExistingRequest: boolean;
+  update: () => Promise<T>;
+  create: () => Promise<T>;
+}): Promise<T> {
+  if (!args.hasExistingRequest) {
+    return args.create();
+  }
+
+  try {
+    return await args.update();
+  } catch (error) {
+    if (isMissingSessionApiError(error)) {
+      return args.create();
+    }
+    throw error;
+  }
+}
+
 export type PaginationT = {
   current_page: number;
   total_pages: number;

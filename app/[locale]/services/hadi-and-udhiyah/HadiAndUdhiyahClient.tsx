@@ -13,7 +13,7 @@ import {
   type HadiRequestT,
   type QurbaniPayload,
 } from "@/app/api";
-import { ApiError } from "@/app/api/base";
+import { getApiErrorMessage, upsertApiRequest } from "@/app/api/base";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
 import { ddmmyyyyFromISODate, isoDateFromDDMMYYYY } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -492,24 +492,15 @@ export default function HadiAndUdhiyahClient({
     };
 
     try {
-      try {
-        await editHadiRequest(payload);
-      } catch (e) {
-        if (
-          e instanceof ApiError &&
-          (e.status === 401 || e.status === 403 || e.status === 404)
-        ) {
-          await postHadiRequest(payload);
-        } else {
-          throw e;
-        }
-      }
+      await upsertApiRequest({
+        hasExistingRequest: Boolean(requestedHadi),
+        update: () => editHadiRequest(payload),
+        create: () => postHadiRequest(payload),
+      });
 
       setStep(3);
     } catch (e) {
-      setCustomerInfoSubmitError(
-        e instanceof Error ? e.message : "حدث خطأ غير متوقع",
-      );
+      setCustomerInfoSubmitError(getApiErrorMessage(e));
     } finally {
       setIsSavingCustomerInfo(false);
     }

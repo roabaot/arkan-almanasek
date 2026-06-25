@@ -23,7 +23,7 @@ import {
   updateRequest,
   type CheckoutPayload,
 } from "@/app/api";
-import { ApiError } from "@/app/api/base";
+import { getApiErrorMessage, upsertApiRequest } from "@/app/api/base";
 import { ddmmyyyyFromISODate, isoDateFromDDMMYYYY } from "@/lib/utils";
 import SarAmount from "@/app/components/ui/SarAmount";
 import type { Step2CustomerInfoValues } from "@/lib/validation";
@@ -362,19 +362,18 @@ export default function CheckoutWizard() {
 
   const upsertRequestMutation = useMutation({
     mutationFn: async (payload: CheckoutPayload) => {
-      try {
-        const res = await updateRequest(payload);
-        return { mode: "update" as const, res };
-      } catch (e) {
-        if (
-          e instanceof ApiError &&
-          (e.status === 401 || e.status === 403 || e.status === 404)
-        ) {
-          const res = await addRequest(payload);
-          return { mode: "create" as const, res };
-        }
-        throw e;
-      }
+      const hasExistingRequest = Boolean(requestCartQuery.data);
+
+      const res = await upsertApiRequest({
+        hasExistingRequest,
+        update: () => updateRequest(payload),
+        create: () => addRequest(payload),
+      });
+
+      return {
+        mode: hasExistingRequest ? ("update" as const) : ("create" as const),
+        res,
+      };
     },
   });
 
@@ -431,6 +430,7 @@ export default function CheckoutWizard() {
   }, [isCartEmpty, pathname, router, searchParams]);
 
   const setStepAndSyncUrl = (next: Step) => {
+    const isAdvancing = next > step;
     setStep(next);
 
     const params = new URLSearchParams(searchParams.toString());
@@ -441,6 +441,12 @@ export default function CheckoutWizard() {
     router.replace(query ? `${pathname}?${query}` : pathname, {
       scroll: false,
     });
+
+    if (isAdvancing) {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
   };
 
   const onPrimaryActionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -550,9 +556,7 @@ export default function CheckoutWizard() {
                 isSaving={upsertRequestMutation.isPending}
                 submitError={
                   upsertRequestMutation.isError
-                    ? upsertRequestMutation.error instanceof Error
-                      ? upsertRequestMutation.error.message
-                      : "حدث خطأ غير متوقع"
+                    ? getApiErrorMessage(upsertRequestMutation.error)
                     : null
                 }
               />
